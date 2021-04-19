@@ -7,7 +7,7 @@
 #include <WallGrid.hpp>
 #include <iostream>
 
-#include "Keys.h"
+#include "Keys.hpp"
 #include "LTexture.hpp"
 #include "Pacman.hpp"
 

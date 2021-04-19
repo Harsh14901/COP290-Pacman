@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Constants.h>
+#include <Constants.hpp>
 #include <GL/gl.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
