@@ -1,4 +1,7 @@
 #include "MainGame.h"
+#include <stdio.h>      /* printf, scanf, puts, NULL */
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 
 void fatalError(string error_message){
@@ -27,6 +30,23 @@ void MainGame::runGame(){
 
 void MainGame::initCharacters(){
     _pacman.init(_gRenderer);
+    wallgrid.init(_gRenderer);
+
+    // TODO: Change this to the algorithm.
+    // The snippet below generates a random maze.
+    srand(time(NULL));
+    for (int i = 0; i < wallgrid.GRID_ROW; i++)
+    {
+        for (int j = 0; j < wallgrid.GRID_COL; j++)
+        {
+            if(rand()%2 == 1){
+                // cout<<"Setting wall at "<< i<<" , "<<j<<endl;
+                wallgrid.set_wall(i,j);
+            }
+        }
+        
+    }    
+
 }
 
 void MainGame::initSystems(){
@@ -208,6 +228,7 @@ void MainGame::processInput(){
     // SDL_RenderCopy( _gRenderer, _gTexture, NULL, NULL );
 
     _pacman.render();
+    wallgrid.render();
 
     //Update screen
     SDL_RenderPresent( _gRenderer );

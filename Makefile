@@ -3,9 +3,9 @@ SHELL = /bin/bash
 CC = g++
 C_FLAGS = -g -Wall
 
-BIN  = bin
+BIN  = output
 SRCS = src/*.cpp
-PROG = bin/main
+PROG = output/main
 SRC = src
 INCLUDE := include
 LIB := lib

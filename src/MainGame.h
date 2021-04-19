@@ -6,7 +6,7 @@
 #include <SDL2/SDL_image.h>
 #include "Pacman.hpp"
 #include "LTexture.hpp"
-
+#include <WallGrid.hpp>
 #include "Keys.h"
 
 using namespace std;
@@ -47,4 +47,5 @@ private:
 
     GameState _gameState;
     Pacman _pacman;
+    WallGrid wallgrid;
 };
