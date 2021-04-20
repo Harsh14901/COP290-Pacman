@@ -213,6 +213,7 @@ void MainGame::processInput() {
 void MainGame::gameLoop() {
   while (_gameState == GameState::PLAY) {
     processInput();
+    CollisionEngine::checkCollisions();
   }
 }
 

@@ -8,13 +8,14 @@
 #include <iostream>
 
 #include "LTexture.hpp"
-
+#include "CollisionEngine.hpp"
 class WallGrid {
  public:
   const static int WALL_WIDTH = 32;
   const static int WALL_HEIGHT = 32;
   const static int GRID_COL = SCREEN_WIDTH / WALL_WIDTH;
   const static int GRID_ROW = SCREEN_HEIGHT / WALL_HEIGHT;
+  const static string WALL_ID;
 
   WallGrid();
   void init(SDL_Renderer* renderer);
@@ -31,4 +32,5 @@ class WallGrid {
 
   // The wall matrix, true indicates wall is present
   bool walls[GRID_ROW][GRID_COL];
+  Collider wallColliders[GRID_ROW][GRID_COL];
 };

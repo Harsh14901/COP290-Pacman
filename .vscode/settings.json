@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "*.yacc": "yacc",
+    "string": "cpp",
+    "cmath": "cpp",
+    "deque": "cpp",
+    "vector": "cpp",
+    "thread": "cpp",
+    "iostream": "cpp"
+  }
+}

@@ -1,5 +1,7 @@
 #include <WallGrid.hpp>
 
+const string WallGrid::WALL_ID = "wall";
+
 WallGrid::WallGrid() { memset(walls, 0, sizeof(walls)); }
 
 void WallGrid::init(SDL_Renderer* renderer) {
@@ -9,17 +11,21 @@ void WallGrid::init(SDL_Renderer* renderer) {
 }
 
 void WallGrid::set_wall(int i, int j) {
-  if (i >= GRID_ROW || i < 0 || j >= GRID_COL || j < 0) {
+  if (i >= GRID_ROW || i < 0 || j >= GRID_COL || j < 0 || walls[i][j]) {
     return;
   }
   walls[i][j] = true;
+  auto rect = SDL_Rect{j * WALL_WIDTH, i * WALL_HEIGHT, WALL_WIDTH, WALL_HEIGHT};
+  wallColliders[i][j] = Collider(WALL_ID + "_" + to_string(i) + "_" + to_string(j), rect);
+  CollisionEngine::register_collider(&wallColliders[i][j]);
 }
 
 void WallGrid::unset_wall(int i, int j) {
-  if (i >= GRID_ROW || i < 0 || j >= GRID_COL || j < 0) {
+  if (i >= GRID_ROW || i < 0 || j >= GRID_COL || j < 0 || !walls[i][j]) {
     return;
   }
   walls[i][j] = false;
+  CollisionEngine::deregister_collider(&wallColliders[i][j]);
 }
 
 void WallGrid::render() {

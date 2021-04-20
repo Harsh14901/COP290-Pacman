@@ -5,15 +5,15 @@
 #include <SDL2/SDL_image.h>
 
 #include <iostream>
-
+#include "CollisionEngine.hpp"
 #include "LTexture.hpp"
 
 class Pacman {
  public:
   // The dimensions of the dot
-  static const int DOT_WIDTH = 34;
-  static const int DOT_HEIGHT = 40;
-
+  static const int DOT_WIDTH;
+  static const int DOT_HEIGHT;
+  static const string PACMAN_ID;
   // Maximum axis velocity of the dot
   static const int DOT_VEL = 8;
 
@@ -38,4 +38,7 @@ class Pacman {
   int mVelX, mVelY;
   LTexture _gDotTexture;
   int _direction = 0;
+
+  // The collider associated with pacman
+  Collider mCollider;
 };
