@@ -11,10 +11,13 @@
 #include "CollisionEngine.hpp"
 class WallGrid {
  public:
-  const static int WALL_WIDTH = 32;
-  const static int WALL_HEIGHT = 32;
-  const static int GRID_COL = SCREEN_WIDTH / WALL_WIDTH;
-  const static int GRID_ROW = SCREEN_HEIGHT / WALL_HEIGHT;
+
+  const static int GRID_COL = 28;
+  const static int GRID_ROW = 36;
+  const static int WALL_WIDTH = SCREEN_WIDTH/GRID_COL;
+  const static int WALL_HEIGHT = SCREEN_HEIGHT/GRID_ROW;
+  // const static int GRID_COL = SCREEN_WIDTH / WALL_WIDTH;
+  // const static int GRID_ROW = SCREEN_HEIGHT / WALL_HEIGHT;
   const static string WALL_ID;
 
   WallGrid();

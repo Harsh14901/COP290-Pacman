@@ -15,7 +15,7 @@ class Pacman {
   static const int DOT_HEIGHT;
   static const string PACMAN_ID;
   // Maximum axis velocity of the dot
-  static const int DOT_VEL = 8;
+  static const int DOT_VEL = 2;
 
   // Initializes the variables
   Pacman();
