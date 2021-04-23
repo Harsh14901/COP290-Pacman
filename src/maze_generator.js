@@ -1445,6 +1445,13 @@ var drawTiles = function(ctx,left,top,size) {
 };
 
 var mapgen = function() {
+
+    // Change this
+    rows = 9;
+    cols = 5;
+    // Final dimensions will be (3*rows + 8) x (6*cols - 2)
+    
+
     genRandom();
     var map = getTiles();
     for(var i=0;i<36;i++){
