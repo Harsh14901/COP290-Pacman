@@ -1,4 +1,4 @@
-#include <MainGame.h>
+#include <MainGame.hpp>
 
 #include <iostream>
 // #include <./MainGame.h>

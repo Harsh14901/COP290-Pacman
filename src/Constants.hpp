@@ -14,9 +14,11 @@ const static int WALL_GRID_WIDTH = 32;
 const static int WALL_GRID_HEIGHT = 32;
 const static int WALL_GRID_ROWS = 26;
 const static int WALL_GRID_COLS = 40;
+const static int ENEMY_COUNT = 3;
 const static int SCREEN_WIDTH = WALL_GRID_COLS * WALL_GRID_WIDTH;
 const static int SCREEN_HEIGHT = WALL_GRID_ROWS * WALL_GRID_HEIGHT;
 
 const static string PACMAN_COLLIDER_ID = "pacman";
+const static string ENEMY_COLLIDER_ID = "enemy";
 const static string WALL_COLLIDER_ID = "wall";
 

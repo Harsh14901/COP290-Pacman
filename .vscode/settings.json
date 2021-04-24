@@ -6,6 +6,7 @@
     "deque": "cpp",
     "vector": "cpp",
     "thread": "cpp",
-    "iostream": "cpp"
+    "iostream": "cpp",
+    "*.tcc": "cpp"
   }
 }

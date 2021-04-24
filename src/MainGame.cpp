@@ -1,4 +1,4 @@
-#include "MainGame.h"
+#include "MainGame.hpp"
 
 #include <stdio.h>	/* printf, scanf, puts, NULL */
 #include <stdlib.h> /* srand, rand */
@@ -19,6 +19,7 @@ MainGame::MainGame()
 	_window = nullptr;
 	_screenWidth = SCREEN_WIDTH;
 	_screenHeight = SCREEN_HEIGHT;
+	enemies = vector<Enemy>(ENEMY_COUNT);
 
 	_gameState = GameState::PLAY;
 }
@@ -34,6 +35,11 @@ void MainGame::initCharacters()
 {
 	_pacman.init(_gRenderer);
 	wallgrid.init(_gRenderer);
+
+	for (auto& enemy: enemies){
+		enemy.init(_gRenderer);
+	}
+	
 
 	if(system("node src/maze_generator.js > map.txt")){
 		fatalError("Error Generating map");
@@ -61,8 +67,11 @@ void MainGame::initCharacters()
 		myfile.close();
 	}
 
-	auto empty_location = wallgrid.get_empty_location();
-	_pacman.place(empty_location.x, empty_location.y);
+	_pacman.place(wallgrid.get_empty_location());
+
+	for (auto& enemy: enemies){
+		enemy.place(wallgrid.get_empty_location());
+	}
 	// TODO: Change this to the algorithm.
 	// The snippet below generates a random maze.
 	// srand(time(NULL));
@@ -177,7 +186,7 @@ void MainGame::processInput()
 {
 	SDL_Event evnt;
 	// int key = SDL_PollEvent(evnt);
-	bool change = false;
+	// bool change = false;
 
 	while (SDL_PollEvent(&evnt))
 	{
@@ -204,9 +213,17 @@ void MainGame::processInput()
 		}
 
 		_pacman.handleEvent(evnt);
+		for (auto& enemy: enemies){
+			enemy.handleEvent(evnt);
+		}
 	}
 
 	_pacman.move();
+
+	for (auto& enemy: enemies){
+		enemy.move();
+	}
+	
 
 	// if(!change){
 	//     SDL_BlitSurface(_gPacman, NULL, _screenSurface, NULL);
@@ -249,6 +266,9 @@ void MainGame::processInput()
 	// SDL_RenderCopy( _gRenderer, _gTexture, NULL, NULL );
 
 	_pacman.render();
+	for (auto& enemy: enemies){
+		enemy.render();
+	}
 	wallgrid.render();
 
 	// Update screen

@@ -1,10 +1,12 @@
 #include "Pacman.hpp"
 
-const string Pacman::PACMAN_ID = PACMAN_COLLIDER_ID;
 const int Pacman::DOT_WIDTH = PACMAN_DOT_WIDTH;
 const int Pacman::DOT_HEIGHT = PACMAN_DOT_HEIGHT;
 
-Pacman::Pacman() {
+Pacman::Pacman() : Pacman(PACMAN_COLLIDER_ID) {}
+
+Pacman::Pacman(string id) {
+  PACMAN_ID = id;
   // Initialize the offsets
   mPosX = 0;
   mPosY = 0;
@@ -16,8 +18,8 @@ Pacman::Pacman() {
   // Initialize collider
 
   // Rectangular collider
-  // auto rect = SDL_Rect{mPosX, mPosY, PACMAN_RENDER_WIDTH, PACMAN_RENDER_HEIGHT};
-  // mCollider = Collider(PACMAN_ID, rect);
+  // auto rect = SDL_Rect{mPosX, mPosY, PACMAN_RENDER_WIDTH,
+  // PACMAN_RENDER_HEIGHT}; mCollider = Collider(PACMAN_ID, rect);
 
   // Circular collider
   auto circle = Circle{SDL_Point{mPosX + PACMAN_RENDER_WIDTH / 2,
@@ -27,6 +29,7 @@ Pacman::Pacman() {
 }
 
 void Pacman::init(SDL_Renderer* renderer) {
+  cout << PACMAN_ID << endl;
   _gDotTexture.setRenderer(renderer);
   _gDotTexture.loadFromFile("assets/bitmaps/pacman.bmp");
   _gDotTexture.set_image_dimenstions(PACMAN_RENDER_WIDTH, PACMAN_RENDER_HEIGHT);
@@ -60,9 +63,9 @@ void Pacman::handleEvent(SDL_Event& e) {
   }
 }
 
-void Pacman::place(int x, int y) {
-  mPosX = x;
-  mPosY = y;
+void Pacman::place(SDL_Point p) {
+  mPosX = p.x;
+  mPosY = p.y;
 }
 
 void Pacman::render() {
@@ -140,4 +143,35 @@ void Pacman::move() {
   // Change circular collider position
   mCollider.setX(mPosX + PACMAN_RENDER_WIDTH / 2);
   mCollider.setY(mPosY + PACMAN_RENDER_HEIGHT / 2);
+}
+
+Enemy::Enemy()
+    : Pacman(ENEMY_COLLIDER_ID + "_" + to_string(rand())), counter(0) {}
+
+void Enemy::handleEvent(SDL_Event& event) {}
+
+void Enemy::move() {
+  if (counter == 0) {
+    _direction = rand() % 4;
+  }
+  mVelY = 0;
+  mVelX = 0;
+  switch (_direction) {
+    case 0:
+      mVelX = -DOT_VEL;
+      break;
+    case 1:
+      mVelX = DOT_VEL;
+      break;
+    case 2:
+      mVelY = -DOT_VEL;
+      break;
+    case 3:
+      mVelY = DOT_VEL;
+      break;
+    default:
+      break;
+  }
+  counter = (counter + 1) % RETAIN_DIRECTION_FOR_FRAMES;
+  Pacman::move();
 }

@@ -41,12 +41,11 @@ void WallGrid::render() {
 }
 
 SDL_Point WallGrid::get_empty_location() {
-  for (int i = 0; i < GRID_ROW; i++) {
-    for (int j = 0; j < GRID_COL; j++) {
-      if (!walls[i][j]) {
-        return SDL_Point{j * WALL_WIDTH, i * WALL_HEIGHT};
-      }
-    }
+  int x = 0, y = 0;
+  while (walls[x][y]) {
+    x = rand() % GRID_ROW;
+    y = rand() % GRID_COL;
   }
-  return SDL_Point{0, 0};
+  printf("Found empty location: (%d, %d)\n", x, y);
+  return SDL_Point{y * WALL_WIDTH, x * WALL_HEIGHT};
 }
