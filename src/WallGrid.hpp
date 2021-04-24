@@ -23,23 +23,27 @@ class WallGrid {
   const static int GRID_ROW = WALL_GRID_ROWS;
   const static string WALL_ID;
 
-  WallGrid();
-  void init(SDL_Renderer* renderer);
-  void render();
+  // WallGrid();
+  static void init(SDL_Renderer* renderer);
+  static void render();
 
   // Set the wall at position (i,j)
-  void set_wall(int i, int j);
+  static void set_wall(int i, int j);
 
   // Remove the wall at position (i,j)
-  void unset_wall(int i, int j);
+  static void unset_wall(int i, int j);
 
   // Get an empty location in the matrix
-  SDL_Point get_empty_location();
+  static SDL_Point get_empty_location();
+
+  static bool can_move(int posX, int posY, Direction d);
+
 
  private:
-  LTexture wall_texture;
-
+  static LTexture wall_texture;
+  
   // The wall matrix, true indicates wall is present
-  bool walls[GRID_ROW][GRID_COL];
-  Collider wallColliders[GRID_ROW][GRID_COL];
+  static bool walls[GRID_ROW][GRID_COL];
+
+  static Collider wallColliders[GRID_ROW][GRID_COL];
 };

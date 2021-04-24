@@ -34,7 +34,7 @@ void MainGame::runGame()
 void MainGame::initCharacters()
 {
 	_pacman.init(_gRenderer);
-	wallgrid.init(_gRenderer);
+	WallGrid::init(_gRenderer);
 
 	for (auto& enemy: enemies){
 		enemy.init(_gRenderer);
@@ -56,7 +56,7 @@ void MainGame::initCharacters()
 			for (char &c : line)
 			{
 				if(c=='|' || c=='_'){
-					wallgrid.set_wall(i,j);
+					WallGrid::set_wall(i,j);
 				}
 				j++;
 			}
@@ -67,10 +67,10 @@ void MainGame::initCharacters()
 		myfile.close();
 	}
 
-	_pacman.place(wallgrid.get_empty_location());
+	_pacman.place(WallGrid::get_empty_location());
 
 	for (auto& enemy: enemies){
-		enemy.place(wallgrid.get_empty_location());
+		enemy.place(WallGrid::get_empty_location());
 	}
 	// TODO: Change this to the algorithm.
 	// The snippet below generates a random maze.
@@ -269,7 +269,7 @@ void MainGame::processInput()
 	for (auto& enemy: enemies){
 		enemy.render();
 	}
-	wallgrid.render();
+	WallGrid::render();
 
 	// Update screen
 	SDL_RenderPresent(_gRenderer);

@@ -11,6 +11,7 @@
 
 #include <stdlib.h> /* srand, rand */
 #include <time.h>	/* time */
+#include <WallGrid.hpp>
 
 class Pacman {
  public:
@@ -18,7 +19,7 @@ class Pacman {
   static const int DOT_WIDTH;
   static const int DOT_HEIGHT;
   // Maximum axis velocity of the dot
-  static const int DOT_VEL = 4;
+  static const int DOT_VEL = 2;
 
   // Initializes the variables
   Pacman();
@@ -43,7 +44,10 @@ class Pacman {
 
   // The velocity of the dot
   int mVelX, mVelY;
-  int _direction = 0;
+  Direction _direction = Direction::LEFT;
+
+  void change_direction(Direction d);
+  void handle_collision();
 
   // The collider associated with pacman
   Collider mCollider;
@@ -56,7 +60,4 @@ public:
   Enemy();
   void handleEvent(SDL_Event& e);
   void move();
-private:
-  int counter;
-  const static int RETAIN_DIRECTION_FOR_FRAMES = 100;
 };

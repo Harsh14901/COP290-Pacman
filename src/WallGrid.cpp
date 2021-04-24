@@ -2,9 +2,13 @@
 
 const string WallGrid::WALL_ID = WALL_COLLIDER_ID;
 
-WallGrid::WallGrid() { memset(walls, 0, sizeof(walls)); }
+// WallGrid::WallGrid() { memset(walls, 0, sizeof(walls)); }
+bool WallGrid::walls[WallGrid::GRID_ROW][WallGrid::GRID_COL];
+Collider WallGrid::wallColliders[WallGrid::GRID_ROW][WallGrid::GRID_COL];
+LTexture WallGrid::wall_texture;
 
 void WallGrid::init(SDL_Renderer* renderer) {
+  memset(walls, 0, sizeof(walls));
   wall_texture.setRenderer(renderer);
   wall_texture.loadFromFile("assets/pngs/stone_wall.png");
   wall_texture.set_image_dimenstions(WALL_WIDTH, WALL_HEIGHT);
@@ -48,4 +52,29 @@ SDL_Point WallGrid::get_empty_location() {
   }
   printf("Found empty location: (%d, %d)\n", x, y);
   return SDL_Point{y * WALL_WIDTH, x * WALL_HEIGHT};
+}
+
+bool WallGrid::can_move(int posX, int posY, Direction d) {
+  int row = posY / WALL_HEIGHT;
+  int col = posX / WALL_WIDTH;
+  bool ans = false;
+  switch (d) {
+    case Direction::UP:
+      ans = row != 0 && !walls[row - 1][col] && posX == col * WALL_WIDTH + WALL_WIDTH/2;
+      break;
+    case Direction::DOWN:
+      ans = row != GRID_ROW - 1 && !walls[row + 1][col] && posX == col * WALL_WIDTH + WALL_WIDTH/2;
+      break;
+    case Direction::RIGHT:
+      ans = col != GRID_COL - 1 && !walls[row][col + 1] && posY == row * WALL_HEIGHT + WALL_HEIGHT/2;
+      break;
+    case Direction::LEFT:
+      ans = col != 0 && !walls[row][col - 1] && posY == row * WALL_HEIGHT + WALL_HEIGHT/2;
+      break;
+    default:
+      ans = false;
+      break;
+  }
+
+  return ans;
 }

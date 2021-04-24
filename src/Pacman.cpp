@@ -39,25 +39,71 @@ void Pacman::init(SDL_Renderer* renderer) {
 void Pacman::handleEvent(SDL_Event& e) {
   // If a key was pressed
   if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
-    mVelY = 0;
-    mVelX = 0;
     // Adjust the velocity
+    handle_collision();
     switch (e.key.keysym.sym) {
       case SDLK_UP:
-        mVelY -= DOT_VEL;
-        _direction = 2;
+        change_direction(Direction::UP);
         break;
       case SDLK_DOWN:
-        mVelY += DOT_VEL;
-        _direction = 3;
+        change_direction(Direction::DOWN);
         break;
       case SDLK_LEFT:
-        mVelX -= DOT_VEL;
-        _direction = 0;
+        change_direction(Direction::LEFT);
         break;
       case SDLK_RIGHT:
-        mVelX += DOT_VEL;
-        _direction = 1;
+        change_direction(Direction::RIGHT);
+        break;
+    }
+  }
+}
+
+void Pacman::handle_collision() {
+  auto collisions = CollisionEngine::getCollisions(PACMAN_ID);
+
+  if (!collisions.empty()) {
+    switch (_direction) {
+      case Direction::LEFT:
+      case Direction::RIGHT:
+        mPosX -= 1 * mVelX;
+        break;
+      case Direction::UP:
+      case Direction::DOWN:
+        mPosY -= 1 * mVelY;
+        break;
+      default:
+        break;
+    }
+  }
+  // for (auto& c : collisions) {
+  //   cout << "Pacman has collided with " << c->id << endl;
+  // }
+  // cout << "------------" << endl;
+}
+
+void Pacman::change_direction(Direction d) {
+  if (WallGrid::can_move(mPosX + PACMAN_RENDER_WIDTH / 2,
+                         mPosY + PACMAN_RENDER_HEIGHT / 2, d)) {
+    mVelX = 0;
+    mVelY = 0;
+    switch (d) {
+      case Direction::LEFT:
+        mVelX = -DOT_VEL;
+        _direction = Direction::LEFT;
+        break;
+      case Direction::RIGHT:
+        mVelX = DOT_VEL;
+        _direction = Direction::RIGHT;
+        break;
+      case Direction::UP:
+        mVelY = -DOT_VEL;
+        _direction = Direction::UP;
+        break;
+      case Direction::DOWN:
+        mVelY = DOT_VEL;
+        _direction = Direction::DOWN;
+        break;
+      default:
         break;
     }
   }
@@ -70,12 +116,14 @@ void Pacman::place(SDL_Point p) {
 
 void Pacman::render() {
   // Show the dot
-  SDL_Rect rect{DOT_WIDTH * _direction, 0, DOT_WIDTH, DOT_HEIGHT};
+  SDL_Rect rect{DOT_WIDTH * int(_direction), 0, DOT_WIDTH, DOT_HEIGHT};
   _gDotTexture.render(mPosX, mPosY, &rect);
 }
 
 void Pacman::move() {
   // Move the dot left or right
+  handle_collision();
+
   mPosX += mVelX;
 
   // If the dot went too far to the left or right
@@ -102,39 +150,6 @@ void Pacman::move() {
 
     mVelY = 0;
   }
-  auto collisions = CollisionEngine::getCollisions(PACMAN_ID);
-
-  if (!collisions.empty()) {
-    switch (_direction) {
-      case 0:
-        mPosX -= 2 * mVelX;
-        mVelX *= 0;
-        _direction = 1;
-        break;
-      case 1:
-        mPosX -= 2 * mVelX;
-        mVelX *= 0;
-        _direction = 0;
-        break;
-      case 2:
-        mPosY -= 2 * mVelY;
-        mVelY *= 0;
-        _direction = 3;
-        break;
-      case 3:
-        mPosY -= 2 * mVelY;
-        mVelY *= 0;
-        _direction = 2;
-        break;
-      default:
-        break;
-    }
-  }
-
-  // for (auto& c : collisions) {
-  //   cout << "Pacman has collided with " << c->id << endl;
-  // }
-  // cout << "------------" << endl;
 
   // Change rectangular collider position
   // mCollider.setX(mPosX);
@@ -145,33 +160,47 @@ void Pacman::move() {
   mCollider.setY(mPosY + PACMAN_RENDER_HEIGHT / 2);
 }
 
-Enemy::Enemy()
-    : Pacman(ENEMY_COLLIDER_ID + "_" + to_string(rand())), counter(0) {}
+Enemy::Enemy() : Pacman(ENEMY_COLLIDER_ID + "_" + to_string(rand())) {}
 
 void Enemy::handleEvent(SDL_Event& event) {}
 
 void Enemy::move() {
-  if (counter == 0) {
-    _direction = rand() % 4;
+  handle_collision();
+  unordered_set<Direction> available_directions;
+  for (int i = 0; i < 4; i++) {
+    auto d = Direction(i);
+
+    if (WallGrid::can_move(mPosX + PACMAN_RENDER_WIDTH / 2,
+                           mPosY + PACMAN_RENDER_HEIGHT / 2, d)) {
+      // printf("Direction %d is available\n", i);
+      available_directions.insert(d);
+    }
   }
-  mVelY = 0;
-  mVelX = 0;
-  switch (_direction) {
-    case 0:
-      mVelX = -DOT_VEL;
-      break;
-    case 1:
-      mVelX = DOT_VEL;
-      break;
-    case 2:
-      mVelY = -DOT_VEL;
-      break;
-    case 3:
-      mVelY = DOT_VEL;
-      break;
-    default:
-      break;
+
+  if (_direction == Direction::LEFT || _direction == Direction::RIGHT) {
+    available_directions.erase(Direction::LEFT);
+    available_directions.erase(Direction::RIGHT);
+  } else {
+    available_directions.erase(Direction::UP);
+    available_directions.erase(Direction::DOWN);
   }
-  counter = (counter + 1) % RETAIN_DIRECTION_FOR_FRAMES;
+  if (available_directions.size() != 0) {
+    int selection = rand() % available_directions.size();
+    int i = 0;
+    for (auto& it : available_directions) {
+      if (selection == i) {
+        change_direction(it);
+        break;
+      }
+      i++;
+    }
+  } else {
+    // cout << "No available direction for " << PACMAN_ID << endl;
+    // printf("Velocities: %d, %d\n", mVelX, mVelY);
+    // change_direction(Direction(rand() % 4));
+    change_direction(_direction);
+
+  }
+  // cout << "-----------------" << endl;
   Pacman::move();
 }

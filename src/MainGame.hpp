@@ -45,5 +45,4 @@ class MainGame {
   GameState _gameState;
   Pacman _pacman;
   vector<Enemy> enemies;
-  WallGrid wallgrid;
 };
