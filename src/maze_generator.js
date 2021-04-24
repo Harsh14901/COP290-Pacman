@@ -1224,12 +1224,12 @@ var getTiles = function() {
 
     // return a tile string (3 empty lines on top and 2 on bottom)
     return (
-        "____________________________" +
-        "____________________________" +
-        "____________________________" +
+        "_".repeat(6*cols -2) +
+        "_".repeat(6*cols -2) +
+        "_".repeat(6*cols -2) +
         tiles.join("") +
-        "____________________________" +
-        "____________________________");
+        "_".repeat(6*cols -2) +
+        "_".repeat(6*cols -2));
 };
 
 var randomColor = function() {
@@ -1447,17 +1447,17 @@ var drawTiles = function(ctx,left,top,size) {
 var mapgen = function() {
 
     // Change this
-    rows = 9;
-    cols = 5;
+    rows = 6;
+    cols = 7;
     // Final dimensions will be (3*rows + 8) x (6*cols - 2)
     
 
     genRandom();
     var map = getTiles();
-    for(var i=0;i<36;i++){
+    for(var i=0;i<3*rows + 8;i++){
         var temp = "";
-        for(var j=0;j<28;j++){
-            temp += map.charAt(i*28+j);
+        for(var j=0;j<6*cols - 2;j++){
+            temp += map.charAt(i*(6*cols - 2)+j);
         }
         console.log(temp)
     }

@@ -17,8 +17,8 @@ void fatalError(string error_message)
 MainGame::MainGame()
 {
 	_window = nullptr;
-	_screenWidth = 1024;
-	_screenHeight = 768;
+	_screenWidth = SCREEN_WIDTH;
+	_screenHeight = SCREEN_HEIGHT;
 
 	_gameState = GameState::PLAY;
 }
@@ -61,7 +61,8 @@ void MainGame::initCharacters()
 		myfile.close();
 	}
 
-
+	auto empty_location = wallgrid.get_empty_location();
+	_pacman.place(empty_location.x, empty_location.y);
 	// TODO: Change this to the algorithm.
 	// The snippet below generates a random maze.
 	// srand(time(NULL));

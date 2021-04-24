@@ -7,6 +7,7 @@
 #include <iostream>
 #include "CollisionEngine.hpp"
 #include "LTexture.hpp"
+#include "Constants.hpp"
 
 class Pacman {
  public:
@@ -15,7 +16,7 @@ class Pacman {
   static const int DOT_HEIGHT;
   static const string PACMAN_ID;
   // Maximum axis velocity of the dot
-  static const int DOT_VEL = 2;
+  static const int DOT_VEL = 4;
 
   // Initializes the variables
   Pacman();
@@ -29,6 +30,9 @@ class Pacman {
 
   // Shows the dot on the screen
   void render();
+
+  // Place the pacman at a position.
+  void place(int posX, int posY);
 
  private:
   // The X and Y offsets of the dot

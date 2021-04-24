@@ -9,15 +9,18 @@
 
 #include "LTexture.hpp"
 #include "CollisionEngine.hpp"
+#include "Constants.hpp"
 class WallGrid {
  public:
 
-  const static int GRID_COL = 28;
-  const static int GRID_ROW = 36;
-  const static int WALL_WIDTH = SCREEN_WIDTH/GRID_COL;
-  const static int WALL_HEIGHT = SCREEN_HEIGHT/GRID_ROW;
+  // const static int GRID_COL = 28;
+  // const static int GRID_ROW = 36;
+  const static int WALL_WIDTH = WALL_GRID_WIDTH;
+  const static int WALL_HEIGHT = WALL_GRID_HEIGHT;
   // const static int GRID_COL = SCREEN_WIDTH / WALL_WIDTH;
   // const static int GRID_ROW = SCREEN_HEIGHT / WALL_HEIGHT;
+  const static int GRID_COL = WALL_GRID_COLS;
+  const static int GRID_ROW = WALL_GRID_ROWS;
   const static string WALL_ID;
 
   WallGrid();
@@ -29,6 +32,9 @@ class WallGrid {
 
   // Remove the wall at position (i,j)
   void unset_wall(int i, int j);
+
+  // Get an empty location in the matrix
+  SDL_Point get_empty_location();
 
  private:
   LTexture wall_texture;
