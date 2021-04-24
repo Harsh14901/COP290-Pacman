@@ -106,6 +106,9 @@ void Pacman::change_direction(Direction d) {
       default:
         break;
     }
+    _next = Direction::NONE;
+  } else {
+    _next = d;
   }
 }
 
@@ -123,7 +126,9 @@ void Pacman::render() {
 void Pacman::move() {
   // Move the dot left or right
   handle_collision();
-
+  if(_next != Direction::NONE){
+    change_direction(_next);
+  }
   mPosX += mVelX;
 
   // If the dot went too far to the left or right

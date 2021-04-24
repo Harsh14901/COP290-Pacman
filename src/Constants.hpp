@@ -14,12 +14,12 @@ const static int PACMAN_RENDER_WIDTH = WALL_GRID_WIDTH;
 const static int PACMAN_RENDER_HEIGHT = WALL_GRID_HEIGHT;
 const static int WALL_GRID_ROWS = 26;
 const static int WALL_GRID_COLS = 40;
-const static int ENEMY_COUNT = 2;
+const static int ENEMY_COUNT = 3;
 const static int SCREEN_WIDTH = WALL_GRID_COLS * WALL_GRID_WIDTH;
 const static int SCREEN_HEIGHT = WALL_GRID_ROWS * WALL_GRID_HEIGHT;
 
 enum class Direction{
-  LEFT, RIGHT, UP, DOWN
+  LEFT, RIGHT, UP, DOWN, NONE
 };
 
 const static string PACMAN_COLLIDER_ID = "pacman";

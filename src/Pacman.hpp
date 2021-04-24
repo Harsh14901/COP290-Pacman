@@ -19,7 +19,7 @@ class Pacman {
   static const int DOT_WIDTH;
   static const int DOT_HEIGHT;
   // Maximum axis velocity of the dot
-  static const int DOT_VEL = 2;
+  static const int DOT_VEL = 4;
 
   // Initializes the variables
   Pacman();
@@ -45,6 +45,7 @@ class Pacman {
   // The velocity of the dot
   int mVelX, mVelY;
   Direction _direction = Direction::LEFT;
+  Direction _next = Direction::NONE;
 
   void change_direction(Direction d);
   void handle_collision();
