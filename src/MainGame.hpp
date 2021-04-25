@@ -10,6 +10,7 @@
 #include "Keys.hpp"
 #include "LTexture.hpp"
 #include "Pacman.hpp"
+#include "Enemy.hpp"
 
 using namespace std;
 

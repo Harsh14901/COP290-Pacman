@@ -14,9 +14,10 @@
 #include <time.h>	/* time */
 #include <WallGrid.hpp>
 
-class Pacman : public Character{
-public:
-  Pacman();
-  void handleEvent(SDL_Event& e);
-};
 
+class Enemy: public Character{
+public:
+  Enemy();
+  void handleEvent(SDL_Event& e);
+  void move();
+};
