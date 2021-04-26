@@ -18,6 +18,8 @@ const static int ENEMY_COUNT = 3;
 const static int SCREEN_WIDTH = WALL_GRID_COLS * WALL_GRID_WIDTH;
 const static int SCREEN_HEIGHT = WALL_GRID_ROWS * WALL_GRID_HEIGHT;
 
+const static int PORT = 8000;
+
 enum class Direction{
   LEFT, RIGHT, UP, DOWN, NONE
 };
@@ -25,4 +27,7 @@ enum class Direction{
 const static string PACMAN_COLLIDER_ID = "pacman";
 const static string ENEMY_COLLIDER_ID = "enemy";
 const static string WALL_COLLIDER_ID = "wall";
+
+
+void fatalError(string error_message);
 

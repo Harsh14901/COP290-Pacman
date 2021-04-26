@@ -8,10 +8,10 @@
 void fatalError(string error_message)
 {
 	cout << error_message << endl;
-	int a;
+	char a;
 	cout << "Enter any key to quit" << endl;
 	cin >> a;
-	exit(0);
+	exit(EXIT_FAILURE);
 }
 
 MainGame::MainGame()
@@ -22,6 +22,28 @@ MainGame::MainGame()
 	enemies = vector<Enemy>(ENEMY_COUNT);
 
 	_gameState = GameState::PLAY;
+}
+
+void MainGame::listen(Server* server){
+	this->server = server;
+}
+
+void MainGame::connect(Client* client){
+	this->client = client;
+}
+
+void MainGame::initNetwork(){
+	if(server != nullptr){
+		server->init();
+		printf("Server: Waiting for incoming connection\n");
+		while(!server->is_connected()){
+			server->wait_for_connection();
+		}
+	} else if(client != nullptr){
+		client->init();
+		printf("Client: establishing connection to server\n");
+		client->connect();
+	}
 }
 
 void MainGame::runGame()
@@ -40,10 +62,12 @@ void MainGame::initCharacters()
 		enemy.init(_gRenderer);
 	}
 	
-
-	if(system("node src/maze_generator.js > map.txt")){
-		fatalError("Error Generating map");
+	if(client == nullptr){
+		if(system("node src/maze_generator.js > map.txt")){
+			fatalError("Error Generating map");
+		}
 	}
+	
 
 	string line;
 	ifstream myfile("map.txt");
@@ -108,8 +132,12 @@ void MainGame::initSystems()
 				   string(SDL_GetError()));
 	}
 
-	drawInitScreen();
+	if (SDLNet_Init() < 0) {
+    fatalError("SDLNet_Init Error:\n" + string(SDLNet_GetError()));
+  }
 
+	initNetwork();
+	drawInitScreen();
 	initCharacters();
 }
 

@@ -9,7 +9,7 @@ PROG = output/main
 SRC = src
 INCLUDE := include
 LIB := lib
-LFLAGS = -lSDL2 -lGL -lGLEW -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+LFLAGS = -lSDL2 -lGL -lGLEW -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_net
 
 
 

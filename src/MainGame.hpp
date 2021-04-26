@@ -3,6 +3,7 @@
 #include <GL/gl.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_net.h>
 
 #include <WallGrid.hpp>
 #include <iostream>
@@ -11,7 +12,7 @@
 #include "LTexture.hpp"
 #include "Pacman.hpp"
 #include "Enemy.hpp"
-
+#include "NetworkManager.hpp"
 using namespace std;
 
 enum class GameState { PLAY, EXIT };
@@ -21,6 +22,8 @@ class MainGame {
   MainGame();
 
   void runGame();
+  void listen(Server* server);
+  void connect(Client* client);
 
  private:
   SDL_Window* _window;
@@ -30,6 +33,8 @@ class MainGame {
 
   SDL_Renderer* _gRenderer;
   SDL_Texture* _gTexture = NULL;
+  Server* server = nullptr;
+  Client* client = nullptr;
 
   void initSystems();
   void drawInitScreen();
@@ -37,6 +42,7 @@ class MainGame {
   void gameLoop();
   bool loadMedia();
   void initCharacters();
+  void initNetwork();
 
   SDL_Texture* loadTexture(string path);
 

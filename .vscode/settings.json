@@ -7,6 +7,8 @@
     "vector": "cpp",
     "thread": "cpp",
     "iostream": "cpp",
-    "*.tcc": "cpp"
+    "*.tcc": "cpp",
+    "stdexcept": "cpp",
+    "ostream": "cpp"
   }
 }
