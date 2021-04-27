@@ -1,15 +1,58 @@
 #include "NetworkManager.hpp"
 
-Packet::Packet() {}
+Packet::Packet() : delimiter('|') {}
 
 void Packet::encode(char* buffer) {
-  auto encoded = data.c_str();
+  auto combined = id + delimiter + data;
+  auto encoded = combined.c_str();
   strcpy(buffer, encoded);
 }
 
 void Packet::decode(char* buffer) {
-  auto decoded = string(buffer);
-  data = buffer;
+  string buff = string(buffer);
+  stringstream parse_stream(buff);
+  string decoded;
+  vector<string> tokens;
+  while (getline(parse_stream, decoded, delimiter)) {
+    tokens.push_back(decoded);
+  }
+
+  id = tokens[0];
+  data = tokens[1];
+}
+
+NetworkDevice* NetworkManager::device;
+unordered_map<string, vector<Packet>> NetworkManager::packet_store;
+
+void NetworkManager::get_packets(string id, vector<Packet>& packets) {
+  packets = packet_store[id];
+}
+
+void NetworkManager::load_device(NetworkDevice* device) {
+  NetworkManager::device = device;
+}
+
+void NetworkManager::recv_packets() {
+  if (device == nullptr) {
+    fatalError("Cannot recieve packets from a NULL device");
+    return;
+  }
+  packet_store.clear();
+  device->recv();
+  while (device->packet_ready()) {
+    cout<<"NetworkManager::recv_packets: Packet is ready "<<endl;
+    Packet p;
+    device->get_packet(p);
+    packet_store[p.id].push_back(p);
+  }
+}
+
+void NetworkManager::send_packet(Packet& packet) {
+  if (device == nullptr) {
+    fatalError("Cannot send packets from a NULL device");
+    return;
+  }
+  device->send(packet);
 }
 
 const int NetworkDevice::MAX_BUFFER;
@@ -24,36 +67,38 @@ NetworkDevice::NetworkDevice(TCPsocket* recv_socket, TCPsocket* send_socket)
 
 bool NetworkDevice::packet_ready() { return !packet_buffer.empty(); }
 
-void NetworkDevice::get_packet(Packet& packet) { return packet_buffer.pop(); }
+void NetworkDevice::get_packet(Packet& packet) {
+  packet = packet_buffer.front();
+  packet_buffer.pop();
+}
 
 void NetworkDevice::recv() {
   char buffer[MAX_BUFFER];
-  while (SDLNet_TCP_Recv(*recv_socket, buffer, MAX_BUFFER) > 0) {
+  cout<<"NetworkDevice::recv() called"<<endl;
+  if (SDLNet_TCP_Recv(*recv_socket, buffer, MAX_BUFFER) > 0) {
+    printf("packet data recieved: %s\n", buffer);
+
     auto packet = Packet();
     packet.decode(buffer);
+    printf("packet id: %s, packet data: %s\n", packet.id.c_str(), packet.data.c_str());
     packet_buffer.push(packet);
   }
+  printf("buffer size: %ld\n", packet_buffer.size());
 }
 
 void NetworkDevice::send(Packet& packet) {
   char buffer[MAX_BUFFER];
   packet.encode(buffer);
   int size = strlen(buffer) + 1;
+  printf("Sending buffer: %s\n", buffer);
   if (SDLNet_TCP_Send(*send_socket, buffer, size) < size) {
     fatalError("Error sending packet: " + string(SDLNet_GetError()));
+  } else{
+    cout<<"Packet sent"<<endl;
   }
 }
 
-NetworkDevice::~NetworkDevice() {
-  if (send_socket != nullptr) {
-    SDLNet_TCP_Close(*send_socket);
-  }
-  if (recv_socket != nullptr) {
-    SDLNet_TCP_Close(*recv_socket);
-  }
-}
-
-Server::Server(int port) : NetworkDevice(&csd, &sd), port(port) {}
+Server::Server(int port) : NetworkDevice(&csd, &csd), port(port) {}
 Server::Server() : Server(PORT) {}
 
 void Server::init() {
@@ -82,10 +127,8 @@ void Server::wait_for_connection() {
 
 bool Server::is_connected() { return connected; }
 
-Server::~Server() { printf("Server exiting\n"); }
-
 Client::Client(string server_host, int port)
-    : NetworkDevice(&sd, &csd), server_host(server_host), port(port) {}
+    : NetworkDevice(&sd, &sd), server_host(server_host), port(port) {}
 Client::Client() : Client("", PORT) {}
 
 void Client::init() {
@@ -99,5 +142,3 @@ void Client::connect() {
     fatalError("SDLNet_TCP_Open:" + string(SDLNet_GetError()));
   }
 }
-
-Client::~Client() { printf("Client exiting\n"); }

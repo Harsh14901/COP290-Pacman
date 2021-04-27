@@ -49,6 +49,8 @@ class Character{
 
   void change_direction(Direction d);
   void handle_collision();
+  void handle_packets();
+  void broadcast_coordinates();
 
   // The collider associated with pacman
   Collider mCollider;

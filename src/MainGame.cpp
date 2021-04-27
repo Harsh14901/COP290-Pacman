@@ -39,10 +39,65 @@ void MainGame::initNetwork(){
 		while(!server->is_connected()){
 			server->wait_for_connection();
 		}
+		NetworkManager::load_device((NetworkDevice *)server);
 	} else if(client != nullptr){
 		client->init();
 		printf("Client: establishing connection to server\n");
 		client->connect();
+		NetworkManager::load_device((NetworkDevice *)client);
+	}
+}
+
+void MainGame::testNetwork(){
+	int num = 5;
+	vector<string> pids = {"b", "c", "d", "e", "a"};
+	vector<string> data = {"a", "b", "c", "d", "e"};
+
+	auto send_packets = [&](NetworkDevice* device){
+		for (int i = 0; i < num; i++)
+		{	
+			Packet p;
+			p.id = pids[i];
+			p.data = data[i];
+			// NetworkManager::send_packet(p);
+			device->send(p);
+			cout<<"[#] Hello sent by server. GG!"<<endl;
+			// SDL_Delay(100);
+		}
+
+	};
+
+	auto recv_packets = [&](NetworkDevice* device){
+		// vector<Packet> packets;
+		int n = 0;
+		// SDL_Delay(2000);		
+		while(n != num){
+			// NetworkManager::recv_packets();
+			// NetworkManager::get_packets(pids[n], packets);
+			// assert(packets.size() == 1);
+			device->recv();
+			while(device->packet_ready()){
+				Packet p;
+				device->get_packet(p);
+				assert(p.id == pids[n] && p.data == data[n]);
+				n++;
+			}
+			// for(auto&p :packets){
+			// 	assert(p.id == pids[n] && p.data == data[n]);
+			// 	cout<<"[#] Hello received by client. GG!"<<endl;
+			// }
+			// n += packets.size();
+
+			// packets.clear();
+		}
+	};
+	if(server != nullptr){
+		send_packets(server);
+		// recv_packets(server);
+	} else if(client != nullptr){
+		recv_packets(client);
+		// send_packets(client);
+		
 	}
 }
 
@@ -137,6 +192,7 @@ void MainGame::initSystems()
   }
 
 	initNetwork();
+	testNetwork();
 	drawInitScreen();
 	initCharacters();
 }
@@ -311,6 +367,7 @@ void MainGame::gameLoop()
 	{
 		processInput();
 		CollisionEngine::checkCollisions();
+		// NetworkManager::recv_packets();
 	}
 }
 

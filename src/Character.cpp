@@ -1,5 +1,5 @@
 #include "Character.hpp"
-
+#include "NetworkManager.hpp"
 
 // TODO: Fix This
 const int Character::DOT_WIDTH = PACMAN_RENDER_WIDTH;
@@ -74,6 +74,24 @@ void Character::handle_collision() {
   // cout << "------------" << endl;
 }
 
+void Character::handle_packets(){
+  vector<Packet> packets;
+  NetworkManager::get_packets(CHARACTER_ID, packets);
+
+  for(auto&p: packets){
+    printf("[#] Recieved packet by: %s, with data: %s", p.id.c_str(), p.data.c_str());
+  }
+  if(!packets.empty())
+    cout<<"-----------"<<endl;
+}
+
+void Character::broadcast_coordinates(){
+  Packet p;
+  p.id = CHARACTER_ID;
+  p.data = "(" + to_string(mPosX) + "," + to_string(mPosY) + ")";
+  NetworkManager::send_packet(p);
+}
+
 void Character::change_direction(Direction d) {
   if (WallGrid::can_move(mPosX + DOT_WIDTH / 2,
                          mPosY + DOT_HEIGHT / 2, d)) {
@@ -108,6 +126,7 @@ void Character::change_direction(Direction d) {
 void Character::move() {
   // Move the dot left or right
   handle_collision();
+  handle_packets();
   if(_next != Direction::NONE){
     change_direction(_next);
   }

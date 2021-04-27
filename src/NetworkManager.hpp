@@ -8,10 +8,13 @@ using namespace std;
 
 class Packet{
   public:
+    string id;
     string data;
     Packet();
     void decode(char* buffer);
     void encode(char* buffer);
+  private:
+    char delimiter;
 };
 
 class NetworkDevice{
@@ -22,13 +25,24 @@ class NetworkDevice{
     void send(Packet& packet);
     bool packet_ready();
     void get_packet(Packet& packet);
-    ~NetworkDevice();
   protected:
     queue<Packet> packet_buffer;
   private:
     const static int MAX_BUFFER = 4096;
     TCPsocket* recv_socket;
     TCPsocket* send_socket;
+};
+
+
+class NetworkManager{
+  public:
+    static void get_packets(string id, vector<Packet>& packets);
+    static void load_device(NetworkDevice* device);
+    static void recv_packets();
+    static void send_packet(Packet& packet);
+  private:
+    static NetworkDevice* device;
+    static unordered_map<string, vector<Packet>> packet_store;
 };
 
 class Server: public NetworkDevice {
@@ -40,7 +54,6 @@ class Server: public NetworkDevice {
   void wait_for_connection();
   bool is_connected();
 
-  ~Server();
 
  private:
   int port;
@@ -57,12 +70,11 @@ class Client: public NetworkDevice{
     void init();
     void connect();
     
-    ~Client();
 
   private:
     string server_host;
     int port;
     IPaddress server_ip;
-    TCPsocket sd, csd;
+    TCPsocket sd;
 
 };

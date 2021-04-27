@@ -43,6 +43,7 @@ class MainGame {
   bool loadMedia();
   void initCharacters();
   void initNetwork();
+  void testNetwork();
 
   SDL_Texture* loadTexture(string path);
 
