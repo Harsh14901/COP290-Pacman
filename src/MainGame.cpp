@@ -356,9 +356,11 @@ void MainGame::gameLoop()
 {
 	while (_gameState == GameState::PLAY)
 	{
+		NetworkManager::send_packets();
+		NetworkManager::recv_packets();
+
 		processInput();
 		CollisionEngine::checkCollisions();
-		// NetworkManager::recv_packets();
 	}
 }
 

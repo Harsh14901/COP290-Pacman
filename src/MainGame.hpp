@@ -8,11 +8,11 @@
 #include <WallGrid.hpp>
 #include <iostream>
 
-#include "Keys.hpp"
+#include "Constants.hpp"
 #include "LTexture.hpp"
 #include "Pacman.hpp"
 #include "Enemy.hpp"
-#include "NetworkManager.hpp"
+#include "Network/NetworkManager.hpp"
 using namespace std;
 
 enum class GameState { PLAY, EXIT };

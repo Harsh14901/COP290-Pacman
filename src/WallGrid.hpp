@@ -8,7 +8,7 @@
 #include <iostream>
 
 #include "LTexture.hpp"
-#include "CollisionEngine.hpp"
+#include "Collision/CollisionEngine.hpp"
 #include "Constants.hpp"
 class WallGrid {
  public:

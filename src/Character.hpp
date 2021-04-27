@@ -5,7 +5,7 @@
 #include <SDL2/SDL_image.h>
 
 #include <iostream>
-#include "CollisionEngine.hpp"
+#include "Collision/CollisionEngine.hpp"
 #include "LTexture.hpp"
 #include "Constants.hpp"
 

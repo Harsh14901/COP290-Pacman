@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SDL2/SDL_rect.h>
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -31,22 +32,3 @@ class Collider {
 
 double distance(SDL_Point a, SDL_Point b);
 double shortest_length(SDL_Point a, SDL_Point b, SDL_Point e);
-
-class CollisionEngine {
- private:
-  static vector<Collider*> colliders;
-  static unordered_map<string, vector<Collider*>> collisions;
-
- public:
-  // register a collider with collision engine
-  static void register_collider(Collider* collider);
-  // deregister a collider with collision engine
-  static void deregister_collider(Collider* collider);
-
-  // Returns the collider pointers with which the collider with argument id has
-  // collided
-  static vector<Collider*> getCollisions(string id);
-
-  // Checks for collision among registered colliders
-  static void checkCollisions();
-};

@@ -1,8 +1,4 @@
-#include <SDL2/SDL_rect.h>
-
-#include <CollisionEngine.hpp>
-#include <cmath>
-using namespace std;
+#include "Collision/Collider.hpp"
 
 Collider::Collider() {}
 Collider::Collider(string id, SDL_Rect& rect)
@@ -197,40 +193,4 @@ double shortest_length(SDL_Point A, SDL_Point B, SDL_Point E) {
     reqAns = abs(x1 * y2 - y1 * x2) / mod;
   }
   return reqAns;
-}
-
-vector<Collider*> CollisionEngine::colliders = vector<Collider*>();
-unordered_map<string, vector<Collider*>> CollisionEngine::collisions =
-    unordered_map<string, vector<Collider*>>();
-
-void CollisionEngine::register_collider(Collider* collider) {
-  colliders.push_back(collider);
-}
-
-void CollisionEngine::deregister_collider(Collider* collider) {
-  auto it = find(colliders.begin(), colliders.end(), collider);
-  if (it != colliders.end()) {
-    colliders.erase(it);
-    collisions[collider->id].clear();
-  }
-}
-
-vector<Collider*> CollisionEngine::getCollisions(string id) {
-  return collisions[id];
-}
-
-void CollisionEngine::checkCollisions() {
-  collisions.clear();
-  int n = colliders.size();
-  for (int i = 0; i < n; i++) {
-    for (int j = i + 1; j < n; j++) {
-      if (colliders[i]->checkCollision(colliders[j])) {
-        // cout << colliders[i]->id << " collided with " << colliders[j]->id
-        //      << endl;
-        collisions[colliders[i]->id].push_back(colliders[j]);
-        collisions[colliders[j]->id].push_back(colliders[i]);
-      }
-    }
-  }
-  // cout << "--------" << endl;
 }

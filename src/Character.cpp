@@ -1,5 +1,5 @@
 #include "Character.hpp"
-#include "NetworkManager.hpp"
+#include "Network/NetworkManager.hpp"
 
 // TODO: Fix This
 const int Character::DOT_WIDTH = PACMAN_RENDER_WIDTH;
@@ -126,7 +126,6 @@ void Character::change_direction(Direction d) {
 void Character::move() {
   // Move the dot left or right
   handle_collision();
-  // handle_packets();
   if(_next != Direction::NONE){
     change_direction(_next);
   }

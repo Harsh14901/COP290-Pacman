@@ -28,6 +28,14 @@ const static string PACMAN_COLLIDER_ID = "pacman";
 const static string ENEMY_COLLIDER_ID = "enemy";
 const static string WALL_COLLIDER_ID = "wall";
 
+enum KeyPressSurfaces {
+  KEY_PRESS_SURFACE_DEFAULT,
+  KEY_PRESS_SURFACE_UP,
+  KEY_PRESS_SURFACE_DOWN,
+  KEY_PRESS_SURFACE_LEFT,
+  KEY_PRESS_SURFACE_RIGHT,
+  KEY_PRESS_SURFACE_TOTAL
+};
 
 void fatalError(string error_message);
 

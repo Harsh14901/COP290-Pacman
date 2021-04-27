@@ -25,6 +25,6 @@ clean:
 
 run: all 
 	./$(BIN)/$(EXECUTABLE) $(args)
-$(BIN)/$(EXECUTABLE): $(SRC)/*.cpp
+$(BIN)/$(EXECUTABLE): $(SRC)/*.cpp $(SRC)/**/*.cpp
 
 	$(CC) $(C_FLAGS) -I$(INCLUDE) -I ./src/ -L$(LIB) $^ $(LFLAGS) -o $@ 
