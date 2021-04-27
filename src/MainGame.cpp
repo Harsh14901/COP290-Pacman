@@ -54,50 +54,41 @@ void MainGame::testNetwork(){
 	vector<string> data = {"a", "b", "c", "d", "e"};
 
 	auto send_packets = [&](NetworkDevice* device){
+		PacketStore ps;
 		for (int i = 0; i < num; i++)
 		{	
 			Packet p;
 			p.id = pids[i];
 			p.data = data[i];
-			// NetworkManager::send_packet(p);
-			device->send(p);
-			cout<<"[#] Hello sent by server. GG!"<<endl;
-			// SDL_Delay(100);
+			NetworkManager::queue_packet(p);
 		}
 
+		NetworkManager::send_packets();
+		cout<<"[#] Hello sent by server. GG!"<<endl;
+		SDL_Delay(100);
 	};
 
 	auto recv_packets = [&](NetworkDevice* device){
-		// vector<Packet> packets;
-		int n = 0;
-		// SDL_Delay(2000);		
-		while(n != num){
-			// NetworkManager::recv_packets();
-			// NetworkManager::get_packets(pids[n], packets);
-			// assert(packets.size() == 1);
-			device->recv();
-			while(device->packet_ready()){
-				Packet p;
-				device->get_packet(p);
-				assert(p.id == pids[n] && p.data == data[n]);
-				n++;
-			}
-			// for(auto&p :packets){
-			// 	assert(p.id == pids[n] && p.data == data[n]);
-			// 	cout<<"[#] Hello received by client. GG!"<<endl;
-			// }
-			// n += packets.size();
+		vector<Packet> packets;
+		NetworkManager::recv_packets();
 
-			// packets.clear();
+		for (int i = 0; i < num; i++)
+		{
+			NetworkManager::get_packets(pids[i], packets);
+			assert(packets.size() == 1);
+			auto p = packets[0];
+			assert(p.id == pids[i] && p.data == data[i]);
+			
 		}
+		cout<<"[#] Hello received by client. GG!"<<endl;
+		packets.clear();
 	};
 	if(server != nullptr){
 		send_packets(server);
-		// recv_packets(server);
+		recv_packets(server);
 	} else if(client != nullptr){
 		recv_packets(client);
-		// send_packets(client);
-		
+		send_packets(client);
 	}
 }
 

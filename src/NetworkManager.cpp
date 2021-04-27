@@ -21,11 +21,53 @@ void Packet::decode(char* buffer) {
   data = tokens[1];
 }
 
+PacketStore::PacketStore(): packets(vector<Packet>()), delimiter(';'){}
+void PacketStore::add_packet(Packet& packet){
+  packets.push_back(packet);
+}
+
+void PacketStore::get_packets(vector<Packet>& p){
+  p = packets;
+}
+
+void PacketStore::encode(char* buffer){
+  string encoded = to_string(packets.size()) + delimiter;
+  for(auto&p :packets){
+    char buffer[MAX_BUFF];
+    p.encode(buffer);
+    encoded += string(buffer);
+    encoded +=  delimiter;
+  }
+  strcpy(buffer, encoded.c_str());
+
+}
+void PacketStore::decode(char* buffer){
+  string buff = string(buffer);
+  stringstream parse_stream(buff);
+  string decoded;
+  vector<string> tokens;
+  while (getline(parse_stream, decoded, delimiter)) {
+    tokens.push_back(decoded);
+  }
+  int n = stoi(tokens[0]);
+  for (int i = 1; i <= n; i++){
+    Packet p;
+    p.decode(strdup(tokens[i].c_str()));
+    packets.push_back(p);
+  }
+  
+}
+
+void PacketStore::clear(){
+  packets.clear();
+}
+
 NetworkDevice* NetworkManager::device;
-unordered_map<string, vector<Packet>> NetworkManager::packet_store;
+unordered_map<string, vector<Packet>> NetworkManager::packet_map;
+PacketStore NetworkManager::tosend_packets;
 
 void NetworkManager::get_packets(string id, vector<Packet>& packets) {
-  packets = packet_store[id];
+  packets = packet_map[id];
 }
 
 void NetworkManager::load_device(NetworkDevice* device) {
@@ -37,39 +79,48 @@ void NetworkManager::recv_packets() {
     fatalError("Cannot recieve packets from a NULL device");
     return;
   }
-  packet_store.clear();
+  packet_map.clear();
   device->recv();
   while (device->packet_ready()) {
-    cout<<"NetworkManager::recv_packets: Packet is ready "<<endl;
-    Packet p;
-    device->get_packet(p);
-    packet_store[p.id].push_back(p);
+    cout<<"NetworkManager::recv_packets: PacketStore is ready "<<endl;
+    PacketStore ps;
+    device->get_packets(ps);
+    vector<Packet> packets;
+    ps.get_packets(packets);
+    for(auto&p : packets){
+      packet_map[p.id].push_back(p); 
+    }
   }
 }
 
-void NetworkManager::send_packet(Packet& packet) {
+void NetworkManager::queue_packet(Packet& packet) {
+  tosend_packets.add_packet(packet);
+}
+
+void NetworkManager::send_packets(){
   if (device == nullptr) {
     fatalError("Cannot send packets from a NULL device");
     return;
   }
-  device->send(packet);
+  device->send(tosend_packets);
+  tosend_packets.clear();
 }
 
 const int NetworkDevice::MAX_BUFFER;
 NetworkDevice::NetworkDevice() {
   recv_socket = nullptr;
   send_socket = nullptr;
-  packet_buffer = queue<Packet>();
+  ps_buffer = queue<PacketStore>();
 }
 
 NetworkDevice::NetworkDevice(TCPsocket* recv_socket, TCPsocket* send_socket)
     : recv_socket(recv_socket), send_socket(send_socket) {}
 
-bool NetworkDevice::packet_ready() { return !packet_buffer.empty(); }
+bool NetworkDevice::packet_ready() { return !ps_buffer.empty(); }
 
-void NetworkDevice::get_packet(Packet& packet) {
-  packet = packet_buffer.front();
-  packet_buffer.pop();
+void NetworkDevice::get_packets(PacketStore& ps) {
+  ps = ps_buffer.front();
+  ps_buffer.pop();
 }
 
 void NetworkDevice::recv() {
@@ -78,23 +129,22 @@ void NetworkDevice::recv() {
   if (SDLNet_TCP_Recv(*recv_socket, buffer, MAX_BUFFER) > 0) {
     printf("packet data recieved: %s\n", buffer);
 
-    auto packet = Packet();
-    packet.decode(buffer);
-    printf("packet id: %s, packet data: %s\n", packet.id.c_str(), packet.data.c_str());
-    packet_buffer.push(packet);
+    auto ps = PacketStore();
+    ps.decode(buffer);
+    ps_buffer.push(ps);
   }
-  printf("buffer size: %ld\n", packet_buffer.size());
+  printf("buffer size: %ld\n", ps_buffer.size());
 }
 
-void NetworkDevice::send(Packet& packet) {
+void NetworkDevice::send(PacketStore& ps) {
   char buffer[MAX_BUFFER];
-  packet.encode(buffer);
+  ps.encode(buffer);
   int size = strlen(buffer) + 1;
   printf("Sending buffer: %s\n", buffer);
   if (SDLNet_TCP_Send(*send_socket, buffer, size) < size) {
-    fatalError("Error sending packet: " + string(SDLNet_GetError()));
+    fatalError("Error sending packet store: " + string(SDLNet_GetError()));
   } else{
-    cout<<"Packet sent"<<endl;
+    cout<<"packet store sent"<<endl;
   }
 }
 

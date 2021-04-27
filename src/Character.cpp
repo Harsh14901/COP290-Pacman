@@ -89,7 +89,7 @@ void Character::broadcast_coordinates(){
   Packet p;
   p.id = CHARACTER_ID;
   p.data = "(" + to_string(mPosX) + "," + to_string(mPosY) + ")";
-  NetworkManager::send_packet(p);
+  NetworkManager::queue_packet(p);
 }
 
 void Character::change_direction(Direction d) {
@@ -126,7 +126,7 @@ void Character::change_direction(Direction d) {
 void Character::move() {
   // Move the dot left or right
   handle_collision();
-  handle_packets();
+  // handle_packets();
   if(_next != Direction::NONE){
     change_direction(_next);
   }
