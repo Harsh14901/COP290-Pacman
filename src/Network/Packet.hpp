@@ -24,9 +24,12 @@ class PacketStore {
   PacketStore();
   void add_packet(Packet& packet);
   void get_packets(vector<Packet>& packets);
-  void encode(char* buffer);
+
+  // Returns the number of packets encoded in the buffer
+  // The buffer size is constrainted by MAX_BUFF in constants.hpp
+  int encode(char* buffer);
   void decode(char* buffer);
-  void clear();
+  void clear(int num);
 
  private:
   vector<Packet> packets;

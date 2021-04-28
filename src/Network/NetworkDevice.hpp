@@ -12,7 +12,9 @@ class NetworkDevice {
   NetworkDevice();
   NetworkDevice(TCPsocket* recv_socket, TCPsocket* send_socket);
   void recv();
-  void send(PacketStore& ps);
+
+  // Returns the number of packets sent from ps
+  int send(PacketStore& ps);
   bool packet_ready();
   void get_packets(PacketStore& ps);
 

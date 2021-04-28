@@ -32,9 +32,9 @@ void NetworkDevice::recv() {
   // printf("buffer size: %ld\n", ps_buffer.size());
 }
 
-void NetworkDevice::send(PacketStore& ps) {
+int NetworkDevice::send(PacketStore& ps) {
   char buffer[MAX_BUFFER];
-  ps.encode(buffer);
+  int n = ps.encode(buffer);
   int size = strlen(buffer) + 1;
   // printf("Sending buffer: %s\n", buffer);
   if (SDLNet_TCP_Send(*send_socket, buffer, size) < size) {
@@ -42,6 +42,7 @@ void NetworkDevice::send(PacketStore& ps) {
   } else {
     // cout << "packet store sent" << endl;
   }
+  return n;
 }
 
 Server::Server(int port) : NetworkDevice(&csd, &csd), port(port) {}

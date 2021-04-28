@@ -1471,5 +1471,12 @@ var mapgen = function() {
     // map.pelletColor = "#ffb8ae";
     // return map;
 };
-
-mapgen();
+var err = true;
+while(err){
+    try {
+        mapgen();
+        err = false;
+    } catch (error) {
+        
+    }
+}

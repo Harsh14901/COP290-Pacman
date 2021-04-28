@@ -49,39 +49,66 @@ void MainGame::initNetwork(){
 }
 
 void MainGame::testNetwork(){
-	int num = 5;
+	int num = 10000;
 	vector<string> pids = {"b", "c", "d", "e", "a"};
 	vector<string> data = {"a", "b", "c", "d", "e"};
+	
+	Packet ack;
+	ack.id = "ACK";
+	ack.data = "THis is an ack";
+
+	int data_size = pids.size();
 
 	auto send_packets = [&](NetworkDevice* device){
 		PacketStore ps;
 		for (int i = 0; i < num; i++)
 		{	
 			Packet p;
-			p.id = pids[i];
-			p.data = data[i];
+			p.id = pids[i%data_size];
+			p.data = data[i% data_size];
 			NetworkManager::queue_packet(p);
 		}
+		int n = 0;
+		while(n != num){
+			n += NetworkManager::send_packets();
+			cout<<"[#] " << n << " Hello's sent by server"<<endl;
+			
+			NetworkManager::recv_packets();
+			vector<Packet> packets;
+ 			NetworkManager::get_packets(ack.id, packets);
+			
+			assert(packets.size() == 1 && packets[0].id == ack.id && packets[0].data == ack.data);
+			cout<<"[#] ACK received!"<<endl;
 
-		NetworkManager::send_packets();
-		cout<<"[#] Hello sent by server. GG!"<<endl;
+		}
+		cout<<"[#] All sent by server. GG!"<<endl;
 		SDL_Delay(100);
 	};
 
 	auto recv_packets = [&](NetworkDevice* device){
-		vector<Packet> packets;
-		NetworkManager::recv_packets();
+		int n = 0;
+		while(n != num){
+			NetworkManager::recv_packets();
+			for (int i = 0; i < data_size; i++){
+				vector<Packet> packets;
 
-		for (int i = 0; i < num; i++)
-		{
-			NetworkManager::get_packets(pids[i], packets);
-			assert(packets.size() == 1);
-			auto p = packets[0];
-			assert(p.id == pids[i] && p.data == data[i]);
-			
+				NetworkManager::get_packets(pids[i], packets);
+				for(auto&p :packets){
+					assert(p.id == pids[i] && p.data == data[i]);
+				}
+				
+				n += packets.size();
+				cout<<"[#] "<< n <<" Hello's received by client"<<endl;
+
+			}
+			NetworkManager::queue_packet(ack);
+			if(NetworkManager::send_packets() == 1){
+				cout<<"[#] ACK sent!"<<endl;
+			} else {
+				fatalError("Could not send ACK");
+			}
 		}
-		cout<<"[#] Hello received by client. GG!"<<endl;
-		packets.clear();
+		cout<<"[#] All received. GG!"<<endl;
 	};
 	if(server != nullptr){
 		send_packets(server);

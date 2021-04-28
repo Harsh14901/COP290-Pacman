@@ -14,7 +14,9 @@ class NetworkManager {
   static void get_packets(string id, vector<Packet>& packets);
   static void load_device(NetworkDevice* device);
   static void recv_packets();
-  static void send_packets();
+
+  // Returns the number of packets sent through network manager
+  static int send_packets();
   static void queue_packet(Packet& packet);
 
  private:

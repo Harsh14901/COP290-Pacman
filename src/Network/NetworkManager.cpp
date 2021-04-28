@@ -20,7 +20,8 @@ void NetworkManager::recv_packets() {
   packet_map.clear();
   device->recv();
   while (device->packet_ready()) {
-    cout << "NetworkManager::recv_packets: PacketStore is ready " << endl;
+    // cout << "NetworkManager::recv_packets: PacketStore is ready " << endl;
+
     PacketStore ps;
     device->get_packets(ps);
     vector<Packet> packets;
@@ -35,11 +36,12 @@ void NetworkManager::queue_packet(Packet& packet) {
   tosend_packets.add_packet(packet);
 }
 
-void NetworkManager::send_packets() {
+int NetworkManager::send_packets() {
   if (device == nullptr) {
     fatalError("Cannot send packets from a NULL device");
-    return;
+    return -1;
   }
-  device->send(tosend_packets);
-  tosend_packets.clear();
+  int num = device->send(tosend_packets);
+  tosend_packets.clear(num);
+  return num;
 }
