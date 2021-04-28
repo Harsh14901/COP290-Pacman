@@ -9,9 +9,14 @@ using namespace std;
 
 class Packet {
  public:
-  string id;
-  string data;
+  string id = "";
+  int posX = 0;
+  int posY = 0;
+  int velX = 0;
+  int velY = 0;
+  string data = "";
   Packet();
+  Packet(string id, string data);
   void decode(char* buffer);
   void encode(char* buffer);
 
@@ -24,7 +29,7 @@ class PacketStore {
   PacketStore();
   void add_packet(Packet& packet);
   void get_packets(vector<Packet>& packets);
-
+  int size();
   // Returns the number of packets encoded in the buffer
   // The buffer size is constrainted by MAX_BUFF in constants.hpp
   int encode(char* buffer);
@@ -35,3 +40,6 @@ class PacketStore {
   vector<Packet> packets;
   char delimiter;
 };
+
+extern Packet ack;
+void check_ack(vector<Packet>& packets);

@@ -14,19 +14,18 @@ const static int PACMAN_RENDER_WIDTH = WALL_GRID_WIDTH;
 const static int PACMAN_RENDER_HEIGHT = WALL_GRID_HEIGHT;
 const static int WALL_GRID_ROWS = 26;
 const static int WALL_GRID_COLS = 40;
-const static int ENEMY_COUNT = 0;
+const static int ENEMY_COUNT = 2;
 const static int SCREEN_WIDTH = WALL_GRID_COLS * WALL_GRID_WIDTH;
 const static int SCREEN_HEIGHT = WALL_GRID_ROWS * WALL_GRID_HEIGHT;
 
 const static int PORT = 8000;
 const static int MAX_BUFF = 4096;
-enum class Direction{
-  LEFT, RIGHT, UP, DOWN, NONE
-};
+enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };
 
 const static string PACMAN_COLLIDER_ID = "pacman";
 const static string ENEMY_COLLIDER_ID = "enemy";
 const static string WALL_COLLIDER_ID = "wall";
+const static string NETWORK_ID = "networkmanager";
 
 enum KeyPressSurfaces {
   KEY_PRESS_SURFACE_DEFAULT,
@@ -37,5 +36,5 @@ enum KeyPressSurfaces {
   KEY_PRESS_SURFACE_TOTAL
 };
 
+extern bool is_server;
 void fatalError(string error_message);
-

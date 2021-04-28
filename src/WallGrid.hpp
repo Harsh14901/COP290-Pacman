@@ -1,18 +1,18 @@
 #pragma once
 
-#include <Constants.hpp>
 #include <GL/gl.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include <Constants.hpp>
 #include <iostream>
 
-#include "LTexture.hpp"
 #include "Collision/CollisionEngine.hpp"
 #include "Constants.hpp"
+#include "LTexture.hpp"
+#include "Network/NetworkManager.hpp"
 class WallGrid {
  public:
-
   // const static int GRID_COL = 28;
   // const static int GRID_ROW = 36;
   const static int WALL_WIDTH = WALL_GRID_WIDTH;
@@ -38,12 +38,24 @@ class WallGrid {
 
   static bool can_move(int posX, int posY, Direction d);
 
+  // Generate a random maze
+  static void generate_maze();
+
+  // Broadcast position of walls via NetworkManager
+  // ASSUMPTION: Call in init stage, not in game loop
+  static void broadcast_walls();
+
+  // Recieve wall packets and form a maze
+  // Assumption: Call in init stage, not in game loop
+  static void packets2maze();
 
  private:
   static LTexture wall_texture;
-  
+
   // The wall matrix, true indicates wall is present
   static bool walls[GRID_ROW][GRID_COL];
+
+  static int active_walls;
 
   static Collider wallColliders[GRID_ROW][GRID_COL];
 };

@@ -3,9 +3,9 @@
 #include <iostream>
 
 using namespace std;
-
+bool is_server = false;
 void signal_handler(int signal_num) {
-  cout << "\nOK BYE!"<<endl;
+  cout << "\nOK BYE!" << endl;
 
   // terminate program
   exit(signal_num);
@@ -15,17 +15,19 @@ int main(int argc, char* argv[]) {
   signal(SIGINT, signal_handler);
   MainGame mainGame;
   string host = "";
-  
+
   if (argc >= 2) {
     host = string(argv[1]);
   }
 
-  Server server;  
+  Server server;
   Client client(host, PORT);
 
   if (host == "") {
+    is_server = true;
     mainGame.listen(&server);
   } else {
+    is_server = false;
     mainGame.connect(&client);
   }
   mainGame.runGame();

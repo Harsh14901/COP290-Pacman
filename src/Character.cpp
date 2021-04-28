@@ -1,4 +1,5 @@
 #include "Character.hpp"
+
 #include "Network/NetworkManager.hpp"
 
 // TODO: Fix This
@@ -43,13 +44,10 @@ Character::Character(string id) {
   // PACMAN_RENDER_HEIGHT}; mCollider = Collider(PACMAN_ID, rect);
 
   // Circular collider
-  auto circle = Circle{SDL_Point{mPosX + DOT_WIDTH / 2,
-                                 mPosY + DOT_HEIGHT / 2},
+  auto circle = Circle{SDL_Point{mPosX + DOT_WIDTH / 2, mPosY + DOT_HEIGHT / 2},
                        max(DOT_WIDTH, DOT_WIDTH) / 2};
   mCollider = Collider(CHARACTER_ID, circle);
 }
-
-
 
 void Character::handle_collision() {
   auto collisions = CollisionEngine::getCollisions(CHARACTER_ID);
@@ -74,27 +72,33 @@ void Character::handle_collision() {
   // cout << "------------" << endl;
 }
 
-void Character::handle_packets(){
+void Character::handle_packets() {
   vector<Packet> packets;
   NetworkManager::get_packets(CHARACTER_ID, packets);
 
-  for(auto&p: packets){
-    printf("[#] Recieved packet by: %s, with data: %s", p.id.c_str(), p.data.c_str());
+  for (auto& p : packets) {
+    mPosX = p.posX;
+    mPosY = p.posY;
+    mVelX = p.velX;
+    mVelY = p.velY;
+    _direction = Direction(stoi(p.data));
+    change_direction(_direction);
   }
-  if(!packets.empty())
-    cout<<"-----------"<<endl;
 }
 
-void Character::broadcast_coordinates(){
+void Character::broadcast_coordinates() {
   Packet p;
   p.id = CHARACTER_ID;
-  p.data = "(" + to_string(mPosX) + "," + to_string(mPosY) + ")";
+  p.posX = mPosX;
+  p.posY = mPosY;
+  p.velX = mVelX;
+  p.velY = mVelY;
+  p.data = to_string(int(_direction));
   NetworkManager::queue_packet(p);
 }
 
 void Character::change_direction(Direction d) {
-  if (WallGrid::can_move(mPosX + DOT_WIDTH / 2,
-                         mPosY + DOT_HEIGHT / 2, d)) {
+  if (WallGrid::can_move(mPosX + DOT_WIDTH / 2, mPosY + DOT_HEIGHT / 2, d)) {
     mVelX = 0;
     mVelY = 0;
     switch (d) {
@@ -125,8 +129,12 @@ void Character::change_direction(Direction d) {
 
 void Character::move() {
   // Move the dot left or right
+  if (!is_server) {
+    handle_packets();
+    return;
+  }
   handle_collision();
-  if(_next != Direction::NONE){
+  if (_next != Direction::NONE) {
     change_direction(_next);
   }
   mPosX += mVelX;
@@ -163,4 +171,5 @@ void Character::move() {
   // Change circular collider position
   mCollider.setX(mPosX + PACMAN_RENDER_WIDTH / 2);
   mCollider.setY(mPosY + PACMAN_RENDER_HEIGHT / 2);
+  broadcast_coordinates();
 }
