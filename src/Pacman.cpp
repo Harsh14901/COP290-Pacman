@@ -33,7 +33,7 @@ void Pacman::handle_collision() {
 
   // if(!collisions.empty()){
   while (i < collisions.size()) {
-    if(collisions[i]->id.find("coin")!=-1){
+    if(collisions[i]->id.find(COIN_COLLIDER_ID)!=-1){
       i++;
       continue;
     }
