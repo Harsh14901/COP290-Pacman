@@ -23,4 +23,6 @@ public:
   void handleEvent(SDL_Event& e);
   void move();
   int type;
+protected:
+  void handle_collision();
 };
