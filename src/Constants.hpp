@@ -25,6 +25,8 @@ enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };
 const static string PACMAN_COLLIDER_ID = "pacman";
 const static string ENEMY_COLLIDER_ID = "enemy";
 const static string WALL_COLLIDER_ID = "wall";
+const static string COIN_COLLIDER_ID = "coins";
+
 const static string NETWORK_ID = "networkmanager";
 
 enum KeyPressSurfaces {

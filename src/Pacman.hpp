@@ -17,6 +17,9 @@
 class Pacman : public Character{
 public:
   Pacman();
+  void move();
   void handleEvent(SDL_Event& e);
+protected:
+  void handle_collision();
 };
 

@@ -6,6 +6,7 @@
 #include <SDL2/SDL_net.h>
 
 #include <WallGrid.hpp>
+#include <CoinGrid.hpp>
 #include <iostream>
 
 #include "Constants.hpp"

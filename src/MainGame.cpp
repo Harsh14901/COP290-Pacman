@@ -107,6 +107,7 @@ void MainGame::initCharacters()
 {
 	_pacman.init(_gRenderer);
 	WallGrid::init(_gRenderer);
+	CoinGrid::init(_gRenderer);
 
 	for (auto& enemy: enemies){
 		enemy.init(_gRenderer);
@@ -115,6 +116,8 @@ void MainGame::initCharacters()
 	if(server != nullptr && is_server){
 		WallGrid::generate_maze();
 		WallGrid::broadcast_walls();
+		CoinGrid::generate_coins();
+		// CoinGrid::broadcast_coins();
 	} else {
 		WallGrid::packets2maze();
 	}
@@ -321,6 +324,8 @@ void MainGame::processInput()
 
 	// //Render texture to screen
 	// SDL_RenderCopy( _gRenderer, _gTexture, NULL, NULL );
+
+	CoinGrid::render();
 
 	_pacman.render();
 	for (auto& enemy: enemies){
