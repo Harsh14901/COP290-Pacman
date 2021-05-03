@@ -50,15 +50,6 @@ void CoinGrid::render() {
   }
 }
 
-// SDL_Point CoinGrid::get_empty_location() {
-//   int x = 0, y = 0;
-//   while (coins[x][y]) {
-//     x = rand() % GRID_ROW;
-//     y = rand() % GRID_COL;
-//   }
-//   printf("Found empty location: (%d, %d)\n", x, y);
-//   return SDL_Point{y * WALL_WIDTH, x * WALL_HEIGHT};
-// }
 
 bool CoinGrid::can_move(int posX, int posY, Direction d) {
   int row = posY / COIN_HEIGHT;

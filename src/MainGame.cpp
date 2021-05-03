@@ -129,17 +129,7 @@ void MainGame::initCharacters()
 	for (auto& enemy: enemies){
 		enemy.place(WallGrid::get_empty_location());
 	}
-	// TODO: Change this to the algorithm.
-	// The snippet below generates a random maze.
-	// srand(time(NULL));
-	// for (int i = 0; i < wallgrid.GRID_ROW; i++) {
-	// for (int j = 0; j < wallgrid.GRID_COL; j++) {
-	// if (rand() % 2 == 1) {
-	// 	cout<<"Setting wall at "<< i<<" , "<<j<<endl;
-	// 	wallgrid.set_wall(i, j);
-	// }
-	// }
-	// }
+
 }
 
 void MainGame::initSystems()
@@ -231,24 +221,14 @@ void MainGame::drawInitScreen()
 		fatalError("Failed to Load Media: \n" + string(SDL_GetError()));
 	}
 
-	// SDL_BlitSurface( _gPacman, NULL, _screenSurface, NULL );
-
-	// Fill the surface white
-	// SDL_FillRect( _screenSurface, NULL, SDL_MapRGB( _screenSurface->format,
-	// 0xFF, 0x0F, 0xFF ) );
-
 	// Update the surface
 	SDL_UpdateWindowSurface(_window);
 
-	// Wait two seconds
-	// SDL_Delay( 2000 );
 }
 
 void MainGame::processInput()
 {
 	SDL_Event evnt;
-	// int key = SDL_PollEvent(evnt);
-	// bool change = false;
 
 	while (SDL_PollEvent(&evnt))
 	{
@@ -257,21 +237,6 @@ void MainGame::processInput()
 		case SDL_QUIT:
 			_gameState = GameState::EXIT;
 			break;
-
-		case SDL_MOUSEMOTION:
-			// std::cout << evnt.motion.x << "," << evnt.motion.y << endl;
-			break;
-		case SDL_KEYDOWN:
-
-			switch (evnt.key.keysym.sym)
-			{
-			case SDLK_UP:
-				// cout << "Up Arrow Pressed" << endl;
-				// change = true;
-				break;
-			default:
-				break;
-			}
 		}
 
 		_pacman.handleEvent(evnt);
@@ -286,21 +251,6 @@ void MainGame::processInput()
 		enemy.move();
 	}
 	
-
-	// if(!change){
-	//     SDL_BlitSurface(_gPacman, NULL, _screenSurface, NULL);
-	// }else{
-	//     // SDL_BlitSurface(_gComida, NULL, _screenSurface, NULL);
-	//     SDL_Rect stretchRect;
-	//     stretchRect.x = 0;
-	//     stretchRect.y = 0;
-	//     stretchRect.w = _screenWidth;
-	//     stretchRect.h = _screenHeight;
-
-	//     SDL_BlitScaled( _gPacman, NULL, _screenSurface, &stretchRect );
-
-	// }
-
 	SDL_SetRenderDrawColor(_gRenderer, 0xFF, 0xFF, 0x0F, 0xFF);
 
 	SDL_RenderClear(_gRenderer);
@@ -315,17 +265,6 @@ void MainGame::processInput()
 
 	// Render texture to screen
 	SDL_RenderCopy(_gRenderer, _gTexture, NULL, NULL);
-
-	// SDL_Rect topRightViewport;
-	// topRightViewport.x = _screenWidth/2 - 200;
-	// topRightViewport.y = 0;
-	// topRightViewport.w = _screenWidth / 2 + 100;
-	// topRightViewport.h = _screenHeight / 2;
-
-	// SDL_RenderSetViewport( _gRenderer, &topRightViewport );
-
-	// //Render texture to screen
-	// SDL_RenderCopy( _gRenderer, _gTexture, NULL, NULL );
 
 	CoinGrid::render();
 
@@ -375,13 +314,3 @@ bool MainGame::loadMedia()
 
 	return success;
 }
-
-// MainGame::MainGame(){
-
-// }
-
-// void MainGame::run(){
-
-// }
-
-// void MainGa
