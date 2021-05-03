@@ -26,6 +26,7 @@ class MainGame {
   void listen(Server* server);
   void connect(Client* client);
 
+
  private:
   SDL_Window* _window;
   SDL_Surface* _screenSurface;

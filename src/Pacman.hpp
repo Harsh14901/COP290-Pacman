@@ -15,6 +15,7 @@
 #include <WallGrid.hpp>
 #include "CoinGrid.hpp"
 #include "utils.hpp"
+#include "Animator.hpp"
 
 class Pacman : public Character{
 public:
@@ -26,6 +27,9 @@ public:
 protected:
   void handle_collision();
 private:
+  Animator gulp_animator = Animator(3);
+  bool isMouthOpen();
+
   int coins;
 };
 

@@ -27,7 +27,11 @@ void Pacman::handleEvent(SDL_Event& e) {
 
 void Pacman::render() {
   // Show the dot
-  SDL_Rect rect{138*4 , 171 * (2-int(_direction)%2), 138, 171};
+  int mouth_fac = isMouthOpen()?0:2;
+  // cout << "Mouth is Open ?" << isMouthOpen() << "," << mouth_fac << endl;
+
+  cout << "Rendering y at " << 171 * ((2-(int(_direction)%2))  + isMouthOpen()?0:2) << endl; 
+  SDL_Rect rect{138*4 , 171 * ((2-(int(_direction)%2)) +mouth_fac ), 138, 171};
   _gDotTexture.render(mPosX, mPosY, &rect,90 * (int(_direction)/2));
 }
 
@@ -46,6 +50,7 @@ void Pacman::handle_collision() {
       if(temp.size()==2){
         CoinGrid::unset_coin(temp[0],temp[1]);
       }
+      gulp_animator.start();
       continue;
     }
 
@@ -67,6 +72,17 @@ void Pacman::handle_collision() {
       // cout << "Outside pacman collision" << endl;
 
 }
+
+bool Pacman::isMouthOpen(){
+  if(gulp_animator.isActive()){
+    int cf = gulp_animator.get_current_frame();
+    if(cf == 1 || cf==2){
+      return false;
+    }
+  }
+  return true;
+}
+
 
 
 void Pacman::move() {

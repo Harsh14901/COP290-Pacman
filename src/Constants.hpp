@@ -18,6 +18,8 @@ const static int ENEMY_COUNT = 4;
 const static int SCREEN_WIDTH = WALL_GRID_COLS * WALL_GRID_WIDTH;
 const static int SCREEN_HEIGHT = WALL_GRID_ROWS * WALL_GRID_HEIGHT;
 
+
+
 const static int PORT = 8000;
 const static int MAX_BUFF = 4096;
 enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };

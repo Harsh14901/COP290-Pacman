@@ -5,6 +5,8 @@
 #include <time.h>	/* time */
 #include <stdlib.h>
 
+int game_frame;
+
 void fatalError(string error_message)
 {
 	cout << error_message << endl;
@@ -289,6 +291,7 @@ void MainGame::gameLoop()
 
 		processInput();
 		CollisionEngine::checkCollisions();
+		game_frame++;
 	}
 }
 
