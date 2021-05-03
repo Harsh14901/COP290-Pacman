@@ -25,6 +25,12 @@ void Pacman::handleEvent(SDL_Event& e) {
   }
 }
 
+void Pacman::render() {
+  // Show the dot
+  SDL_Rect rect{138*4 , 171 * (2-int(_direction)%2), 138, 171};
+  _gDotTexture.render(mPosX, mPosY, &rect,90 * (int(_direction)/2));
+}
+
 void Pacman::handle_collision() {
   auto collisions = CollisionEngine::getCollisions(PACMAN_COLLIDER_ID);
   int i =0 ;

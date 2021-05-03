@@ -109,8 +109,9 @@ void MainGame::initCharacters()
 	WallGrid::init(_gRenderer);
 	CoinGrid::init(_gRenderer);
 
+	int i = 0;
 	for (auto& enemy: enemies){
-		enemy.init(_gRenderer);
+		enemy.init(_gRenderer,i++);
 	}
 	
 	if(server != nullptr && is_server){

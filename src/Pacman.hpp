@@ -22,6 +22,7 @@ public:
   void move();
   void handleEvent(SDL_Event& e);
   int get_coins_collected();
+  void render();
 protected:
   void handle_collision();
 private:

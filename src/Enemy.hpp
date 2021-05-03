@@ -18,6 +18,9 @@
 class Enemy: public Character{
 public:
   Enemy();
+  void render();
+  void init(SDL_Renderer* renderer,int enemy_type);
   void handleEvent(SDL_Event& e);
   void move();
+  int type;
 };

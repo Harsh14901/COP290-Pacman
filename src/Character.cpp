@@ -20,7 +20,7 @@ void Character::place(SDL_Point p) {
 void Character::init(SDL_Renderer* renderer) {
   cout << CHARACTER_ID << endl;
   _gDotTexture.setRenderer(renderer);
-  _gDotTexture.loadFromFile("assets/bitmaps/pacman.bmp");
+  _gDotTexture.loadFromFile("assets/pngs/pac-classic_c-toy.png");
   _gDotTexture.set_image_dimenstions(DOT_WIDTH, DOT_HEIGHT);
   CollisionEngine::register_collider(&mCollider);
 }
