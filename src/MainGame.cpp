@@ -118,9 +118,10 @@ void MainGame::initCharacters()
 		WallGrid::generate_maze();
 		WallGrid::broadcast_walls();
 		CoinGrid::generate_coins();
-		// CoinGrid::broadcast_coins();
+		CoinGrid::broadcast_coins();
 	} else {
 		WallGrid::packets2maze();
+		CoinGrid::packets2coins();
 	}
 	
 	_pacman.place(WallGrid::get_empty_location());

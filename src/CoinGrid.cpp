@@ -129,3 +129,11 @@ void CoinGrid::broadcast_coins() {
   NetworkManager::send_all();
 }
 
+void CoinGrid::packets2coins() {
+  NetworkManager::recv_all();
+  vector<Packet> packets;
+  NetworkManager::get_packets(COIN_ID, packets);
+  for (auto& p : packets) {
+    set_coin(p.posX, p.posY);
+  }
+}
