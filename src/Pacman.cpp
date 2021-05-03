@@ -1,6 +1,5 @@
 #include "Pacman.hpp"
 
-
 Pacman::Pacman() : Character(PACMAN_COLLIDER_ID) {}
 
 
@@ -34,7 +33,13 @@ void Pacman::handle_collision() {
   // if(!collisions.empty()){
   while (i < collisions.size()) {
     if(collisions[i]->id.find(COIN_COLLIDER_ID)!=-1){
+      // cout << "Inside collision" << endl;
       i++;
+      coins++;
+      auto temp = extractIntegerWords(collisions[i-1]->id);
+      if(temp.size()==2){
+        CoinGrid::unset_coin(temp[0],temp[1]);
+      }
       continue;
     }
 
@@ -103,4 +108,8 @@ void Pacman::move() {
   mCollider.setX(mPosX + PACMAN_RENDER_WIDTH / 2);
   mCollider.setY(mPosY + PACMAN_RENDER_HEIGHT / 2);
   broadcast_coordinates();
+}
+
+int Pacman::get_coins_collected(){
+  return coins;
 }

@@ -30,7 +30,7 @@ void CoinGrid::set_coin(int i, int j) {
 }
 
 void CoinGrid::unset_coin(int i, int j) {
-  if (i >= GRID_ROW || i < 0 || j >= GRID_COL || j < 0 || coins[i][j]) {
+  if (i >= GRID_ROW || i < 0 || j >= GRID_COL || j < 0 ) {
     return;
   }
   coins[i][j] = false;
