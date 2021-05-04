@@ -11,7 +11,7 @@ Animator::Animator(int sf,int dur){
 }
 
 Animator::Animator(int dur){
-    end_frame = dur;
+    duration = dur;
 }
 
 void Animator::start(){
@@ -34,7 +34,7 @@ int Animator::get_current_frame(){
 
 double Animator::animation_progress(){
     if(!isActive()) return -1;
-    return (get_current_frame())/(0.0+start_frame-end_frame);
+    return (get_current_frame())/(0.0+end_frame-start_frame);
 }
 
 bool Animator::isActive(){

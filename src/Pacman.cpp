@@ -66,7 +66,11 @@ void Pacman::handle_collision() {
       for(auto x:enemies){
         x.setState(EnemyState::WEAK);
       }
-
+    }
+    if(collisions[i]->id.find(ENEMY_COLLIDER_ID)!=-1){
+      // Assert: Game Over
+      is_dead = true;
+      return;
     }
 
     // cout << "Collision of pacman with " << collisions.at(0)->id << endl;

@@ -344,27 +344,33 @@ void MainGame::drawInitScreen()
 
 void MainGame::processInput()
 {
-	SDL_Event evnt;
+	if(!_pacman.is_dead){
+		SDL_Event evnt;
 
-	while (SDL_PollEvent(&evnt))
-	{
-		switch (evnt.type)
+		while (SDL_PollEvent(&evnt))
 		{
-		case SDL_QUIT:
-			_gameState = GameState::EXIT;
-			break;
+			switch (evnt.type)
+			{
+			case SDL_QUIT:
+				_gameState = GameState::EXIT;
+				break;
+			}
+
+			_pacman.handleEvent(evnt);
+			for (auto& enemy: enemies){
+				enemy.handleEvent(evnt);
+			}
 		}
 
-		_pacman.handleEvent(evnt);
+		_pacman.move();
+
 		for (auto& enemy: enemies){
-			enemy.handleEvent(evnt);
+			enemy.move();
 		}
-	}
-
-	_pacman.move();
-
-	for (auto& enemy: enemies){
-		enemy.move();
+	}else{
+		if(!gameEndAnimator.isActive()){
+			initialiseGameEndTexture(false);
+		}
 	}
 	
 	SDL_SetRenderDrawColor(_gRenderer, 0xFF, 0xFF, 0x0F, 0xFF);
@@ -390,6 +396,15 @@ void MainGame::processInput()
 		enemy.render();
 	}
 	WallGrid::render();
+
+	if(_pacman.is_dead){
+		if(!gameEndAnimator.isActive()){
+			initialiseGameEndTexture(false);
+		}
+		renderGameEndAnimation();
+		_gameState = GameState::EXIT;
+
+	}
 	
 	// gTextTexture.render( ( SCREEN_WIDTH - gTextTexture.getWidth() ) / 2, ( 0.2f*SCREEN_HEIGHT - gTextTexture.getHeight() ) / 2 );
 
@@ -402,15 +417,41 @@ void MainGame::processInput()
 void MainGame::gameLoop()
 {
 	cout << "Starting GameLoop" << endl;
-	while (_gameState == GameState::PLAY)
+	while (_gameState == GameState::PLAY || (_gameState == GameState::EXIT && gameEndAnimator.isActive()))
 	{
 		NetworkManager::send_packets();
 		NetworkManager::recv_packets();
 
 		processInput();
+
 		CollisionEngine::checkCollisions();
 		game_frame++;
 	}
+}
+
+
+void MainGame::initialiseGameEndTexture(int is_win){
+	gameEndTextTexture.setRenderer(_gRenderer);
+	if(is_win){
+		gameEndTextTexture.loadFromRenderedText("YOU WIN!",{210,255,220},TTF_OpenFont("assets/fonts/bernier.ttf",240));
+	}else{
+		gameEndTextTexture.loadFromRenderedText("YOU LOSE!",{255,255,255},TTF_OpenFont("assets/fonts/game_over.ttf",480));
+	}
+}
+
+void MainGame::renderGameEndAnimation(){
+
+	if(!gameEndAnimator.isActive()){
+		gameEndAnimator.start();
+	}
+
+	// cout << "Animation is happening" << endl;
+
+	double x = gameEndAnimator.animation_progress();
+
+	// cout << x << endl;
+	double val = x>0.33?0.5:1.5*x;
+	gameEndTextTexture.render(SCREEN_WIDTH/2 - gameEndTextTexture.getWidth()/2,(1-val)*SCREEN_HEIGHT - gameEndTextTexture.getHeight()/2 );
 }
 
 bool MainGame::loadMedia()

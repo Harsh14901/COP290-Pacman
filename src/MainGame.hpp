@@ -75,4 +75,10 @@ class MainGame {
   void initNetworkMenu();
   void networkMenuRender();
 
+  void renderGameEndAnimation();
+  void initialiseGameEndTexture(int is_win);
+
+  Animator gameEndAnimator = Animator(360);
+  LTexture gameEndTextTexture;
+
 };

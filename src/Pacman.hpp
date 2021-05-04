@@ -26,6 +26,8 @@ public:
   void handleEvent(SDL_Event& e);
   int get_coins_collected();
   void render();
+  bool is_dead = false;
+
 protected:
   void handle_collision();
 private:
@@ -34,5 +36,6 @@ private:
 
   int coins;
   int cherries;
+
 };
 
