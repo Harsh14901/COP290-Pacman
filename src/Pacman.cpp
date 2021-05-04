@@ -2,6 +2,7 @@
 
 Pacman::Pacman() : Character(PACMAN_COLLIDER_ID) {}
 
+extern CoinGrid coinGrid;
 
 void Pacman::handleEvent(SDL_Event& e) {
   // If a key was pressed
@@ -28,9 +29,6 @@ void Pacman::handleEvent(SDL_Event& e) {
 void Pacman::render() {
   // Show the dot
   int mouth_fac = isMouthOpen()?0:2;
-  // cout << "Mouth is Open ?" << isMouthOpen() << "," << mouth_fac << endl;
-
-  cout << "Rendering y at " << 171 * ((2-(int(_direction)%2))  + isMouthOpen()?0:2) << endl; 
   SDL_Rect rect{138*4 , 171 * ((2-(int(_direction)%2)) +mouth_fac ), 138, 171};
   _gDotTexture.render(mPosX, mPosY, &rect,90 * (int(_direction)/2));
 }
@@ -44,11 +42,12 @@ void Pacman::handle_collision() {
   while (i < collisions.size()) {
     if(collisions[i]->id.find(COIN_COLLIDER_ID)!=-1){
       // Coin Collected
+      cout << "Coin Collected" << endl;
       i++;
       coins++;
       auto temp = extractIntegerWords(collisions[i-1]->id);
       if(temp.size()==2){
-        CoinGrid::unset_coin(temp[0],temp[1]);
+        coinGrid.unset_object(temp[0],temp[1]);
       }
       gulp_animator.start();
       continue;

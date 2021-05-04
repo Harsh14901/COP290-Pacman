@@ -13,7 +13,7 @@
 #include "Network/NetworkManager.hpp"
 #include "ObjectGrid.hpp"
 
-class CoinGrid : public ObjectGrid {
+class CherryGrid : public ObjectGrid {
 public:
   void generate();
 };

@@ -1,7 +1,11 @@
-#include <CoinGrid.hpp>
+#include <CherryGrid.hpp>
 
 
-void CoinGrid::generate() {
+void CherryGrid::generate() {
+//   if (system("node src/maze_generator.js > map.txt")) {
+//     fatalError("Error Generating map");
+//   }
+
   string line;
   ifstream myfile("map.txt");
   int i = 0;
@@ -9,7 +13,7 @@ void CoinGrid::generate() {
   if (myfile.is_open()) {
     while (getline(myfile, line)) {
       for (char& c : line) {
-        if (c == '.') {
+        if (c == 'o') {
           set_object(i, j);
         }
         j++;

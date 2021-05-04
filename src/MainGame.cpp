@@ -6,6 +6,8 @@
 #include <stdlib.h>
 
 int game_frame;
+CoinGrid coinGrid;
+CherryGrid cherryGrid;
 
 void fatalError(string error_message)
 {
@@ -109,8 +111,10 @@ void MainGame::initCharacters()
 {
 	_pacman.init(_gRenderer);
 	WallGrid::init(_gRenderer);
-	CoinGrid::init(_gRenderer);
-
+	// CherryGrid::init(_gRenderer);
+	coinGrid.init(_gRenderer,COIN_COLLIDER_ID,"assets/pngs/coin2.png");
+	cherryGrid.init(_gRenderer,CHERRY_COLLIDER_ID,"assets/pngs/pac-cherry.png");
+	
 	int i = 0;
 	for (auto& enemy: enemies){
 		enemy.init(_gRenderer,i++);
@@ -119,11 +123,14 @@ void MainGame::initCharacters()
 	if(server != nullptr && is_server){
 		WallGrid::generate_maze();
 		WallGrid::broadcast_walls();
-		CoinGrid::generate_coins();
-		CoinGrid::broadcast_coins();
+		coinGrid.generate();
+		coinGrid.broadcast();
+		cherryGrid.generate();
+		cherryGrid.broadcast();
 	} else {
 		WallGrid::packets2maze();
-		CoinGrid::packets2coins();
+		coinGrid.packets2objects();
+		cherryGrid.packets2objects();
 	}
 	
 	_pacman.place(WallGrid::get_empty_location());
@@ -268,7 +275,8 @@ void MainGame::processInput()
 	// Render texture to screen
 	SDL_RenderCopy(_gRenderer, _gTexture, NULL, NULL);
 
-	CoinGrid::render();
+	coinGrid.render();
+	cherryGrid.render();
 
 	_pacman.render();
 	for (auto& enemy: enemies){

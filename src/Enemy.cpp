@@ -19,7 +19,7 @@ void Enemy::handle_collision() {
   int i = 0;
 
   while (i < collisions.size()) {
-    if(collisions[i]->id.find(COIN_COLLIDER_ID)!=-1){
+    if(collisions[i]->id.find(COIN_COLLIDER_ID)!=-1 || collisions[i]->id.find(CHERRY_COLLIDER_ID)!=-1){
       i++;
       continue;
     }

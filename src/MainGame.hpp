@@ -14,6 +14,7 @@
 #include "Pacman.hpp"
 #include "Enemy.hpp"
 #include "Network/NetworkManager.hpp"
+#include "CherryGrid.hpp"
 using namespace std;
 
 enum class GameState { PLAY, EXIT };

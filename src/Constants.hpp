@@ -28,6 +28,7 @@ const static string PACMAN_COLLIDER_ID = "pacman";
 const static string ENEMY_COLLIDER_ID = "enemy";
 const static string WALL_COLLIDER_ID = "wall";
 const static string COIN_COLLIDER_ID = "coins";
+const static string CHERRY_COLLIDER_ID = "cherry";
 
 const static string NETWORK_ID = "networkmanager";
 
