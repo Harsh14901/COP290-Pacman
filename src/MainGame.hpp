@@ -18,7 +18,7 @@
 
 using namespace std;
 
-enum class GameState { MAIN_MENU,PLAY, EXIT };
+enum class GameState { MAIN_MENU,NETWORKMENU,PLAY, EXIT };
 
 class MainGame {
  public:
@@ -67,5 +67,12 @@ class MainGame {
   void mainMenu();
   void initMainMenuSystems();
   void mainMenuRender(int option);
+
+
+  LTexture networkTextTexture;
+
+  void networkMenu();
+  void initNetworkMenu();
+  void networkMenuRender();
 
 };

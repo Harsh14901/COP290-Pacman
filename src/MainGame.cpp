@@ -25,7 +25,7 @@ MainGame::MainGame()
 	_screenHeight = SCREEN_HEIGHT;
 	enemies = vector<Enemy>(ENEMY_COUNT);
 
-	_gameState = GameState::PLAY;
+	_gameState = GameState::MAIN_MENU;
 }
 
 void MainGame::listen(Server* server){
@@ -122,7 +122,7 @@ void MainGame::mainMenu(){
 
 	int menuOption = 0;
 	int totalMenuOptions = 2;
-	while (_gameState == GameState::PLAY){
+	while (_gameState == GameState::MAIN_MENU){
 
 		while (SDL_PollEvent(&evnt) && _gameState!=GameState::EXIT)
 		{
@@ -139,6 +139,8 @@ void MainGame::mainMenu(){
 						case SDLK_DOWN:
 							menuOption +=1;
 							break;
+						case 13:
+							_gameState = GameState::NETWORKMENU;
 						default:
 							cout << "Invalid Key, Play Sound" << endl;
 					}
@@ -167,6 +169,25 @@ void MainGame::initMainMenuSystems(){
 
 }
 
+void MainGame::networkMenu(){
+	networkTextTexture.setRenderer(_gRenderer);
+	if(server != nullptr){
+		networkTextTexture.loadFromRenderedText("Waiting For External Connection...",{210,255,230},TTF_OpenFont("assets/fonts/lazy.ttf",60));
+	}else{
+		networkTextTexture.loadFromRenderedText("Waiting For Server...",{210,255,230},TTF_OpenFont("assets/fonts/lazy.ttf",70));
+	}
+	SDL_RenderClear(_gRenderer);
+	networkTextTexture.render(SCREEN_WIDTH/2-networkTextTexture.getWidth()/2,SCREEN_HEIGHT*0.5-networkTextTexture.getHeight()/2);
+	SDL_RenderPresent(_gRenderer);
+	initNetwork();
+	testNetwork();
+	SDL_RenderClear(_gRenderer);
+	networkTextTexture.loadFromRenderedText("Connection Successfull...",{100,255,40},TTF_OpenFont("assets/fonts/lazy.ttf",80));
+	networkTextTexture.render(SCREEN_WIDTH/2-networkTextTexture.getWidth()/2,SCREEN_HEIGHT*0.5-networkTextTexture.getHeight()/2);
+	SDL_RenderPresent(_gRenderer);
+	_gameState = GameState::PLAY;
+}
+
 
 void MainGame::runGame()
 {
@@ -174,7 +195,14 @@ void MainGame::runGame()
 
 	mainMenu();
 
+	networkMenu();
+
+
+
+
 	initCharacters();
+
+	
 
 	gameLoop();
 }
@@ -240,8 +268,7 @@ void MainGame::initSystems()
     fatalError("SDLNet_Init Error:\n" + string(SDLNet_GetError()));
   }
 
-	initNetwork();
-	testNetwork();
+
 	cout << "Initing Screen" << endl;
 	drawInitScreen();
 }
