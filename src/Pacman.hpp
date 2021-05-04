@@ -14,8 +14,10 @@
 #include <time.h>	/* time */
 #include <WallGrid.hpp>
 #include "CoinGrid.hpp"
+#include "CherryGrid.hpp"
 #include "utils.hpp"
 #include "Animator.hpp"
+#include "Enemy.hpp"
 
 class Pacman : public Character{
 public:
@@ -31,5 +33,6 @@ private:
   bool isMouthOpen();
 
   int coins;
+  int cherries;
 };
 

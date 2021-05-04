@@ -8,6 +8,7 @@
 int game_frame;
 CoinGrid coinGrid;
 CherryGrid cherryGrid;
+vector<Enemy> enemies;
 
 void fatalError(string error_message)
 {

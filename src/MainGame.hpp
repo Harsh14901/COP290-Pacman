@@ -56,7 +56,7 @@ class MainGame {
 
   GameState _gameState;
   Pacman _pacman;
-  vector<Enemy> enemies;
+  // vector<Enemy> enemies;
 
   LTexture pacmanHeadingText;
   LTexture p1Text;

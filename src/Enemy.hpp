@@ -14,6 +14,8 @@
 #include <time.h>	/* time */
 #include <WallGrid.hpp>
 
+enum class EnemyState { NORMAL,WEAK,SUPER_ACTIVE };
+
 
 class Enemy: public Character{
 public:
@@ -23,6 +25,9 @@ public:
   void handleEvent(SDL_Event& e);
   void move();
   int type;
+  EnemyState state = EnemyState::NORMAL;
+  void setState(EnemyState st);
 protected:
   void handle_collision();
+  
 };

@@ -49,7 +49,8 @@ void Enemy::handle_collision() {
 
 void Enemy::render() {
   // Show the dot
-  SDL_Rect rect{138*(2+int(_direction)%2) , 171 * type, 138, 171};
+  int typeValue = state==EnemyState::WEAK?type:type;
+  SDL_Rect rect{138*(2+int(_direction)%2) , 171 * typeValue, 138, 171};
   _gDotTexture.render(mPosX, mPosY, &rect,90 * (int(_direction)/2));
 }
 
@@ -139,3 +140,6 @@ void Enemy::move() {
 }
 
 
+void Enemy::setState(EnemyState st){
+  state = st;
+}

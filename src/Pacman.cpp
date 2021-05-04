@@ -3,6 +3,9 @@
 Pacman::Pacman() : Character(PACMAN_COLLIDER_ID) {}
 
 extern CoinGrid coinGrid;
+extern CherryGrid cherryGrid;
+extern vector<Enemy> enemies;
+
 
 void Pacman::handleEvent(SDL_Event& e) {
   // If a key was pressed
@@ -51,6 +54,19 @@ void Pacman::handle_collision() {
       }
       gulp_animator.start();
       continue;
+    }
+    if(collisions[i]->id.find(CHERRY_COLLIDER_ID)!=-1){
+      cout << "Cherry Collected" << endl;
+      i++;
+      cherries++;
+      auto temp = extractIntegerWords(collisions[i-1]->id);
+      if(temp.size()==2){
+        cherryGrid.unset_object(temp[0],temp[1]);
+      }
+      for(auto x:enemies){
+        x.setState(EnemyState::WEAK);
+      }
+
     }
 
     // cout << "Collision of pacman with " << collisions.at(0)->id << endl;
