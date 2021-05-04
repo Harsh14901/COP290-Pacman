@@ -344,7 +344,7 @@ void MainGame::drawInitScreen()
 
 void MainGame::processInput()
 {
-	if(!_pacman.is_dead){
+	if(!_pacman.is_dead && coinGrid.active_objects!=0){
 		SDL_Event evnt;
 
 		while (SDL_PollEvent(&evnt))
@@ -369,7 +369,11 @@ void MainGame::processInput()
 		}
 	}else{
 		if(!gameEndAnimator.isActive()){
-			initialiseGameEndTexture(false);
+			if(coinGrid.active_objects==0){
+				initialiseGameEndTexture(false);
+			}else{
+				initialiseGameEndTexture(false);
+			}
 		}
 	}
 	
@@ -403,9 +407,14 @@ void MainGame::processInput()
 		}
 		renderGameEndAnimation();
 		_gameState = GameState::EXIT;
-
 	}
-	
+	if(coinGrid.active_objects==0){
+		if(!gameEndAnimator.isActive()){
+			initialiseGameEndTexture(true);
+		}
+		renderGameEndAnimation();
+		_gameState = GameState::EXIT;
+	}
 	// gTextTexture.render( ( SCREEN_WIDTH - gTextTexture.getWidth() ) / 2, ( 0.2f*SCREEN_HEIGHT - gTextTexture.getHeight() ) / 2 );
 
 	// Update screen

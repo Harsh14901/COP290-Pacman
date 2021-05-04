@@ -46,6 +46,7 @@ class ObjectGrid {
   // Assumption: Call in init stage, not in game loop
   // TODO: Remove this assumption
   void packets2objects();
+  int active_objects;
 
  protected:
   LTexture object_texture;
@@ -53,7 +54,6 @@ class ObjectGrid {
   // The object matrix, true indicates object is present
   bool objects[GRID_ROW][GRID_COL];
 
-  int active_objects;
 
   Collider objectColliders[GRID_ROW][GRID_COL];
 };
