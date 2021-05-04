@@ -1,5 +1,6 @@
 #include "Enemy.hpp"
 
+
 Enemy::Enemy() : Character(ENEMY_COLLIDER_ID + "_" + to_string(rand())) {}
 
 void Enemy::handleEvent(SDL_Event& event) {}

@@ -15,9 +15,10 @@
 #include "Enemy.hpp"
 #include "Network/NetworkManager.hpp"
 #include "CherryGrid.hpp"
+
 using namespace std;
 
-enum class GameState { PLAY, EXIT };
+enum class GameState { MAIN_MENU,PLAY, EXIT };
 
 class MainGame {
  public:
@@ -56,5 +57,15 @@ class MainGame {
   GameState _gameState;
   Pacman _pacman;
   vector<Enemy> enemies;
+
+  LTexture pacmanHeadingText;
+  LTexture p1Text;
+  LTexture p2Text;
+  LTexture p1TextLarger;
+  LTexture p2TextLarger;
+
+  void mainMenu();
+  void initMainMenuSystems();
+  void mainMenuRender(int option);
 
 };

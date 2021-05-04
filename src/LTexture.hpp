@@ -7,6 +7,8 @@
 #include <iostream>
 
 #include "Constants.hpp"
+#include <SDL2/SDL_ttf.h>
+
 
 using namespace std;
 
@@ -22,6 +24,8 @@ class LTexture {
 
   // Loads image at specified path
   bool loadFromFile(std::string path);
+  bool loadFromRenderedText( std::string textureText, SDL_Color textColor,TTF_Font* gFont );
+
 
 #if defined(SDL_TTF_MAJOR_VERSION)
   // Creates image from font string

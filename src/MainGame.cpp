@@ -100,9 +100,81 @@ void MainGame::testNetwork(){
 	}
 }
 
+void MainGame::mainMenuRender(int option){
+
+	SDL_RenderClear(_gRenderer);
+
+	pacmanHeadingText.render(SCREEN_WIDTH/2-pacmanHeadingText.getWidth()/2,SCREEN_HEIGHT*0.12);
+
+	if(option == 0){
+		p1TextLarger.render(SCREEN_WIDTH/2-p1TextLarger.getWidth()/2,SCREEN_HEIGHT*0.52-p1TextLarger.getHeight()/2);
+		p2Text.render(SCREEN_WIDTH/2-p2Text.getWidth()/2,SCREEN_HEIGHT*0.67-p2Text.getHeight()/2+p1TextLarger.getHeight()-p1Text.getHeight());
+	}else{
+		p1Text.render(SCREEN_WIDTH/2-p1Text.getWidth()/2,SCREEN_HEIGHT*0.5-p1Text.getHeight()/2);
+		p2TextLarger.render(SCREEN_WIDTH/2-p2TextLarger.getWidth()/2,SCREEN_HEIGHT*0.65-p2TextLarger.getHeight()/2);
+	}
+	SDL_RenderPresent(_gRenderer);
+}
+
+void MainGame::mainMenu(){
+	initMainMenuSystems();
+	SDL_Event evnt;
+
+	int menuOption = 0;
+	int totalMenuOptions = 2;
+	while (_gameState == GameState::PLAY){
+
+		while (SDL_PollEvent(&evnt) && _gameState!=GameState::EXIT)
+		{
+			switch (evnt.type)
+			{
+				case SDL_QUIT:
+					_gameState = GameState::EXIT;
+					break;
+				case SDL_KEYDOWN:
+					switch(evnt.key.keysym.sym){
+						case SDLK_UP:
+							menuOption -=1;
+							break;
+						case SDLK_DOWN:
+							menuOption +=1;
+							break;
+						default:
+							cout << "Invalid Key, Play Sound" << endl;
+					}
+					break;
+			}
+		}
+		mainMenuRender((menuOption+10000)%totalMenuOptions);
+	}
+	
+
+}
+
+void MainGame::initMainMenuSystems(){
+	pacmanHeadingText.setRenderer(_gRenderer);
+	p1Text.setRenderer(_gRenderer);
+	p2Text.setRenderer(_gRenderer);
+	p1TextLarger.setRenderer(_gRenderer);
+	p2TextLarger.setRenderer(_gRenderer);
+
+	pacmanHeadingText.loadFromRenderedText("Pacman",{210,255,30},TTF_OpenFont("assets/fonts/crackman.ttf",160));
+	p1Text.loadFromRenderedText("1 Player",{210,255,230},TTF_OpenFont("assets/fonts/lazy.ttf",80));
+	p2Text.loadFromRenderedText("2 Player",{210,255,230},TTF_OpenFont("assets/fonts/lazy.ttf",80));
+	p1TextLarger.loadFromRenderedText("1 Player",{210,255,230},TTF_OpenFont("assets/fonts/lazy.ttf",120));
+	p2TextLarger.loadFromRenderedText("2 Player",{210,255,230},TTF_OpenFont("assets/fonts/lazy.ttf",120));
+
+
+}
+
+
 void MainGame::runGame()
 {
 	initSystems();
+
+	mainMenu();
+
+	initCharacters();
 
 	gameLoop();
 }
@@ -154,7 +226,7 @@ void MainGame::initSystems()
 				   string(SDL_GetError()));
 	}
 
-	_window = SDL_CreateWindow("Graphics Engine", SDL_WINDOWPOS_CENTERED,
+	_window = SDL_CreateWindow("Pacman Infinity", SDL_WINDOWPOS_CENTERED,
 							   SDL_WINDOWPOS_CENTERED, _screenWidth,
 							   _screenHeight, SDL_WINDOW_OPENGL);
 
@@ -170,8 +242,8 @@ void MainGame::initSystems()
 
 	initNetwork();
 	testNetwork();
+	cout << "Initing Screen" << endl;
 	drawInitScreen();
-	initCharacters();
 }
 
 SDL_Texture *MainGame::loadTexture(string path)
@@ -213,7 +285,7 @@ void MainGame::drawInitScreen()
 	}
 
 	// Initialize renderer color
-	SDL_SetRenderDrawColor(_gRenderer, 0xFF, 0xFF, 0x0F, 0xFF);
+	SDL_SetRenderDrawColor(_gRenderer, 0x00, 0x00, 0x00, 0xFF);
 
 	// Initialize PNG loading
 	int imgFlags = IMG_INIT_PNG;
@@ -223,8 +295,15 @@ void MainGame::drawInitScreen()
 				   string(IMG_GetError()));
 	}
 
+	if( TTF_Init() == -1 )
+	{
+		fatalError("SDL_ttf could not initialize! SDL_ttf Error: " +
+			string(TTF_GetError()));
+	}
+
 	_gTexture = loadTexture("assets/pngs/texture.png");
 
+	cout << "loading media" << endl;
 	if (!loadMedia())
 	{
 		fatalError("Failed to Load Media: \n" + string(SDL_GetError()));
@@ -283,6 +362,8 @@ void MainGame::processInput()
 		enemy.render();
 	}
 	WallGrid::render();
+	
+	// gTextTexture.render( ( SCREEN_WIDTH - gTextTexture.getWidth() ) / 2, ( 0.2f*SCREEN_HEIGHT - gTextTexture.getHeight() ) / 2 );
 
 	// Update screen
 	SDL_RenderPresent(_gRenderer);
@@ -292,6 +373,7 @@ void MainGame::processInput()
 
 void MainGame::gameLoop()
 {
+	cout << "Starting GameLoop" << endl;
 	while (_gameState == GameState::PLAY)
 	{
 		NetworkManager::send_packets();
@@ -305,23 +387,14 @@ void MainGame::gameLoop()
 
 bool MainGame::loadMedia()
 {
-	// Loading success flag
-	bool success = true;
+	// SDL_Color textColor = { 200, 0, 0 };
+	// gTextTexture.setRenderer(_gRenderer);
+	
+	// if( !gTextTexture.loadFromRenderedText( "The quick brown fox jumps over the lazy dog", textColor,TTF_OpenFont( "assets/fonts/lazy.ttf", 28 )) )
+	// {
+	// 	printf( "Failed to render text texture!\n" );
+	// 	return false;
+	// }
 
-	// Load splash image
-	auto _gPacman_temp = SDL_LoadBMP("assets/bitmaps/pacman.bmp");
-	// _gComida = SDL_LoadBMP("assets/comida1.bmp");
-
-	if (_gPacman_temp == NULL)
-	{
-		printf("Unable to load image %s! SDL Error: %s\n",
-			   "02_getting_an_image_on_the_screen/hello_world.bmp", SDL_GetError());
-		success = false;
-	}
-
-	_gPacman = SDL_ConvertSurface(_gPacman_temp, _screenSurface->format, 0);
-
-	SDL_FreeSurface(_gPacman_temp);
-
-	return success;
+    return true;
 }
