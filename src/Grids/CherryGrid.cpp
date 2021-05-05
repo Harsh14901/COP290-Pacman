@@ -1,4 +1,4 @@
-#include <CherryGrid.hpp>
+#include <Grids/CherryGrid.hpp>
 
 
 void CherryGrid::generate() {

@@ -6,12 +6,12 @@
 
 #include <iostream>
 #include "Collision/CollisionEngine.hpp"
-#include "LTexture.hpp"
+#include "Textures/LTexture.hpp"
 #include "Constants.hpp"
 
 #include <stdlib.h> /* srand, rand */
 #include <time.h>	/* time */
-#include <WallGrid.hpp>
+#include "Grids/WallGrid.hpp"
 
 class Character{
  public:

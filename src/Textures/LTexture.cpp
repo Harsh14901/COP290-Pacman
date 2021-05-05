@@ -1,4 +1,4 @@
-#include "LTexture.hpp"
+#include "Textures/LTexture.hpp"
 
 LTexture::LTexture(SDL_Renderer* renderer) {
   // Initialize

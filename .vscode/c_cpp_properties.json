@@ -12,7 +12,8 @@
             "cppStandard": "c++14",
             "intelliSenseMode": "linux-clang-x64",
             "compilerArgs": [
-                "/usr/include/SDL2/"
+                "/usr/include/SDL2/",
+                "include"
             ]
         }
     ],

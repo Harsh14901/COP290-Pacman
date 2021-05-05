@@ -1,4 +1,4 @@
-#include "Pacman.hpp"
+#include "Characters/Pacman.hpp"
 
 Pacman::Pacman() : Character(PACMAN_COLLIDER_ID) {}
 

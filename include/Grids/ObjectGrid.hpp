@@ -9,7 +9,7 @@
 
 #include "Collision/CollisionEngine.hpp"
 #include "Constants.hpp"
-#include "LTexture.hpp"
+#include "Textures/LTexture.hpp"
 #include "Network/NetworkManager.hpp"
 
 class ObjectGrid {

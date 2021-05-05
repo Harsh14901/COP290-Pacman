@@ -1,4 +1,4 @@
-#include "Character.hpp"
+#include "Characters/Character.hpp"
 
 #include "Network/NetworkManager.hpp"
 

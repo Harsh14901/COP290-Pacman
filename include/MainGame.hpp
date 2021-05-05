@@ -5,16 +5,16 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_net.h>
 
-#include <WallGrid.hpp>
-#include <CoinGrid.hpp>
+#include <Grids/WallGrid.hpp>
+#include <Grids/CoinGrid.hpp>
 #include <iostream>
 
 #include "Constants.hpp"
-#include "LTexture.hpp"
-#include "Pacman.hpp"
-#include "Enemy.hpp"
+#include "Textures/LTexture.hpp"
+#include "Characters/Pacman.hpp"
+#include "Characters/Enemy.hpp"
 #include "Network/NetworkManager.hpp"
-#include "CherryGrid.hpp"
+#include "Grids/CherryGrid.hpp"
 
 using namespace std;
 

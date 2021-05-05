@@ -1,4 +1,4 @@
-#include <CoinGrid.hpp>
+#include <Grids/CoinGrid.hpp>
 
 
 void CoinGrid::generate() {

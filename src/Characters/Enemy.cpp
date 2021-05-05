@@ -1,4 +1,4 @@
-#include "Enemy.hpp"
+#include "Characters/Enemy.hpp"
 
 
 Enemy::Enemy() : Character(ENEMY_COLLIDER_ID + "_" + to_string(rand())) {}

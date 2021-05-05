@@ -1,4 +1,4 @@
-#include <WallGrid.hpp>
+#include <Grids/WallGrid.hpp>
 
 const string WallGrid::WALL_ID = WALL_COLLIDER_ID;
 

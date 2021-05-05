@@ -4,16 +4,15 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#include <Constants.hpp>
 #include <iostream>
 
 #include "Collision/CollisionEngine.hpp"
 #include "Constants.hpp"
-#include "LTexture.hpp"
+#include "Textures/LTexture.hpp"
 #include "Network/NetworkManager.hpp"
-#include "ObjectGrid.hpp"
+#include "Grids/ObjectGrid.hpp"
 
-class CherryGrid : public ObjectGrid {
+class CoinGrid : public ObjectGrid {
 public:
   void generate();
 };
