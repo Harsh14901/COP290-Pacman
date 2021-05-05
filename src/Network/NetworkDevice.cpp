@@ -85,7 +85,5 @@ void Client::init() {
 }
 
 void Client::connect() {
-  if (!(sd = SDLNet_TCP_Open(&server_ip))) {
-    fatalError("SDLNet_TCP_Open:" + string(SDLNet_GetError()));
-  }
+  while (!(sd = SDLNet_TCP_Open(&server_ip))) ;
 }

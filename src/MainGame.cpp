@@ -114,12 +114,13 @@ void MainGame::mainMenuRender(int option) {
   SDL_RenderPresent(_gRenderer);
 }
 
-void MainGame::mainMenu() {
+int MainGame::mainMenu() {
   initMainMenuSystems();
   SDL_Event evnt;
 
   int menuOption = 0;
   int totalMenuOptions = 2;
+  int option = 0;
   while (_gameState == GameState::MAIN_MENU) {
     while (SDL_PollEvent(&evnt) && _gameState != GameState::EXIT) {
       switch (evnt.type) {
@@ -142,8 +143,10 @@ void MainGame::mainMenu() {
           break;
       }
     }
-    mainMenuRender((menuOption + 10000) % totalMenuOptions);
+    option = (menuOption + 10000) % totalMenuOptions;
+    mainMenuRender(option);
   }
+  return option;
 }
 
 void MainGame::initMainMenuSystems() {
@@ -171,9 +174,9 @@ void MainGame::networkMenu() {
     networkTextTexture.loadFromRenderedText(
         "Waiting For External Connection...", {210, 255, 230},
         TTF_OpenFont("assets/fonts/lazy.ttf", 60));
-  } else {
+  } else if (client != nullptr) {
     networkTextTexture.loadFromRenderedText(
-        "Waiting For Server...", {210, 255, 230},
+        "Trying to connect to server...", {210, 255, 230},
         TTF_OpenFont("assets/fonts/lazy.ttf", 70));
   }
   SDL_RenderClear(_gRenderer);
@@ -181,8 +184,10 @@ void MainGame::networkMenu() {
       SCREEN_WIDTH / 2 - networkTextTexture.getWidth() / 2,
       SCREEN_HEIGHT * 0.5 - networkTextTexture.getHeight() / 2);
   SDL_RenderPresent(_gRenderer);
+
   initNetwork();
   testNetwork();
+
   SDL_RenderClear(_gRenderer);
   networkTextTexture.loadFromRenderedText(
       "Connection Successfull...", {100, 255, 40},
@@ -191,15 +196,22 @@ void MainGame::networkMenu() {
       SCREEN_WIDTH / 2 - networkTextTexture.getWidth() / 2,
       SCREEN_HEIGHT * 0.5 - networkTextTexture.getHeight() / 2);
   SDL_RenderPresent(_gRenderer);
-  _gameState = GameState::PLAY;
 }
 
 void MainGame::runGame() {
   initSystems();
 
-  mainMenu();
+  auto option = mainMenu();
 
-  networkMenu();
+  if (option == 1) {
+    networkMenu();
+
+  } else {
+    server = nullptr;
+    client = nullptr;
+  }
+
+  _gameState = GameState::PLAY;
 
   initCharacters();
 
@@ -225,10 +237,14 @@ void MainGame::initCharacters() {
     coinGrid.broadcast();
     cherryGrid.generate();
     cherryGrid.broadcast();
-  } else {
+  } else if (client != nullptr) {
     WallGrid::packets2maze();
     coinGrid.packets2objects();
     cherryGrid.packets2objects();
+  } else {
+    WallGrid::generate_maze();
+    coinGrid.generate();
+    cherryGrid.generate();
   }
 
   _pacman.place(WallGrid::get_empty_location());
@@ -408,8 +424,10 @@ void MainGame::gameLoop() {
   cout << "Starting GameLoop" << endl;
   while (_gameState == GameState::PLAY ||
          (_gameState == GameState::EXIT && gameEndAnimator.isActive())) {
-    NetworkManager::send_packets();
-    NetworkManager::recv_packets();
+    if (client != nullptr || server != nullptr) {
+      NetworkManager::send_packets();
+      NetworkManager::recv_packets();
+    }
 
     processInput();
 

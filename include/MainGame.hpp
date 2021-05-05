@@ -63,7 +63,8 @@ class MainGame {
   LTexture p1TextLarger;
   LTexture p2TextLarger;
 
-  void mainMenu();
+  // Returns the option selected
+  int mainMenu();
   void initMainMenuSystems();
   void mainMenuRender(int option);
 
