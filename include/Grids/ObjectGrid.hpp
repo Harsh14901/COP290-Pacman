@@ -9,8 +9,8 @@
 
 #include "Collision/CollisionEngine.hpp"
 #include "Constants.hpp"
-#include "Textures/LTexture.hpp"
 #include "Network/NetworkManager.hpp"
+#include "Textures/LTexture.hpp"
 
 class ObjectGrid {
  public:
@@ -20,9 +20,8 @@ class ObjectGrid {
   const static int GRID_COL = WALL_GRID_COLS;
   const static int GRID_ROW = WALL_GRID_ROWS;
 
-
   // CoinGrid();
-  void init(SDL_Renderer* renderer,string id,string asset_file);
+  void init(SDL_Renderer* renderer, string id, string asset_file);
   void render();
 
   // Set the object at position (i,j)
@@ -53,7 +52,6 @@ class ObjectGrid {
 
   // The object matrix, true indicates object is present
   bool objects[GRID_ROW][GRID_COL];
-
 
   Collider objectColliders[GRID_ROW][GRID_COL];
 };

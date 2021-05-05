@@ -3,24 +3,24 @@
 #include <GL/gl.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <stdlib.h> /* srand, rand */
+#include <time.h>   /* time */
 
 #include <iostream>
-#include "Collision/CollisionEngine.hpp"
-#include "Textures/LTexture.hpp"
-#include "Constants.hpp"
-#include "Characters/Character.hpp"
 
-#include <stdlib.h> /* srand, rand */
-#include <time.h>	/* time */
-#include "Grids/WallGrid.hpp"
-#include "Grids/CoinGrid.hpp"
-#include "Grids/CherryGrid.hpp"
-#include "utils.hpp"
 #include "Animator.hpp"
+#include "Characters/Character.hpp"
 #include "Characters/Enemy.hpp"
+#include "Collision/CollisionEngine.hpp"
+#include "Constants.hpp"
+#include "Grids/CherryGrid.hpp"
+#include "Grids/CoinGrid.hpp"
+#include "Grids/WallGrid.hpp"
+#include "Textures/LTexture.hpp"
+#include "utils.hpp"
 
-class Pacman : public Character{
-public:
+class Pacman : public Character {
+ public:
   Pacman();
   void move();
   void handleEvent(SDL_Event& e);
@@ -28,14 +28,13 @@ public:
   void render();
   bool is_dead = false;
 
-protected:
+ protected:
   void handle_collision();
-private:
+
+ private:
   Animator gulp_animator = Animator(3);
   bool isMouthOpen();
 
   int coins;
   int cherries;
-
 };
-

@@ -1,12 +1,10 @@
 #include "Characters/Enemy.hpp"
 
-
 Enemy::Enemy() : Character(ENEMY_COLLIDER_ID + "_" + to_string(rand())) {}
 
 void Enemy::handleEvent(SDL_Event& event) {}
 
-
-void Enemy::init(SDL_Renderer* renderer,int enemy_type) {
+void Enemy::init(SDL_Renderer* renderer, int enemy_type) {
   cout << ENEMY_COLLIDER_ID << endl;
   _gDotTexture.setRenderer(renderer);
   _gDotTexture.loadFromFile("assets/pngs/pac-classic_c-toy.png");
@@ -20,12 +18,13 @@ void Enemy::handle_collision() {
   int i = 0;
 
   while (i < collisions.size()) {
-    if(collisions[i]->id.find(COIN_COLLIDER_ID)!=-1 || collisions[i]->id.find(CHERRY_COLLIDER_ID)!=-1){
+    if (collisions[i]->id.find(COIN_COLLIDER_ID) != -1 ||
+        collisions[i]->id.find(CHERRY_COLLIDER_ID) != -1) {
       i++;
       continue;
     }
     cout << "Collision with " << collisions[i]->id << endl;
-    if(collisions[i]->id.find(ENEMY_COLLIDER_ID)!=-1){
+    if (collisions[i]->id.find(ENEMY_COLLIDER_ID) != -1) {
       i++;
       cout << "Enemy Collided with another enemy" << endl;
       continue;
@@ -49,9 +48,9 @@ void Enemy::handle_collision() {
 
 void Enemy::render() {
   // Show the dot
-  int typeValue = state==EnemyState::WEAK?type:type;
-  SDL_Rect rect{138*(2+int(_direction)%2) , 171 * typeValue, 138, 171};
-  _gDotTexture.render(mPosX, mPosY, &rect,90 * (int(_direction)/2));
+  int typeValue = state == EnemyState::WEAK ? type : type;
+  SDL_Rect rect{138 * (2 + int(_direction) % 2), 171 * typeValue, 138, 171};
+  _gDotTexture.render(mPosX, mPosY, &rect, 90 * (int(_direction) / 2));
 }
 
 void Enemy::move() {
@@ -89,10 +88,9 @@ void Enemy::move() {
     // printf("Velocities: %d, %d\n", mVelX, mVelY);
     // change_direction(Direction(rand() % 4));
     change_direction(_direction);
-
   }
 
-    // Move the dot left or right
+  // Move the dot left or right
   if (!is_server) {
     handle_packets();
     return;
@@ -136,10 +134,6 @@ void Enemy::move() {
   mCollider.setX(mPosX + PACMAN_RENDER_WIDTH / 2);
   mCollider.setY(mPosY + PACMAN_RENDER_HEIGHT / 2);
   broadcast_coordinates();
-
 }
 
-
-void Enemy::setState(EnemyState st){
-  state = st;
-}
+void Enemy::setState(EnemyState st) { state = st; }

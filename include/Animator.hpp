@@ -1,20 +1,17 @@
 #pragma once
 
-class Animator{
+class Animator {
+ public:
+  Animator(int sf, int dur);
+  Animator(int dur);
 
-public:
-    Animator(int sf,int dur);
-    Animator(int dur);
+  int start_frame = -1;
+  int end_frame = -1;
+  int duration;
 
-    int start_frame = -1;
-    int end_frame = -1;
-    int duration;
-
-    int get_current_frame();
-    double animation_progress();
-    bool isActive();
-    void start();
-    void reset();
-
-
+  int get_current_frame();
+  double animation_progress();
+  bool isActive();
+  void start();
+  void reset();
 };

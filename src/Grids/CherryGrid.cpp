@@ -1,10 +1,9 @@
 #include <Grids/CherryGrid.hpp>
 
-
 void CherryGrid::generate() {
-//   if (system("node src/maze_generator.js > map.txt")) {
-//     fatalError("Error Generating map");
-//   }
+  //   if (system("node src/maze_generator.js > map.txt")) {
+  //     fatalError("Error Generating map");
+  //   }
 
   string line;
   ifstream myfile("map.txt");

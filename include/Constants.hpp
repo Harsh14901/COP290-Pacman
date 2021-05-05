@@ -4,8 +4,6 @@
 
 using namespace std;
 
-// const static int SCREEN_HEIGHT = 768;
-// const static int SCREEN_WIDTH = 1024;
 const static int PACMAN_DOT_WIDTH = 34;
 const static int PACMAN_DOT_HEIGHT = 40;
 const static int WALL_GRID_WIDTH = 32;
@@ -17,8 +15,6 @@ const static int WALL_GRID_COLS = 40;
 const static int ENEMY_COUNT = 4;
 const static int SCREEN_WIDTH = WALL_GRID_COLS * WALL_GRID_WIDTH;
 const static int SCREEN_HEIGHT = WALL_GRID_ROWS * WALL_GRID_HEIGHT;
-
-
 
 const static int PORT = 8000;
 const static int MAX_BUFF = 4096;

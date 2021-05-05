@@ -9,8 +9,8 @@
 
 #include "Collision/CollisionEngine.hpp"
 #include "Constants.hpp"
-#include "Textures/LTexture.hpp"
 #include "Network/NetworkManager.hpp"
+#include "Textures/LTexture.hpp"
 class WallGrid {
  public:
   // const static int GRID_COL = 28;

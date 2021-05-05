@@ -9,11 +9,11 @@
 
 #include "Collision/CollisionEngine.hpp"
 #include "Constants.hpp"
-#include "Textures/LTexture.hpp"
-#include "Network/NetworkManager.hpp"
 #include "Grids/ObjectGrid.hpp"
+#include "Network/NetworkManager.hpp"
+#include "Textures/LTexture.hpp"
 
 class CherryGrid : public ObjectGrid {
-public:
+ public:
   void generate();
 };

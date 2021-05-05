@@ -3,17 +3,17 @@
 #include <GL/gl.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <stdlib.h> /* srand, rand */
+#include <time.h>   /* time */
 
 #include <iostream>
+
 #include "Collision/CollisionEngine.hpp"
-#include "Textures/LTexture.hpp"
 #include "Constants.hpp"
-
-#include <stdlib.h> /* srand, rand */
-#include <time.h>	/* time */
 #include "Grids/WallGrid.hpp"
+#include "Textures/LTexture.hpp"
 
-class Character{
+class Character {
  public:
   // The dimensions of the dot
   static const int DOT_WIDTH;

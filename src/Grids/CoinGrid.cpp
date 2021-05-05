@@ -1,6 +1,5 @@
 #include <Grids/CoinGrid.hpp>
 
-
 void CoinGrid::generate() {
   string line;
   ifstream myfile("map.txt");

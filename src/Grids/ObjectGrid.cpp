@@ -1,10 +1,6 @@
 #include <Grids/ObjectGrid.hpp>
 
-
-
-
-
-void ObjectGrid::init(SDL_Renderer* renderer,string id,string asset_file) {
+void ObjectGrid::init(SDL_Renderer* renderer, string id, string asset_file) {
   memset(objects, 0, sizeof(objects));
   active_objects = 0;
   object_texture.setRenderer(renderer);
@@ -12,7 +8,6 @@ void ObjectGrid::init(SDL_Renderer* renderer,string id,string asset_file) {
   object_texture.set_image_dimenstions(OBJECT_WIDTH, OBJECT_HEIGHT);
 
   OBJECT_ID = id;
-
 }
 
 void ObjectGrid::set_object(int i, int j) {
@@ -21,15 +16,15 @@ void ObjectGrid::set_object(int i, int j) {
   }
   objects[i][j] = true;
   active_objects++;
-  auto rect =
-      SDL_Rect{j * WALL_GRID_WIDTH, i * WALL_GRID_WIDTH, WALL_GRID_WIDTH, WALL_GRID_HEIGHT};
+  auto rect = SDL_Rect{j * WALL_GRID_WIDTH, i * WALL_GRID_WIDTH,
+                       WALL_GRID_WIDTH, WALL_GRID_HEIGHT};
   objectColliders[i][j] =
       Collider(OBJECT_ID + "_" + to_string(i) + "_" + to_string(j), rect);
   CollisionEngine::register_collider(&objectColliders[i][j]);
 }
 
 void ObjectGrid::unset_object(int i, int j) {
-  if (i >= GRID_ROW || i < 0 || j >= GRID_COL || j < 0 ) {
+  if (i >= GRID_ROW || i < 0 || j >= GRID_COL || j < 0) {
     return;
   }
   objects[i][j] = false;
@@ -38,17 +33,17 @@ void ObjectGrid::unset_object(int i, int j) {
 }
 
 void ObjectGrid::render() {
-    // cout << "Rendering Objects" << endl;
+  // cout << "Rendering Objects" << endl;
   for (int i = 0; i < GRID_ROW; i++) {
     for (int j = 0; j < GRID_COL; j++) {
       if (objects[i][j]) {
-        object_texture.render(j * WALL_GRID_WIDTH + (WALL_GRID_WIDTH-OBJECT_WIDTH)/2,
-                            i * WALL_GRID_HEIGHT + (WALL_GRID_HEIGHT-OBJECT_HEIGHT)/2);
+        object_texture.render(
+            j * WALL_GRID_WIDTH + (WALL_GRID_WIDTH - OBJECT_WIDTH) / 2,
+            i * WALL_GRID_HEIGHT + (WALL_GRID_HEIGHT - OBJECT_HEIGHT) / 2);
       }
     }
   }
 }
-
 
 bool ObjectGrid::can_move(int posX, int posY, Direction d) {
   int row = posY / OBJECT_HEIGHT;
@@ -80,8 +75,8 @@ bool ObjectGrid::can_move(int posX, int posY, Direction d) {
 }
 
 void ObjectGrid::generate() {
-    // SHOULD BE HANDLED BY SUBCLASS
-    // TODO: TRY MAKING VIRTUAL
+  // SHOULD BE HANDLED BY SUBCLASS
+  // TODO: TRY MAKING VIRTUAL
 }
 
 void ObjectGrid::broadcast() {

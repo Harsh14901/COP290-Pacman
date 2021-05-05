@@ -6,7 +6,6 @@ extern CoinGrid coinGrid;
 extern CherryGrid cherryGrid;
 extern vector<Enemy> enemies;
 
-
 void Pacman::handleEvent(SDL_Event& e) {
   // If a key was pressed
   if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
@@ -31,43 +30,44 @@ void Pacman::handleEvent(SDL_Event& e) {
 
 void Pacman::render() {
   // Show the dot
-  int mouth_fac = isMouthOpen()?0:2;
-  SDL_Rect rect{138*4 , 171 * ((2-(int(_direction)%2)) +mouth_fac ), 138, 171};
-  _gDotTexture.render(mPosX, mPosY, &rect,90 * (int(_direction)/2));
+  int mouth_fac = isMouthOpen() ? 0 : 2;
+  SDL_Rect rect{138 * 4, 171 * ((2 - (int(_direction) % 2)) + mouth_fac), 138,
+                171};
+  _gDotTexture.render(mPosX, mPosY, &rect, 90 * (int(_direction) / 2));
 }
 
 void Pacman::handle_collision() {
   auto collisions = CollisionEngine::getCollisions(PACMAN_COLLIDER_ID);
-  int i =0 ;
-    // cout << "Inside pacman collision" << endl;
+  int i = 0;
+  // cout << "Inside pacman collision" << endl;
 
   // if(!collisions.empty()){
   while (i < collisions.size()) {
-    if(collisions[i]->id.find(COIN_COLLIDER_ID)!=-1){
+    if (collisions[i]->id.find(COIN_COLLIDER_ID) != -1) {
       // Coin Collected
       cout << "Coin Collected" << endl;
       i++;
       coins++;
-      auto temp = extractIntegerWords(collisions[i-1]->id);
-      if(temp.size()==2){
-        coinGrid.unset_object(temp[0],temp[1]);
+      auto temp = extractIntegerWords(collisions[i - 1]->id);
+      if (temp.size() == 2) {
+        coinGrid.unset_object(temp[0], temp[1]);
       }
       gulp_animator.start();
       continue;
     }
-    if(collisions[i]->id.find(CHERRY_COLLIDER_ID)!=-1){
+    if (collisions[i]->id.find(CHERRY_COLLIDER_ID) != -1) {
       cout << "Cherry Collected" << endl;
       i++;
       cherries++;
-      auto temp = extractIntegerWords(collisions[i-1]->id);
-      if(temp.size()==2){
-        cherryGrid.unset_object(temp[0],temp[1]);
+      auto temp = extractIntegerWords(collisions[i - 1]->id);
+      if (temp.size() == 2) {
+        cherryGrid.unset_object(temp[0], temp[1]);
       }
-      for(auto x:enemies){
+      for (auto x : enemies) {
         x.setState(EnemyState::WEAK);
       }
     }
-    if(collisions[i]->id.find(ENEMY_COLLIDER_ID)!=-1){
+    if (collisions[i]->id.find(ENEMY_COLLIDER_ID) != -1) {
       // Assert: Game Over
       is_dead = true;
       return;
@@ -88,21 +88,18 @@ void Pacman::handle_collision() {
     }
     break;
   }
-      // cout << "Outside pacman collision" << endl;
-
+  // cout << "Outside pacman collision" << endl;
 }
 
-bool Pacman::isMouthOpen(){
-  if(gulp_animator.isActive()){
+bool Pacman::isMouthOpen() {
+  if (gulp_animator.isActive()) {
     int cf = gulp_animator.get_current_frame();
-    if(cf == 1 || cf==2){
+    if (cf == 1 || cf == 2) {
       return false;
     }
   }
   return true;
 }
-
-
 
 void Pacman::move() {
   // Move the dot left or right
@@ -151,6 +148,4 @@ void Pacman::move() {
   broadcast_coordinates();
 }
 
-int Pacman::get_coins_collected(){
-  return coins;
-}
+int Pacman::get_coins_collected() { return coins; }

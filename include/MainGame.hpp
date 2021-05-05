@@ -5,20 +5,20 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_net.h>
 
-#include <Grids/WallGrid.hpp>
 #include <Grids/CoinGrid.hpp>
+#include <Grids/WallGrid.hpp>
 #include <iostream>
 
-#include "Constants.hpp"
-#include "Textures/LTexture.hpp"
-#include "Characters/Pacman.hpp"
 #include "Characters/Enemy.hpp"
-#include "Network/NetworkManager.hpp"
+#include "Characters/Pacman.hpp"
+#include "Constants.hpp"
 #include "Grids/CherryGrid.hpp"
+#include "Network/NetworkManager.hpp"
+#include "Textures/LTexture.hpp"
 
 using namespace std;
 
-enum class GameState { MAIN_MENU,NETWORKMENU,PLAY, EXIT };
+enum class GameState { MAIN_MENU, NETWORKMENU, PLAY, EXIT };
 
 class MainGame {
  public:
@@ -27,7 +27,6 @@ class MainGame {
   void runGame();
   void listen(Server* server);
   void connect(Client* client);
-
 
  private:
   SDL_Window* _window;
@@ -68,7 +67,6 @@ class MainGame {
   void initMainMenuSystems();
   void mainMenuRender(int option);
 
-
   LTexture networkTextTexture;
 
   void networkMenu();
@@ -80,5 +78,4 @@ class MainGame {
 
   Animator gameEndAnimator = Animator(360);
   LTexture gameEndTextTexture;
-
 };

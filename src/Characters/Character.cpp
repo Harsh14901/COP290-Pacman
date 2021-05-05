@@ -53,7 +53,7 @@ void Character::handle_collision() {
   auto collisions = CollisionEngine::getCollisions(CHARACTER_ID);
   int i = 0;
   while (i < collisions.size()) {
-    if(collisions[i]->id.find(COIN_COLLIDER_ID)!=-1){
+    if (collisions[i]->id.find(COIN_COLLIDER_ID) != -1) {
       i++;
       continue;
     }
