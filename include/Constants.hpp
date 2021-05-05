@@ -38,4 +38,5 @@ enum KeyPressSurfaces {
 };
 
 extern bool is_server;
+extern bool is_two_player;
 void fatalError(string error_message);

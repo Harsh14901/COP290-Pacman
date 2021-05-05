@@ -4,6 +4,7 @@
 
 using namespace std;
 bool is_server = false;
+bool is_two_player = true;
 void signal_handler(int signal_num) {
   cout << "\nOK BYE!" << endl;
 

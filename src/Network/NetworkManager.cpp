@@ -42,6 +42,10 @@ void NetworkManager::queue_packet(Packet& packet) {
   tosend_packets.add_packet(packet);
 }
 
+void NetworkManager::clear_all(){
+  tosend_packets.clear(tosend_packets.size());
+}
+
 int NetworkManager::send_packets() {
   if (device == nullptr) {
     fatalError("Cannot send packets from a NULL device");

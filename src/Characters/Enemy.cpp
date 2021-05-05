@@ -1,14 +1,40 @@
 #include "Characters/Enemy.hpp"
 
-Enemy::Enemy() : Character(ENEMY_COLLIDER_ID + "_" + to_string(rand())) {}
+vector<int> Enemy::ids;
+int Enemy::active_id;
 
-void Enemy::handleEvent(SDL_Event& event) {}
+Enemy::Enemy() : Character(ENEMY_COLLIDER_ID + "_" + to_string(rand())) {
+  if (ids.empty()) {
+    id = 0;
+    active_id = 0;
+  } else {
+    auto prev_id = ids.back();
+    id = prev_id + 1;
+  }
+  ids.push_back(id);
+}
+
+void Enemy::switch_active_id() {
+  if (active_id == ids.back()) {
+    active_id = ids.front();
+  } else {
+    active_id++;
+  }
+}
+void Enemy::handleEvent(SDL_Event& e) {
+  if (id != active_id) {
+    return;
+  }
+  Character::handleEvent(e);
+}
 
 void Enemy::init(SDL_Renderer* renderer, int enemy_type) {
-  cout << ENEMY_COLLIDER_ID << endl;
+  cout << CHARACTER_COLLIDER_ID << endl;
+
   _gDotTexture.setRenderer(renderer);
   _gDotTexture.loadFromFile("assets/pngs/pac-classic_c-toy.png");
   _gDotTexture.set_image_dimenstions(DOT_WIDTH, DOT_HEIGHT);
+
   CollisionEngine::register_collider(&mCollider);
   type = enemy_type;
 }
@@ -23,25 +49,14 @@ void Enemy::handle_collision() {
       i++;
       continue;
     }
-    cout << "Collision with " << collisions[i]->id << endl;
+    // cout << "Collision with " << collisions[i]->id << endl;
     if (collisions[i]->id.find(ENEMY_COLLIDER_ID) != -1) {
       i++;
-      cout << "Enemy Collided with another enemy" << endl;
+      // cout << "Enemy Collided with another enemy" << endl;
       continue;
     }
-    cout << "Collision with something: " << collisions[i]->id << endl;
-    switch (_direction) {
-      case Direction::LEFT:
-      case Direction::RIGHT:
-        mPosX -= 1 * mVelX;
-        break;
-      case Direction::UP:
-      case Direction::DOWN:
-        mPosY -= 1 * mVelY;
-        break;
-      default:
-        break;
-    }
+    // cout << "Collision with something: " << collisions[i]->id << endl;
+    Character::handle_collision();
     break;
   }
 }
@@ -53,8 +68,7 @@ void Enemy::render() {
   _gDotTexture.render(mPosX, mPosY, &rect, 90 * (int(_direction) / 2));
 }
 
-void Enemy::move() {
-  handle_collision();
+void Enemy::randomize_direction() {
   unordered_set<Direction> available_directions;
   for (int i = 0; i < 4; i++) {
     auto d = Direction(i);
@@ -89,51 +103,23 @@ void Enemy::move() {
     // change_direction(Direction(rand() % 4));
     change_direction(_direction);
   }
+}
 
-  // Move the dot left or right
-  if (!is_server) {
+void Enemy::move() {
+  if (is_server) {
     handle_packets();
+    handle_collision();
+    if (!is_two_player) {
+      randomize_direction();
+    }
+    Character::move();
     return;
   }
   handle_collision();
-  if (_next != Direction::NONE) {
-    change_direction(_next);
+  if (active_id != id) {
+    randomize_direction();
   }
-  mPosX += mVelX;
-
-  // If the dot went too far to the left or right
-  if ((mPosX < 0) || (mPosX + DOT_WIDTH > SCREEN_WIDTH)) {
-    // Move back
-    if (mPosX < 0)
-      mPosX = 0;
-    else
-      mPosX = SCREEN_WIDTH - DOT_WIDTH;
-
-    mVelX = 0;
-  }
-
-  // Move the dot up or down
-  mPosY += mVelY;
-
-  // If the dot went too far up or down
-  if ((mPosY < 0) || (mPosY + DOT_HEIGHT > SCREEN_HEIGHT)) {
-    // Move back
-    if (mPosY < 0)
-      mPosY = 0;
-    else
-      mPosY = SCREEN_HEIGHT - DOT_HEIGHT;
-
-    mVelY = 0;
-  }
-
-  // Change rectangular collider position
-  // mCollider.setX(mPosX);
-  // mCollider.setY(mPosY);
-
-  // Change circular collider position
-  mCollider.setX(mPosX + PACMAN_RENDER_WIDTH / 2);
-  mCollider.setY(mPosY + PACMAN_RENDER_HEIGHT / 2);
-  broadcast_coordinates();
+  Character::move();
 }
 
 void Enemy::setState(EnemyState st) { state = st; }

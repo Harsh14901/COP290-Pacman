@@ -209,6 +209,7 @@ void MainGame::runGame() {
   } else {
     server = nullptr;
     client = nullptr;
+    is_two_player = false;
   }
 
   _gameState = GameState::PLAY;
@@ -350,6 +351,10 @@ void MainGame::processInput() {
         case SDL_QUIT:
           _gameState = GameState::EXIT;
           break;
+        case SDL_KEYDOWN:
+          if (evnt.key.keysym.sym == SDLK_TAB) {
+            Enemy::switch_active_id();
+          }
       }
 
       _pacman.handleEvent(evnt);
@@ -427,6 +432,8 @@ void MainGame::gameLoop() {
     if (client != nullptr || server != nullptr) {
       NetworkManager::send_packets();
       NetworkManager::recv_packets();
+    } else {
+      NetworkManager::clear_all();
     }
 
     processInput();

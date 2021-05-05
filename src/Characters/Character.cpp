@@ -25,10 +25,33 @@ void Character::init(SDL_Renderer* renderer) {
   CollisionEngine::register_collider(&mCollider);
 }
 
+void Character::handleEvent(SDL_Event& e){
+  if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
+    // Adjust the velocity
+    handle_collision();
+    switch (e.key.keysym.sym) {
+      case SDLK_UP:
+        change_direction(Direction::UP);
+        break;
+      case SDLK_DOWN:
+        change_direction(Direction::DOWN);
+        break;
+      case SDLK_LEFT:
+        change_direction(Direction::LEFT);
+        break;
+      case SDLK_RIGHT:
+        change_direction(Direction::RIGHT);
+        break;
+    }
+  }
+}
+
 Character::Character() : Character(CHARACTER_COLLIDER_ID) {}
 
 Character::Character(string id) {
   CHARACTER_ID = id;
+  CHARACTER_COLLIDER_ID = id;
+  
   // Initialize the offsets
   mPosX = 0;
   mPosY = 0;
@@ -46,7 +69,7 @@ Character::Character(string id) {
   // Circular collider
   auto circle = Circle{SDL_Point{mPosX + DOT_WIDTH / 2, mPosY + DOT_HEIGHT / 2},
                        max(DOT_WIDTH, DOT_WIDTH) / 2};
-  mCollider = Collider(CHARACTER_ID, circle);
+  mCollider = Collider(CHARACTER_COLLIDER_ID, circle);
 }
 
 void Character::handle_collision() {
@@ -83,7 +106,6 @@ void Character::handle_packets() {
     mVelX = p.velX;
     mVelY = p.velY;
     _direction = Direction(stoi(p.data));
-    change_direction(_direction);
   }
 }
 
@@ -123,6 +145,7 @@ void Character::change_direction(Direction d) {
         break;
     }
     _next = Direction::NONE;
+    broadcast_coordinates();
   } else {
     _next = d;
   }
@@ -130,11 +153,6 @@ void Character::change_direction(Direction d) {
 
 void Character::move() {
   // Move the dot left or right
-  if (!is_server) {
-    handle_packets();
-    return;
-  }
-  handle_collision();
   if (_next != Direction::NONE) {
     change_direction(_next);
   }
@@ -172,5 +190,4 @@ void Character::move() {
   // Change circular collider position
   mCollider.setX(mPosX + PACMAN_RENDER_WIDTH / 2);
   mCollider.setY(mPosY + PACMAN_RENDER_HEIGHT / 2);
-  broadcast_coordinates();
 }

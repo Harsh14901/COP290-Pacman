@@ -35,6 +35,9 @@ class NetworkManager {
   // Recieve a single ack packet
   static void recv_ack();
 
+  // Clear all queued up packets without sending
+  static void clear_all();
+
  private:
   static NetworkDevice* device;
   static unordered_map<string, vector<Packet>> packet_map;
