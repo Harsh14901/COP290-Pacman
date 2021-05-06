@@ -1,7 +1,7 @@
 SHELL = /bin/bash
 
 CC = g++
-C_FLAGS = -g -Wall
+C_FLAGS = -g -Wall -std=c++17
 
 BIN  = output
 SRCS = src/*.cpp

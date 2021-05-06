@@ -2,8 +2,18 @@
 
 vector<int> Enemy::ids;
 int Enemy::active_id;
+vector<Enemy*> Enemy::enemies;
 
-Enemy::Enemy() : Character(ENEMY_COLLIDER_ID + "_" + to_string(rand())) {
+void Enemy::make_enemies(int n) {
+  enemies.resize(n);
+  for (int i = 0; i < n; i++) {
+    enemies[i] = new Enemy();
+  }
+}
+
+vector<Enemy*> Enemy::get_enemies() { return enemies; }
+
+Enemy::Enemy() : Character(IDS::ENEMY_COLLIDER_ID + "_" + to_string(rand())) {
   if (ids.empty()) {
     id = 0;
     active_id = 0;
@@ -29,13 +39,7 @@ void Enemy::handleEvent(SDL_Event& e) {
 }
 
 void Enemy::init(SDL_Renderer* renderer, int enemy_type) {
-  cout << CHARACTER_COLLIDER_ID << endl;
-
-  _gDotTexture.setRenderer(renderer);
-  _gDotTexture.loadFromFile("assets/pngs/pac-classic_c-toy.png");
-  _gDotTexture.set_image_dimenstions(DOT_WIDTH, DOT_HEIGHT);
-
-  CollisionEngine::register_collider(&mCollider);
+  Character::init(renderer);
   type = enemy_type;
 }
 
@@ -44,13 +48,13 @@ void Enemy::handle_collision() {
   int i = 0;
 
   while (i < collisions.size()) {
-    if (collisions[i]->id.find(COIN_COLLIDER_ID) != -1 ||
-        collisions[i]->id.find(CHERRY_COLLIDER_ID) != -1) {
+    if (collisions[i]->id.find(IDS::COIN_COLLIDER_ID) != -1 ||
+        collisions[i]->id.find(IDS::CHERRY_COLLIDER_ID) != -1) {
       i++;
       continue;
     }
-    // cout << "Collision with " << collisions[i]->id << endl;
-    if (collisions[i]->id.find(ENEMY_COLLIDER_ID) != -1) {
+    // cout << "Enemy collided with " << collisions[i]->id << endl;
+    if (collisions[i]->id.find(IDS::ENEMY_COLLIDER_ID) != -1) {
       i++;
       // cout << "Enemy Collided with another enemy" << endl;
       continue;
@@ -73,8 +77,8 @@ void Enemy::randomize_direction() {
   for (int i = 0; i < 4; i++) {
     auto d = Direction(i);
 
-    if (WallGrid::can_move(mPosX + PACMAN_RENDER_WIDTH / 2,
-                           mPosY + PACMAN_RENDER_HEIGHT / 2, d)) {
+    if (WallGrid::getInstance()->can_move(mPosX + DOT_WIDTH / 2,
+                                          mPosY + DOT_HEIGHT / 2, d)) {
       // printf("Direction %d is available\n", i);
       available_directions.insert(d);
     }
@@ -98,9 +102,6 @@ void Enemy::randomize_direction() {
       i++;
     }
   } else {
-    // cout << "No available direction for " << PACMAN_ID << endl;
-    // printf("Velocities: %d, %d\n", mVelX, mVelY);
-    // change_direction(Direction(rand() % 4));
     change_direction(_direction);
   }
 }

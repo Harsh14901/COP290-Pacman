@@ -3,7 +3,7 @@
 NetworkDevice* NetworkManager::device;
 unordered_map<string, vector<Packet>> NetworkManager::packet_map;
 PacketStore NetworkManager::tosend_packets;
-string NetworkManager::NET_ID = NETWORK_ID;
+string NetworkManager::NET_ID = IDS::NETWORK_ID;
 
 void NetworkManager::get_packets(string id, vector<Packet>& packets) {
   packets = packet_map[id];
@@ -42,7 +42,7 @@ void NetworkManager::queue_packet(Packet& packet) {
   tosend_packets.add_packet(packet);
 }
 
-void NetworkManager::clear_all(){
+void NetworkManager::clear_all() {
   tosend_packets.clear(tosend_packets.size());
 }
 

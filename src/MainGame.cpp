@@ -5,10 +5,11 @@
 #include <stdlib.h>
 #include <time.h> /* time */
 
-int game_frame;
-CoinGrid coinGrid;
-CherryGrid cherryGrid;
-vector<Enemy> enemies;
+int game_frame = 0;
+auto coinGrid = CoinGrid::getInstance();
+auto cherryGrid = CherryGrid::getInstance();
+auto wallGrid = WallGrid::getInstance();
+vector<Enemy*> enemies;
 
 void fatalError(string error_message) {
   cout << error_message << endl;
@@ -22,7 +23,9 @@ MainGame::MainGame() {
   _window = nullptr;
   _screenWidth = SCREEN_WIDTH;
   _screenHeight = SCREEN_HEIGHT;
-  enemies = vector<Enemy>(ENEMY_COUNT);
+
+  Enemy::make_enemies();
+  enemies = Enemy::get_enemies();
 
   _gameState = GameState::MAIN_MENU;
 }
@@ -221,37 +224,42 @@ void MainGame::runGame() {
 
 void MainGame::initCharacters() {
   _pacman.init(_gRenderer);
-  WallGrid::init(_gRenderer);
-  // CherryGrid::init(_gRenderer);
-  coinGrid.init(_gRenderer, COIN_COLLIDER_ID, "assets/pngs/coin2.png");
-  cherryGrid.init(_gRenderer, CHERRY_COLLIDER_ID, "assets/pngs/pac-cherry.png");
+  wallGrid->init(_gRenderer);
+  coinGrid->init(_gRenderer);
+  cherryGrid->init(_gRenderer);
 
   int i = 0;
   for (auto& enemy : enemies) {
-    enemy.init(_gRenderer, i++);
+    enemy->init(_gRenderer, i++);
   }
 
   if (server != nullptr && is_server) {
-    WallGrid::generate_maze();
-    WallGrid::broadcast_walls();
-    coinGrid.generate();
-    coinGrid.broadcast();
-    cherryGrid.generate();
-    cherryGrid.broadcast();
+    wallGrid->generate();
+    coinGrid->generate();
+    cherryGrid->generate();
+
+    wallGrid->broadcast();
+    coinGrid->broadcast();
+    cherryGrid->broadcast();
   } else if (client != nullptr) {
-    WallGrid::packets2maze();
-    coinGrid.packets2objects();
-    cherryGrid.packets2objects();
+    wallGrid->packets2objects();
+    coinGrid->packets2objects();
+    cherryGrid->packets2objects();
   } else {
-    WallGrid::generate_maze();
-    coinGrid.generate();
-    cherryGrid.generate();
+    wallGrid->generate();
+    coinGrid->generate();
+    cherryGrid->generate();
   }
 
-  _pacman.place(WallGrid::get_empty_location());
+  auto pacman_start = wallGrid->get_empty_location();
+  auto pacman_maze_loc = wallGrid->get_maze_point(pacman_start);
+  _pacman.place(pacman_start);
+
+  coinGrid->unset_object(pacman_maze_loc.x, pacman_maze_loc.y);
+  cherryGrid->unset_object(pacman_maze_loc.x, pacman_maze_loc.y);
 
   for (auto& enemy : enemies) {
-    enemy.place(WallGrid::get_empty_location());
+    enemy->place(wallGrid->get_empty_location());
   }
 }
 
@@ -343,7 +351,7 @@ void MainGame::drawInitScreen() {
 }
 
 void MainGame::processInput() {
-  if (!_pacman.is_dead && coinGrid.active_objects != 0) {
+  if (!_pacman.is_dead && coinGrid->active_objects != 0) {
     SDL_Event evnt;
 
     while (SDL_PollEvent(&evnt)) {
@@ -359,18 +367,18 @@ void MainGame::processInput() {
 
       _pacman.handleEvent(evnt);
       for (auto& enemy : enemies) {
-        enemy.handleEvent(evnt);
+        enemy->handleEvent(evnt);
       }
     }
 
     _pacman.move();
 
     for (auto& enemy : enemies) {
-      enemy.move();
+      enemy->move();
     }
   } else {
     if (!gameEndAnimator.isActive()) {
-      if (coinGrid.active_objects == 0) {
+      if (coinGrid->active_objects == 0) {
         initialiseGameEndTexture(false);
       } else {
         initialiseGameEndTexture(false);
@@ -393,14 +401,14 @@ void MainGame::processInput() {
   // Render texture to screen
   SDL_RenderCopy(_gRenderer, _gTexture, NULL, NULL);
 
-  coinGrid.render();
-  cherryGrid.render();
+  coinGrid->render();
+  cherryGrid->render();
 
   _pacman.render();
   for (auto& enemy : enemies) {
-    enemy.render();
+    enemy->render();
   }
-  WallGrid::render();
+  wallGrid->render();
 
   if (_pacman.is_dead) {
     if (!gameEndAnimator.isActive()) {
@@ -409,7 +417,7 @@ void MainGame::processInput() {
     renderGameEndAnimation();
     _gameState = GameState::EXIT;
   }
-  if (coinGrid.active_objects == 0) {
+  if (coinGrid->active_objects == 0) {
     if (!gameEndAnimator.isActive()) {
       initialiseGameEndTexture(true);
     }

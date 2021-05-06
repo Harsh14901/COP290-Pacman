@@ -15,5 +15,12 @@
 
 class CherryGrid : public ObjectGrid {
  public:
+  static CherryGrid* getInstance();
   void generate();
+
+ protected:
+  CherryGrid();
+
+ private:
+  static CherryGrid* _instance;
 };

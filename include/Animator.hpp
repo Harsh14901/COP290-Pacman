@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Constants.hpp"
 class Animator {
  public:
   Animator(int sf, int dur);

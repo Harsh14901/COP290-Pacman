@@ -3,8 +3,6 @@
 #include <iostream>
 using namespace std;
 
-extern int game_frame;
-
 Animator::Animator(int sf, int dur) {
   start_frame = sf;
   end_frame = sf + dur;

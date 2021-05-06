@@ -14,5 +14,12 @@
 
 class CoinGrid : public ObjectGrid {
  public:
+  static CoinGrid* getInstance();
   void generate();
+
+ protected:
+  CoinGrid();
+
+ private:
+  static CoinGrid* _instance;
 };

@@ -20,13 +20,15 @@ const static int PORT = 8000;
 const static int MAX_BUFF = 4096;
 enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };
 
-const static string PACMAN_COLLIDER_ID = "pacman";
-const static string ENEMY_COLLIDER_ID = "enemy";
-const static string WALL_COLLIDER_ID = "wall";
-const static string COIN_COLLIDER_ID = "coins";
-const static string CHERRY_COLLIDER_ID = "cherry";
-
-const static string NETWORK_ID = "networkmanager";
+class IDS {
+ public:
+  inline const static string WALL_COLLIDER_ID = "wall";
+  inline const static string PACMAN_COLLIDER_ID = "pacman";
+  inline const static string ENEMY_COLLIDER_ID = "enemy";
+  inline const static string COIN_COLLIDER_ID = "coins";
+  inline const static string CHERRY_COLLIDER_ID = "cherry";
+  inline const static string NETWORK_ID = "networkmanager";
+};
 
 enum KeyPressSurfaces {
   KEY_PRESS_SURFACE_DEFAULT,
@@ -39,4 +41,6 @@ enum KeyPressSurfaces {
 
 extern bool is_server;
 extern bool is_two_player;
+extern int game_frame;
+
 void fatalError(string error_message);

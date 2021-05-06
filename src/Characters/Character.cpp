@@ -18,14 +18,14 @@ void Character::place(SDL_Point p) {
 }
 
 void Character::init(SDL_Renderer* renderer) {
-  cout << CHARACTER_ID << endl;
+  cout << CHARACTER_COLLIDER_ID << endl;
   _gDotTexture.setRenderer(renderer);
   _gDotTexture.loadFromFile("assets/pngs/pac-classic_c-toy.png");
   _gDotTexture.set_image_dimenstions(DOT_WIDTH, DOT_HEIGHT);
   CollisionEngine::register_collider(&mCollider);
 }
 
-void Character::handleEvent(SDL_Event& e){
+void Character::handleEvent(SDL_Event& e) {
   if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
     // Adjust the velocity
     handle_collision();
@@ -51,7 +51,7 @@ Character::Character() : Character(CHARACTER_COLLIDER_ID) {}
 Character::Character(string id) {
   CHARACTER_ID = id;
   CHARACTER_COLLIDER_ID = id;
-  
+
   // Initialize the offsets
   mPosX = 0;
   mPosY = 0;
@@ -76,7 +76,7 @@ void Character::handle_collision() {
   auto collisions = CollisionEngine::getCollisions(CHARACTER_ID);
   int i = 0;
   while (i < collisions.size()) {
-    if (collisions[i]->id.find(COIN_COLLIDER_ID) != -1) {
+    if (collisions[i]->id.find(IDS::COIN_COLLIDER_ID) != -1) {
       i++;
       continue;
     }
@@ -121,7 +121,8 @@ void Character::broadcast_coordinates() {
 }
 
 void Character::change_direction(Direction d) {
-  if (WallGrid::can_move(mPosX + DOT_WIDTH / 2, mPosY + DOT_HEIGHT / 2, d)) {
+  if (WallGrid::getInstance()->can_move(mPosX + DOT_WIDTH / 2,
+                                        mPosY + DOT_HEIGHT / 2, d)) {
     mVelX = 0;
     mVelY = 0;
     switch (d) {

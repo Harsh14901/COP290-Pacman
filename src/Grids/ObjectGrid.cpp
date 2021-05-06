@@ -1,13 +1,18 @@
 #include <Grids/ObjectGrid.hpp>
 
-void ObjectGrid::init(SDL_Renderer* renderer, string id, string asset_file) {
+ObjectGrid::ObjectGrid(string id, string asset_file, double scale)
+    : OBJECT_ID(id),
+      active_objects(0),
+      OBJECT_WIDTH(int(WALL_GRID_WIDTH / scale)),
+      OBJECT_HEIGHT(int(WALL_GRID_HEIGHT / scale)),
+      asset_file(asset_file) {
   memset(objects, 0, sizeof(objects));
-  active_objects = 0;
+}
+
+void ObjectGrid::init(SDL_Renderer* renderer) {
   object_texture.setRenderer(renderer);
   object_texture.loadFromFile(asset_file);
   object_texture.set_image_dimenstions(OBJECT_WIDTH, OBJECT_HEIGHT);
-
-  OBJECT_ID = id;
 }
 
 void ObjectGrid::set_object(int i, int j) {
@@ -74,6 +79,10 @@ bool ObjectGrid::can_move(int posX, int posY, Direction d) {
   return ans;
 }
 
+SDL_Point ObjectGrid::get_maze_point(SDL_Point canvas_point) {
+  return SDL_Point{canvas_point.y / OBJECT_HEIGHT,
+                   canvas_point.x / OBJECT_WIDTH};
+}
 void ObjectGrid::generate() {
   // SHOULD BE HANDLED BY SUBCLASS
   // TODO: TRY MAKING VIRTUAL
@@ -84,7 +93,7 @@ void ObjectGrid::broadcast() {
     for (int j = 0; j < GRID_COL; j++) {
       if (objects[i][j]) {
         Packet p;
-        p.id = ObjectGrid::OBJECT_ID;
+        p.id = OBJECT_ID;
         p.posX = i;
         p.posY = j;
         NetworkManager::queue_packet(p);
@@ -97,7 +106,7 @@ void ObjectGrid::broadcast() {
 void ObjectGrid::packets2objects() {
   NetworkManager::recv_all();
   vector<Packet> packets;
-  NetworkManager::get_packets(ObjectGrid::OBJECT_ID, packets);
+  NetworkManager::get_packets(OBJECT_ID, packets);
   for (auto& p : packets) {
     set_object(p.posX, p.posY);
   }

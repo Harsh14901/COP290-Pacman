@@ -20,7 +20,9 @@ class Enemy : public Character {
  public:
   static void switch_active_id();
 
-  Enemy();
+  static void make_enemies(int num = ENEMY_COUNT);
+  static vector<Enemy*> get_enemies();
+
   void render();
   void init(SDL_Renderer* renderer, int enemy_type);
   void handleEvent(SDL_Event& e);
@@ -31,10 +33,14 @@ class Enemy : public Character {
   void setState(EnemyState st);
 
  protected:
+  Enemy();
+
   void handle_collision();
   // The list of enemy ids
   static vector<int> ids;
 
+  // List of all the enemies
+  static vector<Enemy*> enemies;
   // The id that is being controlled by player 2
   static int active_id;
 
