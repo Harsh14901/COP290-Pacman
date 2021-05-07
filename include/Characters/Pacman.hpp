@@ -26,6 +26,7 @@ class Pacman : public Character {
   void move();
   void handleEvent(SDL_Event& e);
   int get_coins_collected();
+  int get_active_points();
   void render();
   bool is_dead = false;
   void init(SDL_Renderer* renderer);
@@ -37,9 +38,12 @@ class Pacman : public Character {
  private:
   Animator gulp_animator = Animator(3);
   bool isMouthOpen();
+  void incrementActivePoints(int inc);
+  
+  int coins = 0;
+  int cherries = 0;
+  int activePoints = 0;
 
-  int coins;
-  int cherries;
   AudioAsset chompSound;
 
 };

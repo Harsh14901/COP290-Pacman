@@ -13,8 +13,13 @@ const static int PACMAN_RENDER_HEIGHT = WALL_GRID_HEIGHT;
 const static int WALL_GRID_ROWS = 26;
 const static int WALL_GRID_COLS = 40;
 const static int ENEMY_COUNT = 4;
-const static int SCREEN_WIDTH = WALL_GRID_COLS * WALL_GRID_WIDTH;
-const static int SCREEN_HEIGHT = WALL_GRID_ROWS * WALL_GRID_HEIGHT;
+
+const static int GAMEAREA_WIDTH = WALL_GRID_COLS * WALL_GRID_WIDTH;
+const static int GAMEAREA_HEIGHT = WALL_GRID_ROWS * WALL_GRID_HEIGHT;  
+const static int BOTTOM_BAR_HEIGHT = 100;
+const static int BOTTOM_BAR_WIDTH = GAMEAREA_WIDTH;
+const static int SCREEN_WIDTH = GAMEAREA_WIDTH;
+const static int SCREEN_HEIGHT = GAMEAREA_HEIGHT + BOTTOM_BAR_HEIGHT;
 
 const static int PORT = 8000;
 const static int MAX_BUFF = 4096;

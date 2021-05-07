@@ -28,6 +28,10 @@ void Pacman::render() {
   _gDotTexture.render(mPosX, mPosY, &rect, 90 * (int(_direction) / 2));
 }
 
+void Pacman::incrementActivePoints(int inc){
+  activePoints = min(activePoints+inc,100);
+}
+
 void Pacman::handle_collision() {
   auto collisions = CollisionEngine::getCollisions(IDS::PACMAN_COLLIDER_ID);
   int i = 0;
@@ -44,6 +48,7 @@ void Pacman::handle_collision() {
       // cout << "Coin Collected" << endl;
       i++;
       coins++;
+      incrementActivePoints(1);
       chompSound.play();
       auto temp = extractIntegerWords(collisions[i - 1]->id);
       if (temp.size() == 2) {
@@ -56,6 +61,7 @@ void Pacman::handle_collision() {
       // cout << "Cherry Collected" << endl;
       i++;
       cherries++;
+      incrementActivePoints(5);
       auto temp = extractIntegerWords(collisions[i - 1]->id);
       if (temp.size() == 2) {
         cherryGrid->unset_object(temp[0], temp[1]);
@@ -74,6 +80,7 @@ void Pacman::handle_collision() {
           is_dead = true;
           return;
         }else{
+          incrementActivePoints(50);
           enemies[temp[0]]->respawn();
         }
       }
@@ -106,3 +113,4 @@ void Pacman::move() {
 }
 
 int Pacman::get_coins_collected() { return coins; }
+int Pacman::get_active_points() { return activePoints; }

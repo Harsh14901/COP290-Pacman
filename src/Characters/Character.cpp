@@ -160,12 +160,12 @@ void Character::move() {
   mPosX += mVelX;
 
   // If the dot went too far to the left or right
-  if ((mPosX < 0) || (mPosX + DOT_WIDTH > SCREEN_WIDTH)) {
+  if ((mPosX < 0) || (mPosX + DOT_WIDTH > GAMEAREA_WIDTH)) {
     // Move back
     if (mPosX < 0)
       mPosX = 0;
     else
-      mPosX = SCREEN_WIDTH - DOT_WIDTH;
+      mPosX = GAMEAREA_WIDTH - DOT_WIDTH;
 
     mVelX = 0;
   }
@@ -174,12 +174,12 @@ void Character::move() {
   mPosY += mVelY;
 
   // If the dot went too far up or down
-  if ((mPosY < 0) || (mPosY + DOT_HEIGHT > SCREEN_HEIGHT)) {
+  if ((mPosY < 0) || (mPosY + DOT_HEIGHT > GAMEAREA_HEIGHT)) {
     // Move back
     if (mPosY < 0)
       mPosY = 0;
     else
-      mPosY = SCREEN_HEIGHT - DOT_HEIGHT;
+      mPosY = GAMEAREA_HEIGHT - DOT_HEIGHT;
 
     mVelY = 0;
   }

@@ -16,6 +16,7 @@
 #include "Network/NetworkManager.hpp"
 #include "Textures/LTexture.hpp"
 #include "Utils/AudioAsset.hpp"
+#include "UI/BottomBar.hpp"
 
 using namespace std;
 
@@ -84,4 +85,6 @@ class MainGame {
 
   AudioAsset pacmanDeathSound;
   AudioAsset pacmanMainMenuMusic;
+
+  BottomBar bottomBar = BottomBar(0,GAMEAREA_HEIGHT,BOTTOM_BAR_WIDTH,BOTTOM_BAR_HEIGHT);
 };

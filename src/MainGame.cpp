@@ -309,6 +309,8 @@ void MainGame::initSystems() {
       fatalError( "SDL_mixer could not initialize! SDL_mixer Error: \n" + string(Mix_GetError()));
   }
 
+
+
   cout << "Initing Screen" << endl;
   drawInitScreen();
 }
@@ -367,6 +369,9 @@ void MainGame::drawInitScreen() {
   if (!loadMedia()) {
     fatalError("Failed to Load Media: \n" + string(SDL_GetError()));
   }
+
+  bottomBar.setRenderer(_gRenderer);
+  bottomBar.initViews();
 
   // Update the surface
   SDL_UpdateWindowSurface(_window);
@@ -427,6 +432,11 @@ void MainGame::processInput() {
   cherryGrid->render();
 
   _pacman.render();
+  
+  bottomBar.update(_pacman.get_coins_collected(),_pacman.get_active_points());
+
+  bottomBar.render();
+
   for (auto& enemy : enemies) {
     enemy->render();
   }
@@ -486,6 +496,7 @@ void MainGame::initialiseGameEndTexture(int is_win) {
         TTF_OpenFont("assets/fonts/game_over.ttf", 480));
   }
 }
+
 
 void MainGame::renderGameEndAnimation() {
   if (!gameEndAnimator.isActive()) {
