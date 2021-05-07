@@ -23,6 +23,12 @@ SDL_Point WallGrid::get_empty_location() {
   return SDL_Point{y * OBJECT_WIDTH, x * OBJECT_HEIGHT};
 }
 
+// TODO: FIx these constants
+SDL_Point WallGrid::getRenderPointFromCoordi(int x,int y){
+  return SDL_Point{y * 32, x * 32};
+}
+
+
 bool WallGrid::can_move(int posX, int posY, Direction d) {
   int row = posY / OBJECT_HEIGHT;
   int col = posX / OBJECT_WIDTH;

@@ -14,6 +14,7 @@
 #include "Grids/WallGrid.hpp"
 #include "Textures/LTexture.hpp"
 #include "Utils/Animator.hpp"
+#include "Characters/GhostManager.hpp"
 
 enum class EnemyState { NORMAL, WEAK, SUPER_ACTIVE };
 
@@ -32,6 +33,7 @@ class Enemy : public Character {
   int id;
   EnemyState state = EnemyState::NORMAL;
   void setState(EnemyState st);
+  void respawn();
 
  protected:
   Enemy(int type);

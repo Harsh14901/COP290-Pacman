@@ -5,12 +5,14 @@
 #include <stdlib.h>
 #include <time.h> /* time */
 #include "Utils/PreferenceManager.hpp"
+#include "Characters/GhostManager.hpp"
 
 int game_frame = 0;
 auto coinGrid = CoinGrid::getInstance();
 auto cherryGrid = CherryGrid::getInstance();
 auto wallGrid = WallGrid::getInstance();
 PreferenceManager prefManager = PreferenceManager(true);
+GhostManager ghostManager;
 vector<Enemy*> enemies;
 
 void fatalError(string error_message) {
@@ -246,6 +248,7 @@ void MainGame::initCharacters() {
 
   if (server != nullptr && is_server) {
     wallGrid->generate();
+    ghostManager.updateGhostZones();
     coinGrid->generate();
     cherryGrid->generate();
 
@@ -254,10 +257,12 @@ void MainGame::initCharacters() {
     cherryGrid->broadcast();
   } else if (client != nullptr) {
     wallGrid->packets2objects();
+    ghostManager.updateGhostZones();
     coinGrid->packets2objects();
     cherryGrid->packets2objects();
   } else {
     wallGrid->generate();
+    ghostManager.updateGhostZones();
     coinGrid->generate();
     cherryGrid->generate();
   }
@@ -270,7 +275,8 @@ void MainGame::initCharacters() {
   cherryGrid->unset_object(pacman_maze_loc.x, pacman_maze_loc.y);
 
   for (auto& enemy : enemies) {
-    enemy->place(wallGrid->get_empty_location());
+    enemy->respawn();
+    // enemy->place(wallGrid->get_empty_location());
   }
 }
 

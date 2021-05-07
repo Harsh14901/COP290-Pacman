@@ -1,5 +1,9 @@
 #include "Characters/Enemy.hpp"
 
+extern GhostManager ghostManager;
+extern WallGrid wallGrid;
+
+
 vector<int> Enemy::ids;
 int Enemy::active_id;
 vector<Enemy*> Enemy::enemies;
@@ -142,4 +146,15 @@ void Enemy::move() {
 void Enemy::setState(EnemyState st) { 
   state = st; 
   weak_state_animator.start();
+}
+
+
+void Enemy::respawn(){
+
+  auto pt = ghostManager.ghostZones[2 + (rand() % 4)];
+
+  Character::place(wallGrid.getRenderPointFromCoordi(pt.first,pt.second));
+  state = EnemyState::NORMAL;
+
+
 }
