@@ -470,7 +470,7 @@ void MainGame::initialiseGameEndTexture(int is_win) {
   if (is_win) {
     gameEndTextTexture.loadFromRenderedText(
         "YOU WIN!", {210, 255, 220},
-        TTF_OpenFont("assets/fonts/bernier.ttf", 240));
+        TTF_OpenFont("assets/fonts/win_font.ttf", 240));
   } else {
     pacmanDeathSound.play();
     gameEndTextTexture.loadFromRenderedText(
