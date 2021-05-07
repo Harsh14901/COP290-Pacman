@@ -67,10 +67,23 @@ void Enemy::handle_collision() {
 
 void Enemy::render() {
   // Show the dot
-  int typeValue = state == EnemyState::WEAK ? 5 : type;
+  int typeValue = getEnemyColor();
   SDL_Rect rect{138 * (2 + int(_direction) % 2), 171 * typeValue, 138, 171};
   _gDotTexture.render(mPosX, mPosY, &rect, 90 * (int(_direction) / 2));
 }
+
+int Enemy::getEnemyColor(){
+  if(weak_state_animator.isActive()){
+    if(weak_state_animator.animation_progress()>0.75){
+      if(int(weak_state_animator.animation_progress()*40)%2==1){
+        return 4;
+      }
+    }
+    return 5;
+  } 
+  return type; 
+}
+
 
 void Enemy::randomize_direction() {
   unordered_set<Direction> available_directions;

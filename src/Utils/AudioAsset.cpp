@@ -10,9 +10,9 @@ void AudioAsset::init(string sound,bool isMusic){
     }else{    
         soundEffect = Mix_LoadWAV(&sound[0]);
         if(soundEffect==NULL){
-            cout << "Invalid Filename" << endl;
+            cerr << "Invalid Filename" << endl;
         }
-        cout << "File Loaded Success" << endl;
+        // cout << "File Loaded Success" << endl;
     }
 }
 
@@ -27,12 +27,12 @@ void AudioAsset::play(){
     is_playing = true;
     if(is_music)   
     {
-        cout << "Music Should be playing" << endl;
+        // cout << "Music Should be playing" << endl;
         Mix_PlayMusic(music,-1);
     }
     else
     {
-        cout << "Should Play Now" << endl;
+        // cout << "Should Play Now" << endl;
         Mix_PlayChannel(-1,soundEffect,0);
     } 
 }

@@ -35,6 +35,8 @@ class Enemy : public Character {
 
  protected:
   Enemy(int type);
+  int getEnemyColor();
+
 
   void handle_collision();
   // The list of enemy ids
