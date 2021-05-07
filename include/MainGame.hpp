@@ -36,6 +36,7 @@ class MainGame {
 
   SDL_Renderer* _gRenderer;
   SDL_Texture* _gTexture = NULL;
+  SDL_Texture* _mainMenuTexture = NULL;
   Server* server = nullptr;
   Client* client = nullptr;
 

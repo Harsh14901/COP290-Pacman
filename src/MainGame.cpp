@@ -99,6 +99,9 @@ void MainGame::testNetwork() {
 void MainGame::mainMenuRender(int option) {
   SDL_RenderClear(_gRenderer);
 
+  SDL_RenderCopy(_gRenderer, _mainMenuTexture, NULL, NULL);
+
+
   pacmanHeadingText.render(SCREEN_WIDTH / 2 - pacmanHeadingText.getWidth() / 2,
                            SCREEN_HEIGHT * 0.12);
 
@@ -158,6 +161,9 @@ void MainGame::initMainMenuSystems() {
   p2Text.setRenderer(_gRenderer);
   p1TextLarger.setRenderer(_gRenderer);
   p2TextLarger.setRenderer(_gRenderer);
+
+  _mainMenuTexture = loadTexture("assets/backgrounds/space_back.jfif");
+
 
   pacmanHeadingText.loadFromRenderedText(
       "Pacman", {210, 255, 30}, TTF_OpenFont("assets/fonts/crackman.ttf", 160));
@@ -339,7 +345,7 @@ void MainGame::drawInitScreen() {
                string(TTF_GetError()));
   }
 
-  _gTexture = loadTexture("assets/pngs/texture.png");
+  _gTexture = loadTexture("assets/backgrounds/main_space_background.jpg");
 
   cout << "loading media" << endl;
   if (!loadMedia()) {
