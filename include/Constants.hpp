@@ -44,7 +44,6 @@ enum KeyPressSurfaces {
   KEY_PRESS_SURFACE_TOTAL
 };
 
-extern bool is_server;
 extern bool is_two_player;
 extern int game_frame;
 

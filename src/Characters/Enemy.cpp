@@ -2,7 +2,7 @@
 
 extern GhostManager ghostManager;
 extern WallGrid wallGrid;
-
+extern bool is_server;
 
 vector<int> Enemy::ids;
 int Enemy::active_id;
@@ -29,6 +29,8 @@ Enemy::Enemy(int type) : Character(IDS::ENEMY_COLLIDER_ID + "_" +to_string(type)
 }
 
 void Enemy::switch_active_id() {
+  if(is_server) return;
+
   if (active_id == ids.back()) {
     active_id = ids.front();
   } else {
@@ -36,6 +38,9 @@ void Enemy::switch_active_id() {
   }
 }
 void Enemy::handleEvent(SDL_Event& e) {
+  if(is_server){
+    return;
+  }
   if (id != active_id) {
     return;
   }

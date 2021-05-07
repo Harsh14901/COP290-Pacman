@@ -1,7 +1,7 @@
 #include "Characters/Pacman.hpp"
 
 extern vector<Enemy*> enemies;
-
+extern bool is_server;
 
 Pacman::Pacman() : Character(IDS::PACMAN_COLLIDER_ID) {}
 

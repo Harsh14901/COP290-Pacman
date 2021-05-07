@@ -23,7 +23,7 @@ void BottomBar::initViews(){
     CoinsCollectedText.loadFromRenderedText(
       "0", {210, 255, 30}, TTF_OpenFont("assets/fonts/lazy.ttf", 60));
 
-    pacmanPointBar.init(x+40 + 0.9* (h/2) + 110,y+h/3,w/4,h/3,SDL_Color{100,255,40,255},SDL_Color{255,255,255,200});
+    pacmanPointBar.init(x+40 + 0.9* (h/2) + 110,y+h/4,w/4,h/3,SDL_Color{100,255,40,255},SDL_Color{255,255,255,200});
     pacmanPointBar.setRenderer(_gRenderer);
 
 }

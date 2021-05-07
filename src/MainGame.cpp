@@ -14,6 +14,7 @@ auto wallGrid = WallGrid::getInstance();
 PreferenceManager prefManager = PreferenceManager(true);
 GhostManager ghostManager;
 vector<Enemy*> enemies;
+extern bool is_server;
 
 void fatalError(string error_message) {
   cout << error_message << endl;
@@ -421,7 +422,7 @@ void MainGame::processInput() {
   topLeftViewport.x = 0;
   topLeftViewport.y = 0;
   topLeftViewport.w = _screenWidth / 1;
-  topLeftViewport.h = _screenHeight / 1.01;
+  topLeftViewport.h = _screenHeight / 1;
 
   SDL_RenderSetViewport(_gRenderer, &topLeftViewport);
 
