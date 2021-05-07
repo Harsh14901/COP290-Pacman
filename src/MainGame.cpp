@@ -4,11 +4,13 @@
 #include <stdlib.h> /* srand, rand */
 #include <stdlib.h>
 #include <time.h> /* time */
+#include "Utils/PreferenceManager.hpp"
 
 int game_frame = 0;
 auto coinGrid = CoinGrid::getInstance();
 auto cherryGrid = CherryGrid::getInstance();
 auto wallGrid = WallGrid::getInstance();
+PreferenceManager prefManager = PreferenceManager(true);
 vector<Enemy*> enemies;
 
 void fatalError(string error_message) {

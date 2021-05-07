@@ -1,5 +1,7 @@
 #include "Utils/AudioAsset.hpp"
 
+extern PreferenceManager prefManager;
+
 void AudioAsset::init(string sound,bool isMusic){
     sound_name = sound;
     is_music = isMusic;
@@ -13,6 +15,18 @@ void AudioAsset::init(string sound,bool isMusic){
             cerr << "Invalid Filename" << endl;
         }
         // cout << "File Loaded Success" << endl;
+    }
+    applySettings();
+}
+
+void AudioAsset::applySettings(){
+    Mix_Volume(-1,0);
+    if(soundEffect != NULL){
+        cout << "Come On I set the volume to zero" << endl;
+        if(prefManager.getSettingValue("sfx")=="false") Mix_VolumeChunk(soundEffect,0);
+    }if(music!=NULL){
+        cout << "Come On I set the music volume to zero" << endl;
+        if(prefManager.getSettingValue("music")=="false") Mix_VolumeMusic(0);
     }
 }
 
@@ -35,6 +49,8 @@ void AudioAsset::play(){
         // cout << "Should Play Now" << endl;
         Mix_PlayChannel(-1,soundEffect,0);
     } 
+
+
 }
 
 void AudioAsset::pause(){

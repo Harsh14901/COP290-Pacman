@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL_mixer.h>
 #include <iostream>
+#include "PreferenceManager.hpp"
 
 using namespace std;
 
@@ -9,6 +10,7 @@ class AudioAsset{
 
 public:
     void init(string sound,bool isMusic);
+    void applySettings();
     // AudioAsset(string sound,bool isMusic);
     string sound_name;
     bool is_music;
