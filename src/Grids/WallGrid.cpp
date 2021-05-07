@@ -64,7 +64,7 @@ void WallGrid::generate() {
   if (myfile.is_open()) {
     while (getline(myfile, line)) {
       for (char& c : line) {
-        if (c == '|' || c == '_') {
+        if (c == '|' || c == '_' || c == 'X') {
           set_object(i, j);
         }
         j++;
