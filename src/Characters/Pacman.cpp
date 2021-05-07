@@ -5,6 +5,14 @@ extern vector<Enemy*> enemies;
 
 Pacman::Pacman() : Character(IDS::PACMAN_COLLIDER_ID) {}
 
+void Pacman::init(SDL_Renderer* renderer) {
+  _gDotTexture.setRenderer(renderer);
+  _gDotTexture.loadFromFile("assets/pngs/pac-classic_c-toy.png");
+  _gDotTexture.set_image_dimenstions(DOT_WIDTH, DOT_HEIGHT);
+  CollisionEngine::register_collider(&mCollider);
+  chompSound.init("assets/sounds/pacman_chomp.wav",false);
+}
+
 void Pacman::handleEvent(SDL_Event& e) {
   if (!is_server) {
     return;
@@ -36,6 +44,7 @@ void Pacman::handle_collision() {
       // cout << "Coin Collected" << endl;
       i++;
       coins++;
+      chompSound.play();
       auto temp = extractIntegerWords(collisions[i - 1]->id);
       if (temp.size() == 2) {
         coinGrid->unset_object(temp[0], temp[1]);

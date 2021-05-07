@@ -18,6 +18,7 @@
 #include "Grids/WallGrid.hpp"
 #include "Textures/LTexture.hpp"
 #include "utils.hpp"
+#include "Utils/AudioAsset.hpp"
 
 class Pacman : public Character {
  public:
@@ -27,6 +28,8 @@ class Pacman : public Character {
   int get_coins_collected();
   void render();
   bool is_dead = false;
+  void init(SDL_Renderer* renderer);
+
 
  protected:
   void handle_collision();
@@ -37,4 +40,6 @@ class Pacman : public Character {
 
   int coins;
   int cherries;
+  AudioAsset chompSound;
+
 };

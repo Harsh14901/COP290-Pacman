@@ -152,6 +152,7 @@ int MainGame::mainMenu() {
     option = (menuOption + 10000) % totalMenuOptions;
     mainMenuRender(option);
   }
+  pacmanMainMenuMusic.stop();
   return option;
 }
 
@@ -164,6 +165,8 @@ void MainGame::initMainMenuSystems() {
 
   _mainMenuTexture = loadTexture("assets/backgrounds/space_back.jfif");
 
+  pacmanMainMenuMusic.init("assets/sounds/pacman_beginning.wav",true);
+  pacmanMainMenuMusic.play();
 
   pacmanHeadingText.loadFromRenderedText(
       "Pacman", {210, 255, 30}, TTF_OpenFont("assets/fonts/crackman.ttf", 160));
@@ -275,7 +278,7 @@ void MainGame::initSystems() {
   SDL_Surface* screenSurface = NULL;
 
   // Initialize SDL
-  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+  if (SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0) {
     fatalError("SDL could not initialize! SDL_Error: \n" +
                string(SDL_GetError()));
   }
@@ -291,6 +294,11 @@ void MainGame::initSystems() {
 
   if (SDLNet_Init() < 0) {
     fatalError("SDLNet_Init Error:\n" + string(SDLNet_GetError()));
+  }
+
+   if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+  {
+      fatalError( "SDL_mixer could not initialize! SDL_mixer Error: \n" + string(Mix_GetError()));
   }
 
   cout << "Initing Screen" << endl;
@@ -464,8 +472,9 @@ void MainGame::initialiseGameEndTexture(int is_win) {
         "YOU WIN!", {210, 255, 220},
         TTF_OpenFont("assets/fonts/bernier.ttf", 240));
   } else {
+    pacmanDeathSound.play();
     gameEndTextTexture.loadFromRenderedText(
-        "YOU LOSE!", {255, 255, 255},
+        "YOU LOSE!", {255, 45, 30},
         TTF_OpenFont("assets/fonts/game_over.ttf", 480));
   }
 }
@@ -487,15 +496,8 @@ void MainGame::renderGameEndAnimation() {
 }
 
 bool MainGame::loadMedia() {
-  // SDL_Color textColor = { 200, 0, 0 };
-  // gTextTexture.setRenderer(_gRenderer);
 
-  // if( !gTextTexture.loadFromRenderedText( "The quick brown fox jumps over the
-  // lazy dog", textColor,TTF_OpenFont( "assets/fonts/lazy.ttf", 28 )) )
-  // {
-  // 	printf( "Failed to render text texture!\n" );
-  // 	return false;
-  // }
+  pacmanDeathSound.init("assets/sounds/pacman-death.wav",false);
 
   return true;
 }

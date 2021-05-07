@@ -15,6 +15,7 @@
 #include "Grids/CherryGrid.hpp"
 #include "Network/NetworkManager.hpp"
 #include "Textures/LTexture.hpp"
+#include "Utils/AudioAsset.hpp"
 
 using namespace std;
 
@@ -80,4 +81,7 @@ class MainGame {
 
   Animator gameEndAnimator = Animator(360);
   LTexture gameEndTextTexture;
+
+  AudioAsset pacmanDeathSound;
+  AudioAsset pacmanMainMenuMusic;
 };
