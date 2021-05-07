@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-#include "Animator.hpp"
+#include "Utils/Animator.hpp"
 #include "Characters/Character.hpp"
 #include "Characters/Enemy.hpp"
 #include "Collision/CollisionEngine.hpp"

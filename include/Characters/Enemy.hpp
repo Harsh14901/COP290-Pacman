@@ -13,6 +13,7 @@
 #include "Constants.hpp"
 #include "Grids/WallGrid.hpp"
 #include "Textures/LTexture.hpp"
+#include "Utils/Animator.hpp"
 
 enum class EnemyState { NORMAL, WEAK, SUPER_ACTIVE };
 
@@ -33,7 +34,7 @@ class Enemy : public Character {
   void setState(EnemyState st);
 
  protected:
-  Enemy();
+  Enemy(int type);
 
   void handle_collision();
   // The list of enemy ids
@@ -46,4 +47,5 @@ class Enemy : public Character {
 
  private:
   void randomize_direction();
+  Animator weak_state_animator = Animator(400);
 };

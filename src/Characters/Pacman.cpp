@@ -1,5 +1,8 @@
 #include "Characters/Pacman.hpp"
 
+extern vector<Enemy*> enemies;
+
+
 Pacman::Pacman() : Character(IDS::PACMAN_COLLIDER_ID) {}
 
 void Pacman::handleEvent(SDL_Event& e) {
@@ -51,11 +54,18 @@ void Pacman::handle_collision() {
       for (auto& x : enemies) {
         x->setState(EnemyState::WEAK);
       }
+      continue;
     }
     if (collisions[i]->id.find(IDS::ENEMY_COLLIDER_ID) != -1) {
       // Assert: Game Over
-      is_dead = true;
-      return;
+      i++;
+      auto temp = extractIntegerWords(collisions[i - 1]->id);
+      if (temp.size() == 2) {
+        if(enemies[temp[0]]->state!=EnemyState::WEAK){
+          is_dead = true;
+          return;
+        }
+      }
     }
 
     // cout << "Collision of pacman with " << collisions[i]->id << endl;

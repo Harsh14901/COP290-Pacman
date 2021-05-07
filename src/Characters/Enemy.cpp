@@ -7,13 +7,13 @@ vector<Enemy*> Enemy::enemies;
 void Enemy::make_enemies(int n) {
   enemies.resize(n);
   for (int i = 0; i < n; i++) {
-    enemies[i] = new Enemy();
+    enemies[i] = new Enemy(i);
   }
 }
 
 vector<Enemy*> Enemy::get_enemies() { return enemies; }
 
-Enemy::Enemy() : Character(IDS::ENEMY_COLLIDER_ID + "_" + to_string(rand())) {
+Enemy::Enemy(int type) : Character(IDS::ENEMY_COLLIDER_ID + "_" +to_string(type) + "_" + to_string(rand())) {
   if (ids.empty()) {
     id = 0;
     active_id = 0;
@@ -67,7 +67,7 @@ void Enemy::handle_collision() {
 
 void Enemy::render() {
   // Show the dot
-  int typeValue = state == EnemyState::WEAK ? type : type;
+  int typeValue = state == EnemyState::WEAK ? 5 : type;
   SDL_Rect rect{138 * (2 + int(_direction) % 2), 171 * typeValue, 138, 171};
   _gDotTexture.render(mPosX, mPosY, &rect, 90 * (int(_direction) / 2));
 }
@@ -107,6 +107,9 @@ void Enemy::randomize_direction() {
 }
 
 void Enemy::move() {
+  if(state==EnemyState::WEAK && !weak_state_animator.isActive()){
+    state = EnemyState::NORMAL;
+  }
   if (is_server) {
     handle_packets();
     handle_collision();
@@ -123,4 +126,7 @@ void Enemy::move() {
   Character::move();
 }
 
-void Enemy::setState(EnemyState st) { state = st; }
+void Enemy::setState(EnemyState st) { 
+  state = st; 
+  weak_state_animator.start();
+}
