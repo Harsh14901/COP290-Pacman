@@ -101,14 +101,12 @@ void Enemy::randomize_direction() {
       available_directions.insert(d);
     }
   }
-
-  if (_direction == Direction::LEFT || _direction == Direction::RIGHT) {
-    available_directions.erase(Direction::LEFT);
-    available_directions.erase(Direction::RIGHT);
-  } else {
-    available_directions.erase(Direction::UP);
-    available_directions.erase(Direction::DOWN);
-  }
+  auto directionToErase = _direction==Direction::LEFT?Direction::RIGHT:
+  _direction==Direction::RIGHT?Direction::LEFT:
+  _direction==Direction::UP?Direction::DOWN:
+  Direction::UP;
+  available_directions.erase(directionToErase);
+ 
   if (available_directions.size() != 0) {
     int selection = rand() % available_directions.size();
     int i = 0;
@@ -120,7 +118,8 @@ void Enemy::randomize_direction() {
       i++;
     }
   } else {
-    change_direction(_direction);
+    // No option but to change direction
+    if(mPosX%32==0 && mPosY%32==0) change_direction(directionToErase);
   }
 }
 
@@ -149,7 +148,7 @@ void Enemy::move() {
             change_direction(Direction::UP);
           }
         }
-        
+
     }
     else if (!is_two_player) {
       randomize_direction();
