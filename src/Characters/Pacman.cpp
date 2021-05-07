@@ -73,6 +73,8 @@ void Pacman::handle_collision() {
         if(enemies[temp[0]]->state!=EnemyState::WEAK){
           is_dead = true;
           return;
+        }else{
+          enemies[temp[0]]->respawn();
         }
       }
     }

@@ -14,9 +14,9 @@ void GhostManager::updateGhostZones(){
     while (getline(myfile, line)) {
       for (char& c : line) {
         if (c == 'G') {
-            ghostZones.push_back(pair<int,int>(i,j));
+            ghostZones.push_back(pair<int,int>(j,i));
         }else if(c == 'X'){
-            ghostDoor.push_back(pair<int,int>(i,j));
+            ghostDoor.push_back(pair<int,int>(j,i));
         }
         j++;
       }

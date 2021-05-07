@@ -49,6 +49,8 @@ class Enemy : public Character {
   // The id that is being controlled by player 2
   static int active_id;
 
+  Animator spawnAnimator = Animator(100);
+
  private:
   void randomize_direction();
   Animator weak_state_animator = Animator(400);

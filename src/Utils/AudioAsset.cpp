@@ -42,7 +42,7 @@ void AudioAsset::play(){
     if(is_music)   
     {
         // cout << "Music Should be playing" << endl;
-        Mix_PlayMusic(music,-1);
+        // Mix_PlayMusic(music,-1);
     }
     else
     {

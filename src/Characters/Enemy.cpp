@@ -45,6 +45,7 @@ void Enemy::handleEvent(SDL_Event& e) {
 void Enemy::init(SDL_Renderer* renderer, int enemy_type) {
   Character::init(renderer);
   type = enemy_type;
+  spawnAnimator.set_duration(100+100*type);
 }
 
 void Enemy::handle_collision() {
@@ -130,7 +131,27 @@ void Enemy::move() {
   if (is_server) {
     handle_packets();
     handle_collision();
-    if (!is_two_player) {
+    if(spawnAnimator.isActive()){
+        if(mVelX==0){
+          if(mPosX==ghostManager.ghostZones[2].first*32)
+            change_direction(Direction::RIGHT);
+          else
+            change_direction(Direction::LEFT);
+        }
+        if(mPosX==ghostManager.ghostZones[2].first*32){
+            change_direction(Direction::RIGHT); 
+        }else if(mPosX==ghostManager.ghostZones[5].first*32){
+            change_direction(Direction::LEFT);
+        }else{
+          if(spawnAnimator.animation_progress()>0.85 &&
+           (mPosX!=ghostManager.ghostZones[3].first*32 && mPosX!=ghostManager.ghostZones[4].first*32) &&
+           (mPosX!=ghostManager.ghostZones[2].first*32 && mPosX!=ghostManager.ghostZones[5].first*32)){
+            change_direction(Direction::UP);
+          }
+        }
+        
+    }
+    else if (!is_two_player) {
       randomize_direction();
     }
     Character::move();
@@ -155,6 +176,7 @@ void Enemy::respawn(){
 
   Character::place(wallGrid.getRenderPointFromCoordi(pt.first,pt.second));
   state = EnemyState::NORMAL;
+  spawnAnimator.start();
 
 
 }

@@ -23,9 +23,9 @@ SDL_Point WallGrid::get_empty_location() {
   return SDL_Point{y * OBJECT_WIDTH, x * OBJECT_HEIGHT};
 }
 
-// TODO: FIx these constants
+// TODO: Fix these constants
 SDL_Point WallGrid::getRenderPointFromCoordi(int x,int y){
-  return SDL_Point{y * 32, x * 32};
+  return SDL_Point{x * 32, y * 32};
 }
 
 
@@ -70,7 +70,7 @@ void WallGrid::generate() {
   if (myfile.is_open()) {
     while (getline(myfile, line)) {
       for (char& c : line) {
-        if (c == '|' || c == '_' || c == 'X') {
+        if (c == '|' || c == '_' ) {
           set_object(i, j);
         }
         j++;

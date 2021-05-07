@@ -22,6 +22,10 @@ void Animator::reset() {
   end_frame = -1;
 }
 
+void Animator::set_duration(int dur){
+  duration = dur;
+}
+
 int Animator::get_current_frame() {
   if (!isActive()) return -1;
   return game_frame - start_frame;
