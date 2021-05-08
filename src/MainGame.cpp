@@ -14,7 +14,10 @@ auto wallGrid = WallGrid::getInstance();
 PreferenceManager prefManager = PreferenceManager(true);
 GhostManager ghostManager;
 vector<Enemy*> enemies;
+Pacman pacman;
+
 extern bool is_server;
+
 
 void fatalError(string error_message) {
   cout << error_message << endl;
@@ -237,7 +240,7 @@ void MainGame::runGame() {
 }
 
 void MainGame::initCharacters() {
-  _pacman.init(_gRenderer);
+  pacman.init(_gRenderer);
   wallGrid->init(_gRenderer);
   coinGrid->init(_gRenderer);
   cherryGrid->init(_gRenderer);
@@ -270,7 +273,7 @@ void MainGame::initCharacters() {
 
   auto pacman_start = wallGrid->get_empty_location();
   auto pacman_maze_loc = wallGrid->get_maze_point(pacman_start);
-  _pacman.place(pacman_start);
+  pacman.place(pacman_start);
 
   coinGrid->unset_object(pacman_maze_loc.x, pacman_maze_loc.y);
   cherryGrid->unset_object(pacman_maze_loc.x, pacman_maze_loc.y);
@@ -379,27 +382,30 @@ void MainGame::drawInitScreen() {
 }
 
 void MainGame::processInput() {
-  if (!_pacman.is_dead && coinGrid->active_objects != 0) {
+  if (!pacman.is_dead && coinGrid->active_objects != 0) {
     SDL_Event evnt;
-
     while (SDL_PollEvent(&evnt)) {
+      
       switch (evnt.type) {
         case SDL_QUIT:
           _gameState = GameState::EXIT;
           break;
         case SDL_KEYDOWN:
+          // cout << evnt.key.keysym.sym << "," << SDLK_t << endl;
           if (evnt.key.keysym.sym == SDLK_TAB) {
             Enemy::switch_active_id();
+          }else if(evnt.key.keysym.sym == SDLK_t){
+            enemies[Enemy::active_id]->shootFreezeBullet();
           }
       }
 
-      _pacman.handleEvent(evnt);
+      pacman.handleEvent(evnt);
       for (auto& enemy : enemies) {
         enemy->handleEvent(evnt);
       }
     }
 
-    _pacman.move();
+    pacman.move();
 
     for (auto& enemy : enemies) {
       enemy->move();
@@ -432,18 +438,20 @@ void MainGame::processInput() {
   coinGrid->render();
   cherryGrid->render();
 
-  _pacman.render();
+  pacman.render();
   
-  bottomBar.update(_pacman.get_coins_collected(),_pacman.get_active_points());
+  bottomBar.update(pacman.get_coins_collected(),pacman.get_active_points());
 
   bottomBar.render();
+
+
 
   for (auto& enemy : enemies) {
     enemy->render();
   }
   wallGrid->render();
 
-  if (_pacman.is_dead) {
+  if (pacman.is_dead) {
     if (!gameEndAnimator.isActive()) {
       initialiseGameEndTexture(false);
     }

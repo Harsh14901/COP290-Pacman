@@ -84,6 +84,13 @@ void Pacman::handle_collision() {
           enemies[temp[0]]->respawn();
         }
       }
+      continue;
+    }if(collisions[i]->id.find(IDS::FREEZEBULLET_ID)!=-1){
+      cout << "Time to Freeze" << endl;
+      // is_dead = true;
+      i++;
+      freezeAnimation.start();
+      continue;
     }
 
     // cout << "Collision of pacman with " << collisions[i]->id << endl;
@@ -104,6 +111,10 @@ bool Pacman::isMouthOpen() {
 }
 
 void Pacman::move() {
+  if(freezeAnimation.isActive()) {
+    cout << "Freeze is active" << endl;
+    return;
+  }
   if (!is_server) {
     handle_packets();
   }

@@ -57,7 +57,6 @@ class MainGame {
   int _screenHeight;
 
   GameState _gameState;
-  Pacman _pacman;
   // vector<Enemy> enemies;
 
   LTexture pacmanHeadingText;

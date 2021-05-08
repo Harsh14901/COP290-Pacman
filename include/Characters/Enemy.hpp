@@ -15,6 +15,8 @@
 #include "Textures/LTexture.hpp"
 #include "Utils/Animator.hpp"
 #include "Characters/GhostManager.hpp"
+// #include "Weapons/BulletWeapon.hpp"
+#include "Weapons/FreezeBullet.hpp"
 
 enum class EnemyState { NORMAL, WEAK, SUPER_ACTIVE };
 
@@ -34,6 +36,8 @@ class Enemy : public Character {
   EnemyState state = EnemyState::NORMAL;
   void setState(EnemyState st);
   void respawn();
+  static int active_id;
+  void shootFreezeBullet();
 
  protected:
   Enemy(int type);
@@ -47,9 +51,11 @@ class Enemy : public Character {
   // List of all the enemies
   static vector<Enemy*> enemies;
   // The id that is being controlled by player 2
-  static int active_id;
 
   Animator spawnAnimator = Animator(100);
+
+
+  FreezeBullet freezeBullet = FreezeBullet(30);
 
  private:
   void randomize_direction();

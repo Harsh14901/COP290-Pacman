@@ -51,7 +51,9 @@ void Enemy::init(SDL_Renderer* renderer, int enemy_type) {
   Character::init(renderer);
   type = enemy_type;
   spawnAnimator.set_duration(100+100*type);
+  freezeBullet.setRenderer(renderer);
 }
+
 
 void Enemy::handle_collision() {
   auto collisions = CollisionEngine::getCollisions(CHARACTER_COLLIDER_ID);
@@ -64,7 +66,7 @@ void Enemy::handle_collision() {
       continue;
     }
     // cout << "Enemy collided with " << collisions[i]->id << endl;
-    if (collisions[i]->id.find(IDS::ENEMY_COLLIDER_ID) != -1) {
+    if (collisions[i]->id.find(IDS::ENEMY_COLLIDER_ID) != -1 || collisions[i]->id.find(IDS::FREEZEBULLET_ID) != -1) {
       i++;
       // cout << "Enemy Collided with another enemy" << endl;
       continue;
@@ -80,6 +82,7 @@ void Enemy::render() {
   int typeValue = getEnemyColor();
   SDL_Rect rect{138 * (2 + int(_direction) % 2), 171 * typeValue, 138, 171};
   _gDotTexture.render(mPosX, mPosY, &rect, 90 * (int(_direction) / 2));
+  freezeBullet.render();
 }
 
 int Enemy::getEnemyColor(){
@@ -132,6 +135,7 @@ void Enemy::move() {
   if(state==EnemyState::WEAK && !weak_state_animator.isActive()){
     state = EnemyState::NORMAL;
   }
+  freezeBullet.update();
   if (is_server) {
     handle_packets();
     handle_collision();
@@ -184,3 +188,9 @@ void Enemy::respawn(){
 
 
 }
+
+void Enemy::shootFreezeBullet(){
+  if(is_server) return;
+  freezeBullet.shoot(_direction,mPosX,mPosY);
+}
+
