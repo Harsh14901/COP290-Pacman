@@ -17,6 +17,13 @@ void Pacman::handleEvent(SDL_Event& e) {
   if (!is_server) {
     return;
   }
+  if (e.type == SDL_KEYDOWN && e.key.repeat == 0 && e.key.keysym.sym == SDLK_q && !is_invisible) {
+    if(get_active_points()>=50){
+      is_invisible = true;
+      invisibleAnimator.start();
+      incrementActivePoints(-50);
+    }
+  }
   Character::handleEvent(e);
 }
 
@@ -25,11 +32,33 @@ void Pacman::render() {
   int mouth_fac = isMouthOpen() ? 0 : 2;
   SDL_Rect rect{138 * 4, 171 * ((2 - (int(_direction) % 2)) + mouth_fac), 138,
                 171};
+
+
+  _gDotTexture.setAlpha(getInvisibleAlphaValue());
   _gDotTexture.render(mPosX, mPosY, &rect, 90 * (int(_direction) / 2));
+  
+}
+
+// Note: this is an impure function
+int Pacman::getInvisibleAlphaValue(){
+  if(!invisibleAnimator.isActive()) {
+    if(is_server) is_invisible = false;
+    return is_server?255:is_invisible?0:255;
+  }
+
+  if(invisibleAnimator.animation_progress()<0.2){
+    double val = invisibleAnimator.getAnimationProgressInCurve(AnimationCurve::IncreasingFreqSine,3/(0.2),0);
+    return val>0?255:is_server?100:50;
+  }
+  if(invisibleAnimator.animation_progress()>0.8){
+    double val = invisibleAnimator.getAnimationProgressInCurve(AnimationCurve::IncreasingFreqSine,3/(0.2),1-0.2);
+    return val>0?255:is_server?100:50;
+  }
+  return is_server?100:0;
 }
 
 void Pacman::incrementActivePoints(int inc){
-  activePoints = min(activePoints+inc,100);
+  activePoints = max(0,min(activePoints+inc,100));
 }
 
 void Pacman::handle_collision() {
@@ -89,6 +118,7 @@ void Pacman::handle_collision() {
       cout << "Time to Freeze" << endl;
       // is_dead = true;
       i++;
+      incrementActivePoints(-20);
       freezeAnimation.start();
       continue;
     }
@@ -121,7 +151,41 @@ void Pacman::move() {
   handle_collision();
 
   Character::move();
+  broadcast_coordinates();
 }
 
 int Pacman::get_coins_collected() { return coins; }
 int Pacman::get_active_points() { return activePoints; }
+
+
+void Pacman::handle_packets() {
+  vector<Packet> packets;
+  NetworkManager::get_packets(CHARACTER_ID, packets);
+
+  for (auto& p : packets) {
+    mPosX = p.posX;
+    mPosY = p.posY;
+    mVelX = p.velX;
+    mVelY = p.velY;
+    auto data = convert_string_to_map(p.data);
+    cout << "See this "<< is_server<< " " << data["is_invisible"] << endl; 
+    _direction = Direction(stoi(data["direction"]));
+    if(!is_server) is_invisible = data["is_invisible"]=="1";
+  }
+}
+
+void Pacman::broadcast_coordinates() {
+  Packet p;
+  p.id = CHARACTER_ID;
+  p.posX = mPosX;
+  p.posY = mPosY;
+  p.velX = mVelX;
+  p.velY = mVelY;
+  map<string,string> data;
+  data.insert({"direction",to_string(int(_direction))});
+  data.insert({"is_invisible",to_string(is_invisible)});
+
+  p.data = map_to_string(data);
+  cout << "data is " << p.data << endl;
+  NetworkManager::queue_packet(p);
+}

@@ -110,6 +110,7 @@ void Character::handle_packets() {
 }
 
 void Character::broadcast_coordinates() {
+  cout << "ID is " << CHARACTER_ID << endl;
   Packet p;
   p.id = CHARACTER_ID;
   p.posX = mPosX;
@@ -146,7 +147,9 @@ void Character::change_direction(Direction d) {
         break;
     }
     _next = Direction::NONE;
-    broadcast_coordinates();
+
+    // TODO: Remove this hack
+    if(CHARACTER_ID.find(IDS::PACMAN_COLLIDER_ID)==-1)  broadcast_coordinates();
   } else {
     _next = d;
   }

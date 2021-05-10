@@ -24,7 +24,50 @@ vector<int> extractIntegerWords(string str) {
   return numbers;
 }
 
+std::map<std::string, std::string> convert_string_to_map(string s)
+{
+    map<string, string> m;
+
+    string::size_type key_pos = 0;
+    string::size_type key_end;
+    string::size_type val_pos;
+    string::size_type val_end;
+
+    while((key_end = s.find(':', key_pos)) != string::npos)
+    {
+        if((val_pos = s.find_first_not_of(": ", key_end)) == string::npos)
+            break;
+
+        val_end = s.find('\n', val_pos);
+        m.emplace(s.substr(key_pos, key_end - key_pos), s.substr(val_pos, val_end - val_pos));
+
+        key_pos = val_end;
+        if(key_pos != string::npos)
+            ++key_pos;
+    }
+
+    return m;
+}
+
+string map_to_string(map<string,string>  m) {
+    string output = "";
+    string convrt = "";
+    string result = "";
+
+	for (auto it = m.cbegin(); it != m.cend(); it++) {
+	
+		convrt = it->second;
+		output += (it->first) + ":" + (convrt) + "\n";
+	}
+	
+	result = output.substr(0, output.size() - 1 );
+	
+  return result;
+}
+
 SDL_Color HSVtoRGB(float H, float S,float V){
+
+
     if(H>360 || H<0 || S>100 || S<0 || V>100 || V<0){
         cout<<"The givem HSV values are not in valid range"<<endl;
         // return;

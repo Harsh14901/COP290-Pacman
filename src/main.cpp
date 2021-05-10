@@ -26,6 +26,7 @@ int main(int argc, char* argv[]) {
 
   if (host == "") {
     is_server = true;
+    cout << "Is server is true" << endl;
     mainGame.listen(&server);
   } else {
     is_server = false;

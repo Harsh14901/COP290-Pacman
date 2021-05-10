@@ -1,7 +1,15 @@
 #pragma once
 #include "Constants.hpp"
+#include <math.h>      
+
+enum AnimationCurve {
+  IncreasingFreqSine
+};
+
 class Animator {
  public:
+
+
   Animator(int sf, int dur);
   Animator(int dur);
 
@@ -15,4 +23,6 @@ class Animator {
   bool isActive();
   void start();
   void reset();
+
+  double getAnimationProgressInCurve(AnimationCurve curve,double factor,double start_offset);
 };

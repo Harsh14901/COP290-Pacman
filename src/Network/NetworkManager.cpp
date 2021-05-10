@@ -52,6 +52,9 @@ int NetworkManager::send_packets() {
     return -1;
   }
   int num = device->send(tosend_packets);
+  // for(int i=0;i<tosend_packets.packets.size();i++){
+  //   cout << "Packet sending " << tosend_packets.packets[i].id << endl;
+  // }
   tosend_packets.clear(num);
   return num;
 }

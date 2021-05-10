@@ -35,9 +35,9 @@ class PacketStore {
   int encode(char* buffer);
   void decode(char* buffer);
   void clear(int num);
+  vector<Packet> packets;
 
  private:
-  vector<Packet> packets;
   char delimiter;
 };
 

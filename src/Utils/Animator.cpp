@@ -36,4 +36,15 @@ double Animator::animation_progress() {
   return (get_current_frame()) / (0.0 + end_frame - start_frame);
 }
 
+double Animator::getAnimationProgressInCurve(AnimationCurve curve,double factor,double start_offset){
+  if(!isActive()) return -99;
+
+
+  if (curve==AnimationCurve::IncreasingFreqSine){
+    double x = (game_frame/(end_frame-start_frame+0.0) - start_offset)*factor;
+    return sin(exp(x));
+  }
+  return -99;
+}
+
 bool Animator::isActive() { return game_frame < end_frame; }

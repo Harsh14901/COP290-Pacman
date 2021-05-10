@@ -29,11 +29,15 @@ class Pacman : public Character {
   int get_active_points();
   void render();
   bool is_dead = false;
+  bool is_invisible = false;
+
   void init(SDL_Renderer* renderer);
 
 
  protected:
   void handle_collision();
+  void handle_packets();
+  void broadcast_coordinates();
 
  private:
   Animator gulp_animator = Animator(3);
@@ -44,8 +48,12 @@ class Pacman : public Character {
   int cherries = 0;
   int activePoints = 0;
 
+
   AudioAsset chompSound;
 
+
   Animator freezeAnimation = Animator(100);
+  Animator invisibleAnimator = Animator(300);
+  int getInvisibleAlphaValue();
 
 };
