@@ -46,6 +46,6 @@ class Pacman : public Character {
 
   AudioAsset chompSound;
 
-  Animator freezeAnimation = Animator(400);
+  Animator freezeAnimation = Animator(100);
 
 };

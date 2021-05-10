@@ -190,7 +190,7 @@ void Enemy::respawn(){
 }
 
 void Enemy::shootFreezeBullet(){
-  if(is_server) return;
+  // if(is_server) return;
   freezeBullet.shoot(_direction,mPosX,mPosY);
 }
 

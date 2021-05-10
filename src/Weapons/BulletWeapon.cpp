@@ -1,14 +1,49 @@
 #include "Weapons/BulletWeapon.hpp"
 
+#include "Network/NetworkManager.hpp"
 
 BulletWeapon::BulletWeapon(string asset,int velocity,string id){
     this->asset = asset;
     vel = velocity;
-    ColliderID = id + to_string(rand()%10000);
+    ColliderID = id;
     auto rect = SDL_Rect{-1, -1, 5,5};
     mCollider = Collider(ColliderID, rect);
     CollisionEngine::register_collider(&mCollider);
 }
+
+void BulletWeapon::broadcast_coordinates(){
+
+    if(!isLaunched) return;
+    Packet p;
+
+    p.id = ColliderID;    
+    p.posX = x;
+    p.posY = y;
+    p.velX = velX;
+    p.velY = velY;
+    p.data = to_string(int(angle));
+    NetworkManager::queue_packet(p);
+
+
+}
+
+void BulletWeapon::receive_coordinates(){
+
+  vector<Packet> packets;
+  NetworkManager::get_packets(ColliderID, packets);
+
+  for (auto& p : packets) {
+    //   cout << "Server has got what it needs" << endl;
+    isLaunched = true;
+    x = p.posX;
+    y = p.posY;
+    velX = p.velX;
+    velY = p.velY;
+    angle = stoi(p.data);
+  }
+
+}
+
 
 
 void BulletWeapon::shoot(Direction dir,int x,int y){
@@ -62,6 +97,9 @@ void BulletWeapon::update(){
     mCollider.setY(y);
 
     checkImpact();
+
+    receive_coordinates();
+    broadcast_coordinates();
 
 }
 

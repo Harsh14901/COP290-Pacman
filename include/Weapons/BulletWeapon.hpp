@@ -21,11 +21,15 @@ public:
     void checkImpact();
 
     void update();
+    void broadcast_coordinates();
+    void receive_coordinates();
 
     Collider mCollider;
     Collider horizCollider;
 
     string asset;
+
+
 
     SDL_Renderer* renderer;
 
