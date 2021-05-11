@@ -25,6 +25,8 @@ class WallGrid : public ObjectGrid {
   // Generate a random maze
   void generate();
 
+  bool is_empty(int i,int j);
+
 
  protected:
   WallGrid();

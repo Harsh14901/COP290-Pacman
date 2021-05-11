@@ -58,6 +58,10 @@ bool WallGrid::can_move(int posX, int posY, Direction d) {
   return ans;
 }
 
+bool WallGrid::is_empty(int i,int j){
+  return !objects[i][j];
+}
+
 void WallGrid::generate() {
   if (system("node src/maze_generator.js > map.txt")) {
     fatalError("Error Generating map");

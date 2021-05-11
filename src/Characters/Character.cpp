@@ -76,7 +76,7 @@ void Character::handle_collision() {
   auto collisions = CollisionEngine::getCollisions(CHARACTER_ID);
   int i = 0;
   while (i < collisions.size()) {
-    if (collisions[i]->id.find(IDS::COIN_COLLIDER_ID) != -1) {
+    if (collisions[i]->id.find(IDS::COIN_COLLIDER_ID) != -1 || collisions[i]->id.find(IDS::VENT_COLLIDER_ID)!=-1) {
       i++;
       continue;
     }
@@ -110,7 +110,7 @@ void Character::handle_packets() {
 }
 
 void Character::broadcast_coordinates() {
-  cout << "ID is " << CHARACTER_ID << endl;
+  // cout << "ID is " << CHARACTER_ID << endl;
   Packet p;
   p.id = CHARACTER_ID;
   p.posX = mPosX;

@@ -31,6 +31,7 @@ class IDS {
   inline const static string PACMAN_COLLIDER_ID = "pacman";
   inline const static string ENEMY_COLLIDER_ID = "enemy";
   inline const static string COIN_COLLIDER_ID = "coins";
+  inline const static string VENT_COLLIDER_ID = "vent";
   inline const static string CHERRY_COLLIDER_ID = "cherry";
   inline const static string NETWORK_ID = "networkmanager";
   inline const static string FREEZEBULLET_ID = "freezebullet";

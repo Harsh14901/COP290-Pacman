@@ -13,6 +13,7 @@
 #include "Characters/Pacman.hpp"
 #include "Constants.hpp"
 #include "Grids/CherryGrid.hpp"
+#include "Grids/VentGrid.hpp"
 #include "Network/NetworkManager.hpp"
 #include "Textures/LTexture.hpp"
 #include "Utils/AudioAsset.hpp"

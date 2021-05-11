@@ -1,4 +1,5 @@
 #include "Characters/Pacman.hpp"
+#include "Grids/VentGrid.hpp"
 
 extern vector<Enemy*> enemies;
 extern bool is_server;
@@ -17,11 +18,15 @@ void Pacman::handleEvent(SDL_Event& e) {
   if (!is_server) {
     return;
   }
-  if (e.type == SDL_KEYDOWN && e.key.repeat == 0 && e.key.keysym.sym == SDLK_q && !is_invisible) {
-    if(get_active_points()>=50){
-      is_invisible = true;
-      invisibleAnimator.start();
-      incrementActivePoints(-50);
+  if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
+    if(e.key.keysym.sym == SDLK_q){
+      if(!is_invisible && get_active_points()>=50){
+        is_invisible = true;
+        invisibleAnimator.start();
+        incrementActivePoints(-50);
+      }
+    }else if(e.key.keysym.sym == SDLK_v){
+      VentGrid::getInstance()->handleOpening(mPosX/32,mPosY/32);
     }
   }
   Character::handleEvent(e);
@@ -122,6 +127,10 @@ void Pacman::handle_collision() {
       freezeAnimation.start();
       continue;
     }
+    if(collisions[i]->id.find(IDS::VENT_COLLIDER_ID)!=-1){
+      i++;
+      continue;
+    }
 
     // cout << "Collision of pacman with " << collisions[i]->id << endl;
     Character::handle_collision();
@@ -151,6 +160,16 @@ void Pacman::move() {
   handle_collision();
 
   Character::move();
+
+  if(VentGrid::getInstance()->canTeleport()){
+    auto newPt = VentGrid::getInstance()->getTeleportLocation();
+    mPosX = newPt.first;
+    mPosY = newPt.second;
+    cout << "x,y are" << mPosX << "," << mPosY << endl;
+    mVelX = 0;
+    mVelY = 0;
+  }
+
   broadcast_coordinates();
 }
 
@@ -186,6 +205,6 @@ void Pacman::broadcast_coordinates() {
   data.insert({"is_invisible",to_string(is_invisible)});
 
   p.data = map_to_string(data);
-  cout << "data is " << p.data << endl;
+  // cout << "data is " << p.data << endl;
   NetworkManager::queue_packet(p);
 }

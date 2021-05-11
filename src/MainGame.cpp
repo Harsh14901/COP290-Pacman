@@ -11,6 +11,7 @@ int game_frame = 0;
 auto coinGrid = CoinGrid::getInstance();
 auto cherryGrid = CherryGrid::getInstance();
 auto wallGrid = WallGrid::getInstance();
+auto ventGrid = VentGrid::getInstance();
 PreferenceManager prefManager = PreferenceManager(true);
 GhostManager ghostManager;
 vector<Enemy*> enemies;
@@ -243,6 +244,7 @@ void MainGame::initCharacters() {
   pacman.init(_gRenderer);
   wallGrid->init(_gRenderer);
   coinGrid->init(_gRenderer);
+  ventGrid->init(_gRenderer);
   cherryGrid->init(_gRenderer);
 
   int i = 0;
@@ -254,19 +256,23 @@ void MainGame::initCharacters() {
     wallGrid->generate();
     ghostManager.updateGhostZones();
     coinGrid->generate();
+    ventGrid->generate();
     cherryGrid->generate();
 
     wallGrid->broadcast();
     coinGrid->broadcast();
+    ventGrid->broadcast();
     cherryGrid->broadcast();
   } else if (client != nullptr) {
     wallGrid->packets2objects();
     ghostManager.updateGhostZones();
+    ventGrid->packets2objects();
     coinGrid->packets2objects();
     cherryGrid->packets2objects();
   } else {
     wallGrid->generate();
     ghostManager.updateGhostZones();
+    ventGrid->generate();
     coinGrid->generate();
     cherryGrid->generate();
   }
@@ -436,6 +442,7 @@ void MainGame::processInput() {
   SDL_RenderCopy(_gRenderer, _gTexture, NULL, NULL);
 
   coinGrid->render();
+  ventGrid->render();
   cherryGrid->render();
 
   pacman.render();
