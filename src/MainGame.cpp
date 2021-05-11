@@ -4,8 +4,10 @@
 #include <stdlib.h> /* srand, rand */
 #include <stdlib.h>
 #include <time.h> /* time */
-#include "Utils/PreferenceManager.hpp"
+
 #include "Characters/GhostManager.hpp"
+#include "Utils/Algorithms.cpp"
+#include "Utils/PreferenceManager.hpp"
 
 int game_frame = 0;
 auto coinGrid = CoinGrid::getInstance();
@@ -105,7 +107,6 @@ void MainGame::mainMenuRender(int option) {
 
   SDL_RenderCopy(_gRenderer, _mainMenuTexture, NULL, NULL);
 
-
   pacmanHeadingText.render(SCREEN_WIDTH / 2 - pacmanHeadingText.getWidth() / 2,
                            SCREEN_HEIGHT * 0.12);
 
@@ -169,7 +170,7 @@ void MainGame::initMainMenuSystems() {
 
   _mainMenuTexture = loadTexture("assets/backgrounds/space_back.jfif");
 
-  pacmanMainMenuMusic.init("assets/sounds/pacman_beginning.wav",true);
+  pacmanMainMenuMusic.init("assets/sounds/pacman_beginning.wav", true);
   pacmanMainMenuMusic.play();
 
   pacmanHeadingText.loadFromRenderedText(
@@ -278,6 +279,19 @@ void MainGame::initCharacters() {
     enemy->respawn();
     // enemy->place(wallGrid->get_empty_location());
   }
+
+  // TODO: remove this
+  cout << "Testing  TSP" << endl;
+  auto tsp = TSP();
+  vector<SDL_Point> points;
+  for (int i = 0; i < TSP::MAX_SIZE; i++) {
+    points.push_back(wallGrid->get_empty_indices());
+  }
+  auto path = tsp.steinerTSP(points);
+  for (auto& p : path) {
+    printf("(%d, %d) ->", p.x, p.y);
+  }
+  cout << endl;
 }
 
 void MainGame::initSystems() {
@@ -286,7 +300,7 @@ void MainGame::initSystems() {
   SDL_Surface* screenSurface = NULL;
 
   // Initialize SDL
-  if (SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0) {
+  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
     fatalError("SDL could not initialize! SDL_Error: \n" +
                string(SDL_GetError()));
   }
@@ -304,12 +318,10 @@ void MainGame::initSystems() {
     fatalError("SDLNet_Init Error:\n" + string(SDLNet_GetError()));
   }
 
-   if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
-  {
-      fatalError( "SDL_mixer could not initialize! SDL_mixer Error: \n" + string(Mix_GetError()));
+  if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+    fatalError("SDL_mixer could not initialize! SDL_mixer Error: \n" +
+               string(Mix_GetError()));
   }
-
-
 
   cout << "Initing Screen" << endl;
   drawInitScreen();
@@ -432,8 +444,8 @@ void MainGame::processInput() {
   cherryGrid->render();
 
   _pacman.render();
-  
-  bottomBar.update(_pacman.get_coins_collected(),_pacman.get_active_points());
+
+  bottomBar.update(_pacman.get_coins_collected(), _pacman.get_active_points());
 
   bottomBar.render();
 
@@ -497,7 +509,6 @@ void MainGame::initialiseGameEndTexture(int is_win) {
   }
 }
 
-
 void MainGame::renderGameEndAnimation() {
   if (!gameEndAnimator.isActive()) {
     gameEndAnimator.start();
@@ -515,8 +526,7 @@ void MainGame::renderGameEndAnimation() {
 }
 
 bool MainGame::loadMedia() {
-
-  pacmanDeathSound.init("assets/sounds/pacman-death.wav",false);
+  pacmanDeathSound.init("assets/sounds/pacman-death.wav", false);
 
   return true;
 }
