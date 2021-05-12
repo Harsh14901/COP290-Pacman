@@ -13,14 +13,18 @@ WallGrid* WallGrid::getInstance() {
 WallGrid::WallGrid()
     : ObjectGrid(IDS::WALL_COLLIDER_ID, "assets/pngs/stone_wall.png") {}
 
-SDL_Point WallGrid::get_empty_location() {
+SDL_Point WallGrid::get_empty_indices() {
   int x = 0, y = 0;
   while (objects[x][y]) {
     x = rand() % GRID_ROW;
     y = rand() % GRID_COL;
   }
   printf("Found empty location: (%d, %d)\n", x, y);
-  return SDL_Point{y * OBJECT_WIDTH, x * OBJECT_HEIGHT};
+  return SDL_Point{x, y};
+}
+SDL_Point WallGrid::get_empty_location() {
+  auto p = get_empty_indices();
+  return SDL_Point{p.y * OBJECT_WIDTH, p.x * OBJECT_HEIGHT};
 }
 
 // TODO: Fix these constants

@@ -30,6 +30,9 @@ class ObjectGrid {
   // Remove the object at position (i,j)
   void unset_object(int i, int j);
 
+  // Returns if the object is set at position (i,j)
+  bool is_set(int i, int j);
+
   bool can_move(int posX, int posY, Direction d);
 
   // Generate a objects in empty part of maze

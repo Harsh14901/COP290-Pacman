@@ -37,6 +37,13 @@ void ObjectGrid::unset_object(int i, int j) {
   CollisionEngine::deregister_collider(&objectColliders[i][j]);
 }
 
+bool ObjectGrid::is_set(int i, int j){
+  if(i >= GRID_ROW || i < 0 || j >= GRID_COL || j < 0){
+    return false;
+  }
+  return objects[i][j] == 1;
+}
+
 void ObjectGrid::render() {
   // cout << "Rendering Objects" << endl;
   for (int i = 0; i < GRID_ROW; i++) {
