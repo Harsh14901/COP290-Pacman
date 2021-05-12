@@ -1,7 +1,5 @@
 #include "Characters/Character.hpp"
 
-#include "Network/NetworkManager.hpp"
-
 // TODO: Fix This
 const int Character::DOT_WIDTH = PACMAN_RENDER_WIDTH;
 const int Character::DOT_HEIGHT = PACMAN_RENDER_HEIGHT;
@@ -83,11 +81,11 @@ void Character::handle_collision() {
     switch (_direction) {
       case Direction::LEFT:
       case Direction::RIGHT:
-        mPosX -= 1 * mVelX;
+        mPosX -= 1 * mVelX*FrameGuider::getFrameDeltaRounded();
         break;
       case Direction::UP:
       case Direction::DOWN:
-        mPosY -= 1 * mVelY;
+        mPosY -= 1 * mVelY*FrameGuider::getFrameDeltaRounded();
         break;
       default:
         break;
@@ -160,7 +158,7 @@ void Character::move() {
   if (_next != Direction::NONE) {
     change_direction(_next);
   }
-  mPosX += mVelX;
+  mPosX += mVelX*FrameGuider::getFrameDeltaRounded();
 
   // If the dot went too far to the left or right
   if ((mPosX < 0) || (mPosX + DOT_WIDTH > GAMEAREA_WIDTH)) {
@@ -174,7 +172,7 @@ void Character::move() {
   }
 
   // Move the dot up or down
-  mPosY += mVelY;
+  mPosY += mVelY*FrameGuider::getFrameDeltaRounded();
 
   // If the dot went too far up or down
   if ((mPosY < 0) || (mPosY + DOT_HEIGHT > GAMEAREA_HEIGHT)) {

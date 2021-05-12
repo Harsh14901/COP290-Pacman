@@ -47,6 +47,7 @@ enum KeyPressSurfaces {
 };
 
 extern bool is_two_player;
-extern int game_frame;
+extern double game_frame;
+extern int game_frame_int;
 
 void fatalError(string error_message);

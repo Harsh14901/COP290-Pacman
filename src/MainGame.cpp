@@ -8,8 +8,10 @@
 #include "Characters/GhostManager.hpp"
 #include "Utils/Algorithms.cpp"
 #include "Utils/PreferenceManager.hpp"
+#include "Utils/FrameGuider.hpp"
 
-int game_frame = 0;
+int game_frame_int = 0;
+double game_frame = 0;
 auto coinGrid = CoinGrid::getInstance();
 auto cherryGrid = CherryGrid::getInstance();
 auto wallGrid = WallGrid::getInstance();
@@ -493,6 +495,7 @@ void MainGame::processInput() {
 
 void MainGame::gameLoop() {
   cout << "Starting GameLoop" << endl;
+  FrameGuider::start();
   while (_gameState == GameState::PLAY ||
          (_gameState == GameState::EXIT && gameEndAnimator.isActive())) {
     if (client != nullptr || server != nullptr) {
@@ -505,7 +508,11 @@ void MainGame::gameLoop() {
     processInput();
 
     CollisionEngine::checkCollisions();
-    game_frame++;
+
+    FrameGuider::updateFrame();
+    // game_frame ++;
+    game_frame = FrameGuider::current_frame_double;
+    game_frame_int = FrameGuider::current_frame_int;
   }
 }
 

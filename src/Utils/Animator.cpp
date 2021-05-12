@@ -12,7 +12,7 @@ Animator::Animator(int sf, int dur) {
 Animator::Animator(int dur) { duration = dur; }
 
 void Animator::start() {
-  start_frame = game_frame;
+  start_frame = game_frame_int;
   end_frame = start_frame + duration;
 }
 
@@ -28,7 +28,7 @@ void Animator::set_duration(int dur){
 
 int Animator::get_current_frame() {
   if (!isActive()) return -1;
-  return game_frame - start_frame;
+  return game_frame_int - start_frame;
 }
 
 double Animator::animation_progress() {
@@ -47,4 +47,4 @@ double Animator::getAnimationProgressInCurve(AnimationCurve curve,double factor,
   return -99;
 }
 
-bool Animator::isActive() { return game_frame < end_frame; }
+bool Animator::isActive() { return game_frame_int < end_frame; }

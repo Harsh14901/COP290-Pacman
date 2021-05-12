@@ -5,6 +5,7 @@
 #include "Collision/CollisionEngine.hpp"
 #include "Constants.hpp"
 #include "Textures/LTexture.hpp"
+#include "Utils/FrameGuider.hpp"
 
 using namespace std;
 

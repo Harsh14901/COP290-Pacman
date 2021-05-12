@@ -12,6 +12,8 @@
 #include "Constants.hpp"
 #include "Grids/WallGrid.hpp"
 #include "Textures/LTexture.hpp"
+#include "Network/NetworkManager.hpp"
+#include "Utils/FrameGuider.hpp"
 
 class Character {
  public:
@@ -19,7 +21,7 @@ class Character {
   static const int DOT_WIDTH;
   static const int DOT_HEIGHT;
   // Maximum axis velocity of the dot
-  static const int DOT_VEL = 4;
+  static const int DOT_VEL = 8;
 
   // Initializes the variables
   Character();

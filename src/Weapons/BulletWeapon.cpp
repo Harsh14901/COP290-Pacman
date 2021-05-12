@@ -90,8 +90,8 @@ void BulletWeapon::update(){
         return;
     }
 
-    x += velX;
-    y += velY;
+    x += velX*FrameGuider::getFrameDeltaRounded();
+    y += velY*FrameGuider::getFrameDeltaRounded();
 
     mCollider.setX(x);
     mCollider.setY(y);

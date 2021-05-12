@@ -21,8 +21,6 @@ VentGrid::VentGrid()
 void VentGrid::generate() {
 
     auto wallGrid = WallGrid::getInstance();
-    // int rows = sizeof(walls)/sizeof(walls[0]);
-    // int cols = sizeof(walls[0])/sizeof(walls[0][0]);
     int rows = GRID_ROW;
     int cols = GRID_COL;
 

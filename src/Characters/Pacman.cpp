@@ -187,7 +187,7 @@ void Pacman::handle_packets() {
     mVelX = p.velX;
     mVelY = p.velY;
     auto data = convert_string_to_map(p.data);
-    cout << "See this "<< is_server<< " " << data["is_invisible"] << endl; 
+    // cout << "See this "<< is_server<< " " << data["is_invisible"] << endl; 
     _direction = Direction(stoi(data["direction"]));
     if(!is_server) is_invisible = data["is_invisible"]=="1";
   }
