@@ -23,6 +23,8 @@ const static int SCREEN_HEIGHT = GAMEAREA_HEIGHT + BOTTOM_BAR_HEIGHT;
 
 const static int PORT = 8000;
 const static int MAX_BUFF = 4096;
+enum class EnemyState { NORMAL, WEAK, SUPER_ACTIVE };
+
 enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };
 
 class IDS {

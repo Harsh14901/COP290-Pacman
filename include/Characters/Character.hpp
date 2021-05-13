@@ -21,7 +21,7 @@ class Character {
   static const int DOT_WIDTH;
   static const int DOT_HEIGHT;
   // Maximum axis velocity of the dot
-  static const int DOT_VEL = 8;
+  static const int DOT_VEL = 4;
 
   // Initializes the variables
   Character();
@@ -40,16 +40,18 @@ class Character {
   // Place the pacman at a position.
   void place(SDL_Point p);
 
- protected:
-  // The X and Y offsets of the dot
   int mPosX, mPosY;
 
   // The velocity of the dot
   int mVelX, mVelY;
   Direction _direction = Direction::LEFT;
   Direction _next = Direction::NONE;
-
   void change_direction(Direction d);
+
+
+ protected:
+  // The X and Y offsets of the dot
+
   void handle_collision();
   void handle_packets();
   void broadcast_coordinates();

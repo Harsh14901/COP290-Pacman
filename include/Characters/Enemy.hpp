@@ -17,8 +17,8 @@
 #include "Characters/GhostManager.hpp"
 // #include "Weapons/BulletWeapon.hpp"
 #include "Weapons/FreezeBullet.hpp"
+#include "AI/GhostAIEngine.hpp"
 
-enum class EnemyState { NORMAL, WEAK, SUPER_ACTIVE };
 
 class Enemy : public Character {
  public:
@@ -58,6 +58,7 @@ class Enemy : public Character {
   FreezeBullet freezeBullet = FreezeBullet(30);
 
  private:
+  GhostAIEngine AIEngine;
   void randomize_direction();
   Animator weak_state_animator = Animator(400);
 };

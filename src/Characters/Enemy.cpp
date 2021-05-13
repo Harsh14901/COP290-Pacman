@@ -26,6 +26,7 @@ Enemy::Enemy(int type) : Character(IDS::ENEMY_COLLIDER_ID + "_" +to_string(type)
     id = prev_id + 1;
   }
   ids.push_back(id);
+  AIEngine.init(DOT_WIDTH,DOT_HEIGHT,type);
 }
 
 void Enemy::switch_active_id() {
@@ -135,7 +136,10 @@ void Enemy::move() {
   if(state==EnemyState::WEAK && !weak_state_animator.isActive()){
     state = EnemyState::NORMAL;
   }
+
   freezeBullet.update();
+  AIEngine.update(mPosX,mPosY,_direction,state);
+
   if (is_server) {
     handle_packets();
     handle_collision();
@@ -160,16 +164,20 @@ void Enemy::move() {
 
     }
     else if (!is_two_player) {
-      randomize_direction();
+      // randomize_direction();
+      // AIEngine.updateDirection();
+       change_direction(AIEngine.updateDirection());
     }
     Character::move();
     return;
+  }else{
+    handle_collision();
+    if (active_id != id) {
+      // randomize_direction();
+      change_direction(AIEngine.updateDirection());
+    }
+    Character::move();
   }
-  handle_collision();
-  if (active_id != id) {
-    randomize_direction();
-  }
-  Character::move();
 }
 
 void Enemy::setState(EnemyState st) { 
