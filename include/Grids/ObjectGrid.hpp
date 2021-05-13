@@ -49,6 +49,7 @@ class ObjectGrid {
   void packets2objects();
 
   SDL_Point get_maze_point(SDL_Point canvas_point);
+  SDL_Point get_canvas_point(SDL_Point maze_indices);
 
  protected:
   ObjectGrid(string id, string asset_file, double scale = 1.0);

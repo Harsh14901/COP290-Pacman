@@ -1,30 +1,52 @@
-SHELL = /bin/bash
-
-CC = g++
-C_FLAGS = -g -Wall -std=c++17
-
-BIN  = output
-SRCS = src/*.cpp
-PROG = output/main
-SRC = src
-INCLUDE := include
-LIB := lib
+CXX = g++
+CXXFLAGS	:= -g -Wall -std=c++17 -fno-stack-protector
+OUTPUT	:= output
+BUILD 			:= build
+SRC		:= src
+INCLUDE	:= include
+LIB		:= 
 LFLAGS = -lSDL2 -lGL -lGLEW -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_net
 
 
 
+MAIN	:= main
+SOURCEDIRS	:= $(shell find $(SRC) -type d)
+BUILDDIRS := $(addprefix $(BUILD)/, $(SOURCEDIRS))
+INCLUDEDIRS	:= $(shell find $(INCLUDE) -type d)
+LIBDIRS		:= $(shell find $(LIB) -type d)
+FIXPATH = $1
+RM = rm -f
+MD	:= mkdir -p
+
+INCLUDES	:= $(patsubst %,-I%, $(INCLUDEDIRS:%/=%))
+LIBS		:= $(patsubst %,-L%, $(LIBDIRS:%/=%))
+SOURCES		:= $(wildcard $(patsubst %,%/*.cpp, $(SOURCEDIRS)))
+OBJECTS		:= $(addprefix $(BUILD)/, $(SOURCES:.cpp=.o))
+
+OUTPUTMAIN	:= $(call FIXPATH,$(OUTPUT)/$(MAIN))
 
 
+all: $(OUTPUT) $(BUILDDIRS) $(MAIN)
+	@echo Executing 'all' complete!
 
-EXECUTABLE = main
+$(OUTPUT):
+	$(MD) $(OUTPUT)
 
-all: $(BIN)/$(EXECUTABLE)
+$(BUILDDIRS):
+	$(MD) $(BUILDDIRS)
 
-clean: 
-	$(RM) $(BIN)/$(EXECUTABLE)
+$(MAIN): $(OBJECTS) 
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $(OBJECTS) $(LFLAGS) -o $(OUTPUTMAIN)
 
-run: all 
-	./$(BIN)/$(EXECUTABLE) $(args)
-$(BIN)/$(EXECUTABLE): $(SRC)/*.cpp $(SRC)/**/*.cpp
+$(BUILD)/%.o: %.cpp 
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@ 
 
-	$(CC) $(C_FLAGS) -I$(INCLUDE) -I ./src/ -L$(LIB) $^ $(LFLAGS) -o $@ 
+.PHONY: clean
+clean:
+	$(RM) $(OUTPUTMAIN)
+	$(RM) $(call FIXPATH,$(OBJECTS))
+	@echo Cleanup complete!
+
+run: all
+	./$(OUTPUTMAIN) ${args}
+	@echo Executing 'run: all' complete!

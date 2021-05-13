@@ -37,8 +37,8 @@ void ObjectGrid::unset_object(int i, int j) {
   CollisionEngine::deregister_collider(&objectColliders[i][j]);
 }
 
-bool ObjectGrid::is_set(int i, int j){
-  if(i >= GRID_ROW || i < 0 || j >= GRID_COL || j < 0){
+bool ObjectGrid::is_set(int i, int j) {
+  if (i >= GRID_ROW || i < 0 || j >= GRID_COL || j < 0) {
     return false;
   }
   return objects[i][j] == 1;
@@ -89,6 +89,11 @@ bool ObjectGrid::can_move(int posX, int posY, Direction d) {
 SDL_Point ObjectGrid::get_maze_point(SDL_Point canvas_point) {
   return SDL_Point{canvas_point.y / OBJECT_HEIGHT,
                    canvas_point.x / OBJECT_WIDTH};
+}
+
+SDL_Point ObjectGrid::get_canvas_point(SDL_Point maze_indices) {
+  return SDL_Point{maze_indices.y * OBJECT_WIDTH,
+                   maze_indices.x * OBJECT_HEIGHT};
 }
 void ObjectGrid::generate() {
   // SHOULD BE HANDLED BY SUBCLASS

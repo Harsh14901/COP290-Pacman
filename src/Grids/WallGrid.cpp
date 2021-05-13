@@ -22,9 +22,9 @@ SDL_Point WallGrid::get_empty_indices() {
   printf("Found empty location: (%d, %d)\n", x, y);
   return SDL_Point{x, y};
 }
+
 SDL_Point WallGrid::get_empty_location() {
-  auto p = get_empty_indices();
-  return SDL_Point{p.y * OBJECT_WIDTH, p.x * OBJECT_HEIGHT};
+  return get_canvas_point(get_empty_indices());
 }
 
 // TODO: Fix these constants

@@ -74,18 +74,19 @@ void Character::handle_collision() {
   auto collisions = CollisionEngine::getCollisions(CHARACTER_ID);
   int i = 0;
   while (i < collisions.size()) {
-    if (collisions[i]->id.find(IDS::COIN_COLLIDER_ID) != -1 || collisions[i]->id.find(IDS::VENT_COLLIDER_ID)!=-1) {
+    if (collisions[i]->id.find(IDS::COIN_COLLIDER_ID) != -1 ||
+        collisions[i]->id.find(IDS::VENT_COLLIDER_ID) != -1) {
       i++;
       continue;
     }
     switch (_direction) {
       case Direction::LEFT:
       case Direction::RIGHT:
-        mPosX -= 1 * mVelX*FrameGuider::getFrameDeltaRounded();
+        mPosX -= 1 * mVelX * FrameGuider::getFrameDeltaRounded();
         break;
       case Direction::UP:
       case Direction::DOWN:
-        mPosY -= 1 * mVelY*FrameGuider::getFrameDeltaRounded();
+        mPosY -= 1 * mVelY * FrameGuider::getFrameDeltaRounded();
         break;
       default:
         break;
@@ -147,7 +148,8 @@ void Character::change_direction(Direction d) {
     _next = Direction::NONE;
 
     // TODO: Remove this hack
-    if(CHARACTER_ID.find(IDS::PACMAN_COLLIDER_ID)==-1)  broadcast_coordinates();
+    if (CHARACTER_ID.find(IDS::PACMAN_COLLIDER_ID) == -1)
+      broadcast_coordinates();
   } else {
     _next = d;
   }
@@ -158,7 +160,7 @@ void Character::move() {
   if (_next != Direction::NONE) {
     change_direction(_next);
   }
-  mPosX += mVelX*FrameGuider::getFrameDeltaRounded();
+  mPosX += mVelX * FrameGuider::getFrameDeltaRounded();
 
   // If the dot went too far to the left or right
   if ((mPosX < 0) || (mPosX + DOT_WIDTH > GAMEAREA_WIDTH)) {
@@ -172,7 +174,7 @@ void Character::move() {
   }
 
   // Move the dot up or down
-  mPosY += mVelY*FrameGuider::getFrameDeltaRounded();
+  mPosY += mVelY * FrameGuider::getFrameDeltaRounded();
 
   // If the dot went too far up or down
   if ((mPosY < 0) || (mPosY + DOT_HEIGHT > GAMEAREA_HEIGHT)) {

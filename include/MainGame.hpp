@@ -16,8 +16,8 @@
 #include "Grids/VentGrid.hpp"
 #include "Network/NetworkManager.hpp"
 #include "Textures/LTexture.hpp"
-#include "Utils/AudioAsset.hpp"
 #include "UI/BottomBar.hpp"
+#include "Utils/AudioAsset.hpp"
 
 using namespace std;
 
@@ -28,10 +28,14 @@ class MainGame {
   MainGame();
 
   void runGame();
+  void runSimulation();
   void listen(Server* server);
   void connect(Client* client);
 
- private:
+ protected:
+  void initSystems();
+  void preRender();
+
   SDL_Window* _window;
   SDL_Surface* _screenSurface;
   SDL_Surface* _gPacman;
@@ -40,10 +44,37 @@ class MainGame {
   SDL_Renderer* _gRenderer;
   SDL_Texture* _gTexture = NULL;
   SDL_Texture* _mainMenuTexture = NULL;
+
   Server* server = nullptr;
   Client* client = nullptr;
 
-  void initSystems();
+  int _screenWidth;
+  int _screenHeight;
+
+  GameState _gameState;
+
+  LTexture pacmanHeadingText;
+  LTexture p1Text;
+  LTexture p2Text;
+  LTexture p1TextLarger;
+  LTexture p2TextLarger;
+  LTexture networkTextTexture;
+
+  Animator gameEndAnimator = Animator(360);
+  LTexture gameEndTextTexture;
+
+  AudioAsset pacmanDeathSound;
+  AudioAsset pacmanMainMenuMusic;
+
+  BottomBar bottomBar =
+      BottomBar(0, GAMEAREA_HEIGHT, BOTTOM_BAR_WIDTH, BOTTOM_BAR_HEIGHT);
+
+  WallGrid* wallGrid;
+  CoinGrid* coinGrid;
+  CherryGrid* cherryGrid;
+  VentGrid* ventGrid;
+
+ private:
   void drawInitScreen();
   void processInput();
   void gameLoop();
@@ -54,24 +85,10 @@ class MainGame {
 
   SDL_Texture* loadTexture(string path);
 
-  int _screenWidth;
-  int _screenHeight;
-
-  GameState _gameState;
-  // vector<Enemy> enemies;
-
-  LTexture pacmanHeadingText;
-  LTexture p1Text;
-  LTexture p2Text;
-  LTexture p1TextLarger;
-  LTexture p2TextLarger;
-
   // Returns the option selected
   int mainMenu();
   void initMainMenuSystems();
   void mainMenuRender(int option);
-
-  LTexture networkTextTexture;
 
   void networkMenu();
   void initNetworkMenu();
@@ -79,12 +96,4 @@ class MainGame {
 
   void renderGameEndAnimation();
   void initialiseGameEndTexture(int is_win);
-
-  Animator gameEndAnimator = Animator(360);
-  LTexture gameEndTextTexture;
-
-  AudioAsset pacmanDeathSound;
-  AudioAsset pacmanMainMenuMusic;
-
-  BottomBar bottomBar = BottomBar(0,GAMEAREA_HEIGHT,BOTTOM_BAR_WIDTH,BOTTOM_BAR_HEIGHT);
 };

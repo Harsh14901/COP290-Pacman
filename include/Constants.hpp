@@ -37,6 +37,7 @@ class IDS {
   inline const static string CHERRY_COLLIDER_ID = "cherry";
   inline const static string NETWORK_ID = "networkmanager";
   inline const static string FREEZEBULLET_ID = "freezebullet";
+  inline const static string ROBOT_ID = "robot";
 };
 
 enum KeyPressSurfaces {

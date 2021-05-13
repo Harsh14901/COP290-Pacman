@@ -1,4 +1,5 @@
 #include <MainGame.hpp>
+#include <SimGame.hpp>
 #include <csignal>
 #include <iostream>
 
@@ -14,7 +15,6 @@ void signal_handler(int signal_num) {
 
 int main(int argc, char* argv[]) {
   signal(SIGINT, signal_handler);
-  MainGame mainGame;
   string host = "";
 
   if (argc >= 2) {
@@ -23,15 +23,20 @@ int main(int argc, char* argv[]) {
 
   Server server;
   Client client(host, PORT);
-
-  if (host == "") {
-    is_server = true;
-    cout << "Is server is true" << endl;
-    mainGame.listen(&server);
+  if (host == "simulate") {
+    SimGame().runSimulation();
   } else {
-    is_server = false;
-    mainGame.connect(&client);
+    MainGame mainGame;
+    if (host == "") {
+      is_server = true;
+      cout << "Is server is true" << endl;
+      mainGame.listen(&server);
+    } else {
+      is_server = false;
+      mainGame.connect(&client);
+    }
+    mainGame.runGame();
   }
-  mainGame.runGame();
+
   return 0;
 }

@@ -1,7 +1,6 @@
 #include "Characters/Enemy.hpp"
 
 extern GhostManager ghostManager;
-extern WallGrid wallGrid;
 extern bool is_server;
 
 vector<int> Enemy::ids;
@@ -17,7 +16,8 @@ void Enemy::make_enemies(int n) {
 
 vector<Enemy*> Enemy::get_enemies() { return enemies; }
 
-Enemy::Enemy(int type) : Character(IDS::ENEMY_COLLIDER_ID + "_" +to_string(type) + "_" + to_string(rand())) {
+Enemy::Enemy(int type)
+    : Character(IDS::ENEMY_COLLIDER_ID + "_" + to_string(type)) {
   if (ids.empty()) {
     id = 0;
     active_id = 0;
@@ -26,11 +26,11 @@ Enemy::Enemy(int type) : Character(IDS::ENEMY_COLLIDER_ID + "_" +to_string(type)
     id = prev_id + 1;
   }
   ids.push_back(id);
-  AIEngine.init(DOT_WIDTH,DOT_HEIGHT,type);
+  AIEngine.init(DOT_WIDTH, DOT_HEIGHT, type);
 }
 
 void Enemy::switch_active_id() {
-  if(is_server) return;
+  if (is_server) return;
 
   if (active_id == ids.back()) {
     active_id = ids.front();
@@ -39,7 +39,7 @@ void Enemy::switch_active_id() {
   }
 }
 void Enemy::handleEvent(SDL_Event& e) {
-  if(is_server){
+  if (is_server) {
     return;
   }
   if (id != active_id) {
@@ -51,10 +51,9 @@ void Enemy::handleEvent(SDL_Event& e) {
 void Enemy::init(SDL_Renderer* renderer, int enemy_type) {
   Character::init(renderer);
   type = enemy_type;
-  spawnAnimator.set_duration(100+100*type);
+  spawnAnimator.set_duration(100 + 100 * type);
   freezeBullet.setRenderer(renderer);
 }
-
 
 void Enemy::handle_collision() {
   auto collisions = CollisionEngine::getCollisions(CHARACTER_COLLIDER_ID);
@@ -67,7 +66,8 @@ void Enemy::handle_collision() {
       continue;
     }
     // cout << "Enemy collided with " << collisions[i]->id << endl;
-    if (collisions[i]->id.find(IDS::ENEMY_COLLIDER_ID) != -1 || collisions[i]->id.find(IDS::FREEZEBULLET_ID) != -1) {
+    if (collisions[i]->id.find(IDS::ENEMY_COLLIDER_ID) != -1 ||
+        collisions[i]->id.find(IDS::FREEZEBULLET_ID) != -1) {
       i++;
       // cout << "Enemy Collided with another enemy" << endl;
       continue;
@@ -86,18 +86,17 @@ void Enemy::render() {
   freezeBullet.render();
 }
 
-int Enemy::getEnemyColor(){
-  if(weak_state_animator.isActive()){
-    if(weak_state_animator.animation_progress()>0.75){
-      if(int(weak_state_animator.animation_progress()*40)%2==1){
+int Enemy::getEnemyColor() {
+  if (weak_state_animator.isActive()) {
+    if (weak_state_animator.animation_progress() > 0.75) {
+      if (int(weak_state_animator.animation_progress() * 40) % 2 == 1) {
         return 4;
       }
     }
     return 5;
-  } 
-  return type; 
+  }
+  return type;
 }
-
 
 void Enemy::randomize_direction() {
   unordered_set<Direction> available_directions;
@@ -110,12 +109,12 @@ void Enemy::randomize_direction() {
       available_directions.insert(d);
     }
   }
-  auto directionToErase = _direction==Direction::LEFT?Direction::RIGHT:
-  _direction==Direction::RIGHT?Direction::LEFT:
-  _direction==Direction::UP?Direction::DOWN:
-  Direction::UP;
+  auto directionToErase = _direction == Direction::LEFT    ? Direction::RIGHT
+                          : _direction == Direction::RIGHT ? Direction::LEFT
+                          : _direction == Direction::UP    ? Direction::DOWN
+                                                           : Direction::UP;
   available_directions.erase(directionToErase);
- 
+
   if (available_directions.size() != 0) {
     int selection = rand() % available_directions.size();
     int i = 0;
@@ -128,49 +127,50 @@ void Enemy::randomize_direction() {
     }
   } else {
     // No option but to change direction
-    if(mPosX%32==0 && mPosY%32==0) change_direction(directionToErase);
+    if (mPosX % 32 == 0 && mPosY % 32 == 0) change_direction(directionToErase);
   }
 }
 
 void Enemy::move() {
-  if(state==EnemyState::WEAK && !weak_state_animator.isActive()){
+  if (state == EnemyState::WEAK && !weak_state_animator.isActive()) {
     state = EnemyState::NORMAL;
   }
 
   freezeBullet.update();
-  AIEngine.update(mPosX,mPosY,_direction,state);
+  AIEngine.update(mPosX, mPosY, _direction, state);
 
   if (is_server) {
     handle_packets();
     handle_collision();
-    if(spawnAnimator.isActive()){
-        if(mVelX==0){
-          if(mPosX==ghostManager.ghostZones[2].first*32)
-            change_direction(Direction::RIGHT);
-          else
-            change_direction(Direction::LEFT);
+    if (spawnAnimator.isActive()) {
+      if (mVelX == 0) {
+        if (mPosX == ghostManager.ghostZones[2].first * 32)
+          change_direction(Direction::RIGHT);
+        else
+          change_direction(Direction::LEFT);
+      }
+      if (mPosX == ghostManager.ghostZones[2].first * 32) {
+        change_direction(Direction::RIGHT);
+      } else if (mPosX == ghostManager.ghostZones[5].first * 32) {
+        change_direction(Direction::LEFT);
+      } else {
+        if (spawnAnimator.animation_progress() > 0.85 &&
+            (mPosX != ghostManager.ghostZones[3].first * 32 &&
+             mPosX != ghostManager.ghostZones[4].first * 32) &&
+            (mPosX != ghostManager.ghostZones[2].first * 32 &&
+             mPosX != ghostManager.ghostZones[5].first * 32)) {
+          change_direction(Direction::UP);
         }
-        if(mPosX==ghostManager.ghostZones[2].first*32){
-            change_direction(Direction::RIGHT); 
-        }else if(mPosX==ghostManager.ghostZones[5].first*32){
-            change_direction(Direction::LEFT);
-        }else{
-          if(spawnAnimator.animation_progress()>0.85 &&
-           (mPosX!=ghostManager.ghostZones[3].first*32 && mPosX!=ghostManager.ghostZones[4].first*32) &&
-           (mPosX!=ghostManager.ghostZones[2].first*32 && mPosX!=ghostManager.ghostZones[5].first*32)){
-            change_direction(Direction::UP);
-          }
-        }
+      }
 
-    }
-    else if (!is_two_player) {
+    } else if (!is_two_player) {
       // randomize_direction();
       // AIEngine.updateDirection();
-       change_direction(AIEngine.updateDirection());
+      change_direction(AIEngine.updateDirection());
     }
     Character::move();
     return;
-  }else{
+  } else {
     handle_collision();
     if (active_id != id) {
       // randomize_direction();
@@ -180,25 +180,21 @@ void Enemy::move() {
   }
 }
 
-void Enemy::setState(EnemyState st) { 
-  state = st; 
+void Enemy::setState(EnemyState st) {
+  state = st;
   weak_state_animator.start();
 }
 
-
-void Enemy::respawn(){
-
+void Enemy::respawn() {
   auto pt = ghostManager.ghostZones[2 + (rand() % 4)];
 
-  Character::place(wallGrid.getRenderPointFromCoordi(pt.first,pt.second));
+  Character::place(
+      WallGrid::getInstance()->getRenderPointFromCoordi(pt.first, pt.second));
   state = EnemyState::NORMAL;
   spawnAnimator.start();
-
-
 }
 
-void Enemy::shootFreezeBullet(){
+void Enemy::shootFreezeBullet() {
   // if(is_server) return;
-  freezeBullet.shoot(_direction,mPosX,mPosY);
+  freezeBullet.shoot(_direction, mPosX, mPosY);
 }
-

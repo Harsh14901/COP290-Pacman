@@ -6,23 +6,19 @@
 #include <time.h> /* time */
 
 #include "Characters/GhostManager.hpp"
-#include "Utils/Algorithms.cpp"
-#include "Utils/PreferenceManager.hpp"
+#include "Characters/Robot.hpp"
 #include "Utils/FrameGuider.hpp"
+#include "Utils/PreferenceManager.hpp"
 
 int game_frame_int = 0;
 double game_frame = 0;
-auto coinGrid = CoinGrid::getInstance();
-auto cherryGrid = CherryGrid::getInstance();
-auto wallGrid = WallGrid::getInstance();
-auto ventGrid = VentGrid::getInstance();
+
 PreferenceManager prefManager = PreferenceManager(true);
 GhostManager ghostManager;
 vector<Enemy*> enemies;
 Pacman pacman;
 
 extern bool is_server;
-
 
 void fatalError(string error_message) {
   cout << error_message << endl;
@@ -39,6 +35,11 @@ MainGame::MainGame() {
 
   Enemy::make_enemies();
   enemies = Enemy::get_enemies();
+
+  coinGrid = CoinGrid::getInstance();
+  cherryGrid = CherryGrid::getInstance();
+  wallGrid = WallGrid::getInstance();
+  ventGrid = VentGrid::getInstance();
 
   _gameState = GameState::MAIN_MENU;
 }
@@ -291,19 +292,6 @@ void MainGame::initCharacters() {
     enemy->respawn();
     // enemy->place(wallGrid->get_empty_location());
   }
-
-  // TODO: remove this
-  cout << "Testing  TSP" << endl;
-  auto tsp = TSP();
-  vector<SDL_Point> points;
-  for (int i = 0; i < TSP::MAX_SIZE; i++) {
-    points.push_back(wallGrid->get_empty_indices());
-  }
-  auto path = tsp.steinerTSP(points);
-  for (auto& p : path) {
-    printf("(%d, %d) ->", p.x, p.y);
-  }
-  cout << endl;
 }
 
 void MainGame::initSystems() {
@@ -401,11 +389,27 @@ void MainGame::drawInitScreen() {
   SDL_UpdateWindowSurface(_window);
 }
 
+void MainGame::preRender() {
+  SDL_SetRenderDrawColor(_gRenderer, 0xFF, 0xFF, 0x0F, 0xFF);
+
+  SDL_RenderClear(_gRenderer);
+
+  SDL_Rect topLeftViewport;
+  topLeftViewport.x = 0;
+  topLeftViewport.y = 0;
+  topLeftViewport.w = _screenWidth / 1;
+  topLeftViewport.h = _screenHeight / 1;
+
+  SDL_RenderSetViewport(_gRenderer, &topLeftViewport);
+
+  // Render texture to screen
+  SDL_RenderCopy(_gRenderer, _gTexture, NULL, NULL);
+}
+
 void MainGame::processInput() {
   if (!pacman.is_dead && coinGrid->active_objects != 0) {
     SDL_Event evnt;
     while (SDL_PollEvent(&evnt)) {
-      
       switch (evnt.type) {
         case SDL_QUIT:
           _gameState = GameState::EXIT;
@@ -414,7 +418,7 @@ void MainGame::processInput() {
           // cout << evnt.key.keysym.sym << "," << SDLK_t << endl;
           if (evnt.key.keysym.sym == SDLK_TAB) {
             Enemy::switch_active_id();
-          }else if(evnt.key.keysym.sym == SDLK_t){
+          } else if (evnt.key.keysym.sym == SDLK_t) {
             enemies[Enemy::active_id]->shootFreezeBullet();
           }
       }
@@ -440,30 +444,15 @@ void MainGame::processInput() {
     }
   }
 
-  SDL_SetRenderDrawColor(_gRenderer, 0xFF, 0xFF, 0x0F, 0xFF);
-
-  SDL_RenderClear(_gRenderer);
-
-  SDL_Rect topLeftViewport;
-  topLeftViewport.x = 0;
-  topLeftViewport.y = 0;
-  topLeftViewport.w = _screenWidth / 1;
-  topLeftViewport.h = _screenHeight / 1;
-
-  SDL_RenderSetViewport(_gRenderer, &topLeftViewport);
-
-  // Render texture to screen
-  SDL_RenderCopy(_gRenderer, _gTexture, NULL, NULL);
+  preRender();
 
   coinGrid->render();
   ventGrid->render();
   cherryGrid->render();
 
   pacman.render();
-  bottomBar.update(pacman.get_coins_collected(),pacman.get_active_points());
+  bottomBar.update(pacman.get_coins_collected(), pacman.get_active_points());
   bottomBar.render();
-
-
 
   for (auto& enemy : enemies) {
     enemy->render();
