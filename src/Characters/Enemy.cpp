@@ -17,7 +17,7 @@ void Enemy::make_enemies(int n) {
 vector<Enemy*> Enemy::get_enemies() { return enemies; }
 
 Enemy::Enemy(int type)
-    : Character(IDS::ENEMY_COLLIDER_ID + "_" + to_string(type)) {
+    : Character(IDS::ENEMY_COLLIDER_ID + "_" + to_string(type + 1)) {
   if (ids.empty()) {
     id = 0;
     active_id = 0;

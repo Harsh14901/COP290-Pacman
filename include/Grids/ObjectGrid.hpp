@@ -36,7 +36,7 @@ class ObjectGrid {
   bool can_move(int posX, int posY, Direction d);
 
   // Generate a objects in empty part of maze
-  void generate();
+  virtual void generate();
 
   // Broadcast position of objects via NetworkManager
   // ASSUMPTION: Call in init stage, not in game loop
@@ -50,6 +50,8 @@ class ObjectGrid {
 
   SDL_Point get_maze_point(SDL_Point canvas_point);
   SDL_Point get_canvas_point(SDL_Point maze_indices);
+
+  virtual ~ObjectGrid();
 
  protected:
   ObjectGrid(string id, string asset_file, double scale = 1.0);

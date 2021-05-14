@@ -245,52 +245,42 @@ void MainGame::runGame() {
 }
 
 void MainGame::initCharacters() {
+  queue<ObjectGrid*> init_grids;
+
+  init_grids.push(wallGrid);
+  init_grids.push(coinGrid);
+  init_grids.push(ventGrid);
+  init_grids.push(cherryGrid);
+
+  while (!init_grids.empty()) {
+    auto grid = init_grids.front();
+
+    grid->init(_gRenderer);
+    if (server != nullptr && is_server) {
+      grid->generate();
+      grid->broadcast();
+    } else if (client != nullptr) {
+      grid->packets2objects();
+    } else {
+      grid->generate();
+    }
+    init_grids.pop();
+  }
+
   pacman.init(_gRenderer);
-  wallGrid->init(_gRenderer);
-  coinGrid->init(_gRenderer);
-  ventGrid->init(_gRenderer);
-  cherryGrid->init(_gRenderer);
 
   int i = 0;
   for (auto& enemy : enemies) {
     enemy->init(_gRenderer, i++);
   }
 
-  if (server != nullptr && is_server) {
-    wallGrid->generate();
-    ghostManager.updateGhostZones();
-    coinGrid->generate();
-    ventGrid->generate();
-    cherryGrid->generate();
+  ghostManager.updateGhostZones();
 
-    wallGrid->broadcast();
-    coinGrid->broadcast();
-    ventGrid->broadcast();
-    cherryGrid->broadcast();
-  } else if (client != nullptr) {
-    wallGrid->packets2objects();
-    ghostManager.updateGhostZones();
-    ventGrid->packets2objects();
-    coinGrid->packets2objects();
-    cherryGrid->packets2objects();
-  } else {
-    wallGrid->generate();
-    ghostManager.updateGhostZones();
-    ventGrid->generate();
-    coinGrid->generate();
-    cherryGrid->generate();
-  }
-
-  auto pacman_start = wallGrid->get_empty_location();
-  auto pacman_maze_loc = wallGrid->get_maze_point(pacman_start);
-  pacman.place(pacman_start);
-
-  coinGrid->unset_object(pacman_maze_loc.x, pacman_maze_loc.y);
-  cherryGrid->unset_object(pacman_maze_loc.x, pacman_maze_loc.y);
+  auto pacman_start = wallGrid->get_empty_indices();
+  pacman.place(wallGrid->get_canvas_point(pacman_start));
 
   for (auto& enemy : enemies) {
     enemy->respawn();
-    // enemy->place(wallGrid->get_empty_location());
   }
 }
 
@@ -443,6 +433,7 @@ void MainGame::processInput() {
       }
     }
   }
+  bottomBar.update(pacman.get_coins_collected(), pacman.get_active_points());
 
   preRender();
 
@@ -451,7 +442,6 @@ void MainGame::processInput() {
   cherryGrid->render();
 
   pacman.render();
-  bottomBar.update(pacman.get_coins_collected(), pacman.get_active_points());
   bottomBar.render();
 
   for (auto& enemy : enemies) {

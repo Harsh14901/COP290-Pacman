@@ -16,7 +16,7 @@
 class CherryGrid : public ObjectGrid {
  public:
   static CherryGrid* getInstance();
-  void generate();
+  void generate() override;
 
  protected:
   CherryGrid();

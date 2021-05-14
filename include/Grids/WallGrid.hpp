@@ -18,16 +18,15 @@ class WallGrid : public ObjectGrid {
   // Get an empty location in the matrix
   SDL_Point get_empty_location();
   SDL_Point get_empty_indices();
-  SDL_Point getRenderPointFromCoordi(int x,int y);
+  SDL_Point getRenderPointFromCoordi(int x, int y);
 
   // Check if a character at (posX, posY) can move in the direction d
   bool can_move(int posX, int posY, Direction d);
 
   // Generate a random maze
-  void generate();
+  void generate() override;
 
-  bool is_empty(int i,int j);
-
+  bool is_empty(int i, int j);
 
  protected:
   WallGrid();

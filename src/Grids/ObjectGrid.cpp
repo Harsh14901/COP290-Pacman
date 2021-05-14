@@ -95,10 +95,6 @@ SDL_Point ObjectGrid::get_canvas_point(SDL_Point maze_indices) {
   return SDL_Point{maze_indices.y * OBJECT_WIDTH,
                    maze_indices.x * OBJECT_HEIGHT};
 }
-void ObjectGrid::generate() {
-  // SHOULD BE HANDLED BY SUBCLASS
-  // TODO: TRY MAKING VIRTUAL
-}
 
 void ObjectGrid::broadcast() {
   for (int i = 0; i < GRID_ROW; i++) {
@@ -123,3 +119,7 @@ void ObjectGrid::packets2objects() {
     set_object(p.posX, p.posY);
   }
 }
+
+void ObjectGrid::generate() {}
+
+ObjectGrid::~ObjectGrid() {}

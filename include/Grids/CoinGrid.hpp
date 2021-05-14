@@ -15,7 +15,7 @@
 class CoinGrid : public ObjectGrid {
  public:
   static CoinGrid* getInstance();
-  void generate();
+  void generate() override;
 
  protected:
   CoinGrid();
