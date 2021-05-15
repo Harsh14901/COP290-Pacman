@@ -18,6 +18,7 @@
 #include "Textures/LTexture.hpp"
 #include "Utils/Animator.hpp"
 #include "Utils/AudioAsset.hpp"
+#include "Weapons/Weapon.hpp"
 #include "utils.hpp"
 
 class Pacman : public Character {
@@ -49,6 +50,7 @@ class Pacman : public Character {
   int activePoints = 0;
 
   AudioAsset chompSound;
+  WeaponSet weaponSet;
 
   Animator freezeAnimation = Animator(100);
   Animator invisibleAnimator = Animator(300);

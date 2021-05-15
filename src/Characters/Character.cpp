@@ -53,7 +53,8 @@ void Character::handle_collision() {
   int i = 0;
   while (i < collisions.size()) {
     if (collisions[i]->id.find(IDS::COIN_COLLIDER_ID) != -1 ||
-        collisions[i]->id.find(IDS::VENT_COLLIDER_ID) != -1) {
+        collisions[i]->id.find(IDS::VENT_COLLIDER_ID) != -1 ||
+        collisions[i]->id.find(IDS::GRENADE_ID) != -1) {
       i++;
       continue;
     }
@@ -126,7 +127,8 @@ void Character::change_direction(Direction d) {
     _next = Direction::NONE;
 
     // TODO: Remove this hack
-    if (ID.find(IDS::PACMAN_COLLIDER_ID) == -1) broadcast_coordinates();
+    // if (ID.find(IDS::PACMAN_COLLIDER_ID) == -1) broadcast_coordinates();
+    broadcast_coordinates();
   } else {
     _next = d;
   }
@@ -169,6 +171,6 @@ void Character::move() {
   // mCollider.setY(mPosY);
 
   // Change circular collider position
-  mCollider.setX(mPosX + PACMAN_RENDER_WIDTH / 2);
-  mCollider.setY(mPosY + PACMAN_RENDER_HEIGHT / 2);
+  mCollider.setX(mPosX + WIDTH / 2);
+  mCollider.setY(mPosY + HEIGHT / 2);
 }

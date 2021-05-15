@@ -10,6 +10,8 @@ Pacman::Pacman() : Character(IDS::PACMAN_COLLIDER_ID) {}
 void Pacman::init(SDL_Renderer* renderer) {
   Base::init(renderer);
   chompSound.init("assets/sounds/pacman_chomp.wav", false);
+  weaponSet.primary_weapon.init(BulletType::EMP, this, 1);
+  weaponSet.secondary_weapon.init(BulletType::GRENADE, this, 1);
 }
 
 void Pacman::handleEvent(SDL_Event& e) {
@@ -27,6 +29,7 @@ void Pacman::handleEvent(SDL_Event& e) {
       VentGrid::getInstance()->handleOpening(mPosX / 32, mPosY / 32);
     }
   }
+  weaponSet.handleEvent(e);
   Character::handleEvent(e);
 }
 
@@ -75,7 +78,7 @@ void Pacman::handle_collision() {
 
   // if(!collisions.empty()){
   while (i < collisions.size()) {
-    if (collisions[i]->id.find(IDS::COIN_COLLIDER_ID) != -1) {
+    if (collisions[i]->id.find(IDS::COIN_COLLIDER_ID) != string::npos) {
       // Coin Collected
       // cout << "Coin Collected" << endl;
       i++;
@@ -89,7 +92,7 @@ void Pacman::handle_collision() {
       gulp_animator.start();
       continue;
     }
-    if (collisions[i]->id.find(IDS::CHERRY_COLLIDER_ID) != -1) {
+    if (collisions[i]->id.find(IDS::CHERRY_COLLIDER_ID) != string::npos) {
       // cout << "Cherry Collected" << endl;
       i++;
       cherries++;
@@ -103,7 +106,7 @@ void Pacman::handle_collision() {
       }
       continue;
     }
-    if (collisions[i]->id.find(IDS::ENEMY_COLLIDER_ID) != -1) {
+    if (collisions[i]->id.find(IDS::ENEMY_COLLIDER_ID) != string::npos) {
       // Assert: Game Over
       i++;
       auto temp = extractIntegerWords(collisions[i - 1]->id);
@@ -119,7 +122,7 @@ void Pacman::handle_collision() {
       }
       continue;
     }
-    if (collisions[i]->id.find(IDS::FREEZEBULLET_ID) != -1) {
+    if (collisions[i]->id.find(IDS::FREEZEBULLET_ID) != string::npos) {
       cout << "Time to Freeze" << endl;
       // is_dead = true;
       i++;
@@ -127,7 +130,7 @@ void Pacman::handle_collision() {
       freezeAnimation.start();
       continue;
     }
-    if (collisions[i]->id.find(IDS::VENT_COLLIDER_ID) != -1) {
+    if (collisions[i]->id.find(IDS::VENT_COLLIDER_ID) != string::npos) {
       i++;
       continue;
     }
@@ -161,6 +164,7 @@ void Pacman::move() {
 
   Character::move();
 
+ 
   if (VentGrid::getInstance()->canTeleport()) {
     auto newPt = VentGrid::getInstance()->getTeleportLocation();
     mPosX = newPt.first;
@@ -168,9 +172,8 @@ void Pacman::move() {
     cout << "x,y are" << mPosX << "," << mPosY << endl;
     mVelX = 0;
     mVelY = 0;
+    broadcast_coordinates();
   }
-
-  broadcast_coordinates();
 }
 
 int Pacman::get_coins_collected() { return coins; }
@@ -202,7 +205,6 @@ void Pacman::broadcast_coordinates() {
   map<string, string> data;
   data.insert({"direction", to_string(int(_direction))});
   data.insert({"is_invisible", to_string(is_invisible)});
-
   p.data = map_to_string(data);
   // cout << "data is " << p.data << endl;
   NetworkManager::queue_packet(p);

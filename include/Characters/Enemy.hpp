@@ -35,6 +35,7 @@ class Enemy : public Character {
   void move();
   void setState(EnemyState st);
   void respawn();
+  void emp();
 
   EnemyState state = EnemyState::NORMAL;
 
@@ -53,5 +54,7 @@ class Enemy : public Character {
   GhostAIEngine AIEngine;
   Animator weak_state_animator = Animator(400);
   Animator spawnAnimator = Animator(100);
-  Weapon weapon;
+  Animator empAnimation = Animator(200);
+
+  WeaponSet weaponSet;
 };

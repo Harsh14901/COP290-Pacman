@@ -4,8 +4,8 @@
 
 Grenade::Grenade()
     : Bullet("assets/pngs/pacman_lasers_freeze.png", 0,
-             IDS::BULLET_ID + "_" + IDS::WALLBUSTER_ID + "_" +
-                 to_string(rand())) {}
+             IDS::BULLET_ID + "_" + IDS::GRENADE_ID + "_" + to_string(rand())) {
+}
 
 void Grenade::handle_collision() {
   auto collisions = CollisionEngine::getCollisions(ID);
@@ -16,6 +16,7 @@ void Grenade::handle_collision() {
       if (temp.size() == 1) {
         temp[0]--;
         Enemy::get_enemies()[temp[0]]->respawn();
+        isActive = false;
       }
     }
   }

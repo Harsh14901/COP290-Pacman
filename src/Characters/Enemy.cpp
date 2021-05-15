@@ -55,7 +55,7 @@ void Enemy::handleEvent(SDL_Event& e) {
   if (id != get_active_id()) {
     return;
   }
-  weapon.handleEvent(e);
+  weaponSet.handleEvent(e);
   Character::handleEvent(e);
 }
 
@@ -63,7 +63,8 @@ void Enemy::init(SDL_Renderer* renderer) {
   Character::init(renderer);
   spawnAnimator.set_duration(100 + 100 * type);
   AIEngine.init(WIDTH, HEIGHT, type);
-  weapon.init(BulletType::WALLBUSTER, this, 1);
+  weaponSet.primary_weapon.init(BulletType::WALLBUSTER, this, 1);
+  weaponSet.secondary_weapon.init(BulletType::FREEZE, this, 1);
 }
 
 void Enemy::handle_collision() {
@@ -83,12 +84,14 @@ void Enemy::handle_collision() {
       // cout << "Enemy Collided with another enemy" << endl;
       continue;
     }
+
     // cout << "Collision with something: " << collisions[i]->id << endl;
     Character::handle_collision();
     break;
   }
 }
 
+void Enemy::emp() { empAnimation.start(); }
 void Enemy::render() {
   // Show the dot
   int typeValue = getEnemyColor();
@@ -142,6 +145,8 @@ void Enemy::randomize_direction() {
 }
 
 void Enemy::move() {
+  auto oldX = mPosX, oldY = mPosY;
+
   if (state == EnemyState::WEAK && !weak_state_animator.isActive()) {
     state = EnemyState::NORMAL;
   }
@@ -178,7 +183,6 @@ void Enemy::move() {
       change_direction(AIEngine.updateDirection());
     }
     Character::move();
-    return;
   } else {
     handle_collision();
     if (get_active_id() != id) {
@@ -186,6 +190,11 @@ void Enemy::move() {
       change_direction(AIEngine.updateDirection());
     }
     Character::move();
+  }
+  auto newX = mPosX, newY = mPosY;
+  if (empAnimation.isActive()) {
+    mPosX = (oldX + newX) / 2;
+    mPosY = (oldY + newY) / 2;
   }
 }
 

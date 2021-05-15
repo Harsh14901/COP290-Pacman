@@ -7,4 +7,7 @@ using namespace std;
 class EMPBullet : public Bullet {
  public:
   EMPBullet();
+
+ protected:
+  void handle_collision();
 };

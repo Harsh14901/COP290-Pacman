@@ -1,3 +1,5 @@
+#pragma once
+
 #include "BulletManager.hpp"
 #include "Characters/Character.hpp"
 #include "Utils/Animator.hpp"
@@ -22,4 +24,14 @@ class Weapon {
  private:
   Animator reload_animator = Animator(reload_time);
   Character* bearer;
+};
+
+struct WeaponSet {
+  Weapon primary_weapon;
+  Weapon secondary_weapon;
+
+  int active_weapon = 0;
+
+  Weapon& get_active_weapon();
+  void handleEvent(SDL_Event& e);
 };

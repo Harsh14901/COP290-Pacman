@@ -56,3 +56,26 @@ void Weapon::handleEvent(SDL_Event& e) {
 }
 
 bool Weapon::out_of_ammo() { return ammo == 0 && bullet_count == 0; }
+
+Weapon& WeaponSet::get_active_weapon() {
+  return (active_weapon == 0) ? primary_weapon : secondary_weapon;
+}
+
+void WeaponSet::handleEvent(SDL_Event& e) {
+  if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
+    switch (e.key.keysym.sym) {
+      case SDLK_1:
+        active_weapon = 0;
+        cout << "active weapon: " << int(primary_weapon.bullet_type) << endl;
+        break;
+      case SDLK_2:
+        active_weapon = 1;
+        cout << "active weapon: " << int(secondary_weapon.bullet_type) << endl;
+
+        break;
+      default:
+        break;
+    }
+  }
+  get_active_weapon().handleEvent(e);
+}
