@@ -4,7 +4,7 @@
 #include "Weapons/Bullet.hpp"
 using namespace std;
 
-class FreezeBullet : public Bullet {
+class EMPBullet : public Bullet {
  public:
-  FreezeBullet();
+  EMPBullet();
 };

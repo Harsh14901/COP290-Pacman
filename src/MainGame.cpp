@@ -9,7 +9,6 @@
 #include "Characters/Robot.hpp"
 #include "Utils/FrameGuider.hpp"
 #include "Utils/PreferenceManager.hpp"
-#include "Weapons/BulletManager.hpp"
 
 int game_frame_int = 0;
 double game_frame = 0;
@@ -411,7 +410,7 @@ void MainGame::processInput() {
           if (evnt.key.keysym.sym == SDLK_TAB) {
             Enemy::switch_active_id();
           } else if (evnt.key.keysym.sym == SDLK_t) {
-            Enemy::get_active_enemy()->shootFreezeBullet();
+            // Enemy::get_active_enemy()->shootFreezeBullet();
           }
       }
 

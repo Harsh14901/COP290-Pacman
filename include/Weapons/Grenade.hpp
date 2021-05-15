@@ -4,7 +4,10 @@
 #include "Weapons/Bullet.hpp"
 using namespace std;
 
-class FreezeBullet : public Bullet {
+class Grenade : public Bullet {
  public:
-  FreezeBullet();
+  Grenade();
+
+ protected:
+  void handle_collision();
 };

@@ -10,11 +10,18 @@ void BulletManager::shoot_bullet(BulletType type, Direction d, int x, int y,
   switch (type) {
     case BulletType::FREEZE:
       active_bullets.push_back(make_unique<FreezeBullet>());
-
       break;
-
+    case BulletType::EMP:
+      active_bullets.push_back(make_unique<EMPBullet>());
+      break;
+    case BulletType::WALLBUSTER:
+      active_bullets.push_back(make_unique<WallBusterBullet>());
+      break;
+    case BulletType::GRENADE:
+      active_bullets.push_back(make_unique<Grenade>());
+      break;
     default:
-      break;
+      return;
   }
   auto bullet_ptr = active_bullets.back().get();
   bullet_ptr->init(renderer);

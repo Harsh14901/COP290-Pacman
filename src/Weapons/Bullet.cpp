@@ -2,7 +2,8 @@
 
 #include "Network/NetworkManager.hpp"
 
-Bullet::Bullet(string asset, string id) : Bullet(asset, BULLET_VEL, id) {}
+Bullet::Bullet(string asset, string id)
+    : Bullet(asset, WeaponStats::MUZZLE_VEL, id) {}
 Bullet::Bullet(string asset, int velocity, string id)
     : Base(32, 32, velocity, id, asset) {}
 

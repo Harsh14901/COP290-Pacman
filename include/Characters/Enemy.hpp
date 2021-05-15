@@ -18,6 +18,7 @@
 // #include "Weapons/Bullet.hpp"
 #include "AI/GhostAIEngine.hpp"
 #include "Weapons/FreezeBullet.hpp"
+#include "Weapons/Weapon.hpp"
 
 class Enemy : public Character {
  public:
@@ -35,7 +36,6 @@ class Enemy : public Character {
   void move();
   void setState(EnemyState st);
   void respawn();
-  void shootFreezeBullet();
 
   EnemyState state = EnemyState::NORMAL;
 
@@ -54,4 +54,5 @@ class Enemy : public Character {
   GhostAIEngine AIEngine;
   Animator weak_state_animator = Animator(400);
   Animator spawnAnimator = Animator(100);
+  Weapon weapon = Weapon(BulletType::FREEZE, this);
 };

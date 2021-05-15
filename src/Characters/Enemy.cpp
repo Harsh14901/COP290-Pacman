@@ -1,7 +1,5 @@
 #include "Characters/Enemy.hpp"
 
-#include "Weapons/BulletManager.hpp"
-
 extern GhostManager ghostManager;
 extern bool is_server;
 int counter = 0;
@@ -57,6 +55,7 @@ void Enemy::handleEvent(SDL_Event& e) {
   if (id != get_active_id()) {
     return;
   }
+  weapon.handleEvent(e);
   Character::handleEvent(e);
 }
 
@@ -203,7 +202,7 @@ void Enemy::respawn() {
   spawnAnimator.start();
 }
 
-void Enemy::shootFreezeBullet() {
-  // if(is_server) return;
-  BulletManager::shoot_bullet(BulletType::FREEZE, _direction, mPosX, mPosY);
-}
+// void Enemy::shootFreezeBullet() {
+//   // if(is_server) return;
+//   BulletManager::shoot_bullet(BulletType::FREEZE, _direction, mPosX, mPosY);
+// }

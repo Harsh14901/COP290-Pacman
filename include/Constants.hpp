@@ -14,7 +14,6 @@ const static int WALL_GRID_ROWS = 26;
 const static int WALL_GRID_COLS = 40;
 const static int ENEMY_COUNT = 1;
 const static int PLAYER_VEL = 4;
-const static int BULLET_VEL = 32;
 
 const static int GAMEAREA_WIDTH = WALL_GRID_COLS * WALL_GRID_WIDTH;
 const static int GAMEAREA_HEIGHT = WALL_GRID_ROWS * WALL_GRID_HEIGHT;
@@ -29,7 +28,7 @@ enum class EnemyState { NORMAL, WEAK, SUPER_ACTIVE };
 
 enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };
 
-enum class BulletType { FREEZE, SLOW, WALLBUSTER };
+enum class BulletType { FREEZE, EMP, WALLBUSTER, GRENADE };
 
 class IDS {
  public:
@@ -43,7 +42,18 @@ class IDS {
   inline const static string BULLET_MANAGER_ID = "bulletmanager";
   inline const static string BULLET_ID = "bullet";
   inline const static string FREEZEBULLET_ID = "freeze";
+  inline const static string WALLBUSTER_ID = "wallbuster";
+  inline const static string EMP_ID = "emp";
+  inline const static string GRENADE_ID = "grenade";
   inline const static string ROBOT_ID = "robot";
+};
+
+class WeaponStats {
+ public:
+  inline const static int AMMO = 240;
+  inline const static int MAG_CAP = 30;
+  inline const static int RELOAD_TIME = 250;
+  inline const static int MUZZLE_VEL = 32;
 };
 
 enum KeyPressSurfaces {

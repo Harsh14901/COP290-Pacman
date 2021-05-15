@@ -1,8 +1,13 @@
+#pragma once
+
 #include "Constants.hpp"
 #include "Network/NetworkManager.hpp"
 #include "Network/Packet.hpp"
 #include "Weapons/Bullet.hpp"
+#include "Weapons/EMPBullet.hpp"
 #include "Weapons/FreezeBullet.hpp"
+#include "Weapons/Grenade.hpp"
+#include "Weapons/WallBusterBullet.hpp"
 #include "bits/stdc++.h"
 using namespace std;
 
