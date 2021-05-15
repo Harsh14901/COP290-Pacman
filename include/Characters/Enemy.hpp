@@ -38,7 +38,6 @@ class Enemy : public Character {
   void shootFreezeBullet();
 
   EnemyState state = EnemyState::NORMAL;
-  FreezeBullet freezeBullet;
 
  protected:
   int id;

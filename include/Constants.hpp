@@ -12,7 +12,7 @@ const static int PACMAN_RENDER_WIDTH = WALL_GRID_WIDTH;
 const static int PACMAN_RENDER_HEIGHT = WALL_GRID_HEIGHT;
 const static int WALL_GRID_ROWS = 26;
 const static int WALL_GRID_COLS = 40;
-const static int ENEMY_COUNT = 4;
+const static int ENEMY_COUNT = 1;
 const static int PLAYER_VEL = 4;
 const static int BULLET_VEL = 32;
 
@@ -28,6 +28,8 @@ const static int MAX_BUFF = 4096;
 enum class EnemyState { NORMAL, WEAK, SUPER_ACTIVE };
 
 enum class Direction { LEFT, RIGHT, UP, DOWN, NONE };
+
+enum class BulletType { FREEZE, SLOW, WALLBUSTER };
 
 class IDS {
  public:

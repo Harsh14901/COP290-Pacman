@@ -33,4 +33,7 @@ void Base::handle_collision() {}
 void Base::handle_packets() {}
 void Base::broadcast_coordinates() {}
 
-Base::~Base() {}
+Base::~Base() {
+  CollisionEngine::deregister_collider(&mCollider);
+  cout << "Exiting base" << endl;
+}

@@ -1,5 +1,7 @@
 #include "Characters/Enemy.hpp"
 
+#include "Weapons/BulletManager.hpp"
+
 extern GhostManager ghostManager;
 extern bool is_server;
 int counter = 0;
@@ -62,7 +64,6 @@ void Enemy::init(SDL_Renderer* renderer) {
   Character::init(renderer);
   spawnAnimator.set_duration(100 + 100 * type);
   AIEngine.init(WIDTH, HEIGHT, type);
-  freezeBullet.init(renderer);
 }
 
 void Enemy::handle_collision() {
@@ -93,7 +94,6 @@ void Enemy::render() {
   int typeValue = getEnemyColor();
   SDL_Rect rect{138 * (2 + int(_direction) % 2), 171 * typeValue, 138, 171};
   _gDotTexture.render(mPosX, mPosY, &rect, 90 * (int(_direction) / 2));
-  freezeBullet.render();
 }
 
 int Enemy::getEnemyColor() {
@@ -146,7 +146,6 @@ void Enemy::move() {
     state = EnemyState::NORMAL;
   }
 
-  freezeBullet.move();
   AIEngine.update(mPosX, mPosY, _direction, state);
 
   if (is_server) {
@@ -206,5 +205,5 @@ void Enemy::respawn() {
 
 void Enemy::shootFreezeBullet() {
   // if(is_server) return;
-  freezeBullet.shoot(_direction, mPosX, mPosY);
+  BulletManager::shoot_bullet(BulletType::FREEZE, _direction, mPosX, mPosY);
 }

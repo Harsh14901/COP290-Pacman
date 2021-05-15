@@ -76,10 +76,18 @@ void Bullet::handle_collision() {
   }
 }
 
+bool Bullet::is_active() {
+  if (mPosX > GAMEAREA_WIDTH || mPosY > GAMEAREA_HEIGHT || mPosX < 0 ||
+      mPosY < 0) {
+    isActive = false;
+  }
+  return isActive;
+}
+
 void Bullet::move() {
   handle_collision();
 
-  if (!isActive) {
+  if (!is_active()) {
     // cout << "Not Launched" << endl;
     return;
   }
@@ -90,18 +98,14 @@ void Bullet::move() {
   mCollider.setX(mPosX);
   mCollider.setY(mPosY);
 
+  // cout << "Updated bullet: " << this->mPosX << " , " << this->mPosY << endl;
+
   // handle_packets();
   // broadcast_coordinates();
 }
 
 void Bullet::render() {
-  if (mPosX > GAMEAREA_WIDTH || mPosY > GAMEAREA_HEIGHT || mPosX < 0 ||
-      mPosY < 0) {
-    isActive = false;
-  }
-  if (!isActive) return;
-  // cout << "Rendering bullet: " << this->mPosX << " , " << this->mPosY <<
-  // endl;
+  if (!is_active()) return;
 
   _gDotTexture.render(mPosX, mPosY, NULL, angle);
 }

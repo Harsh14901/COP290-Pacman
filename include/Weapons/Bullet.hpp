@@ -22,6 +22,7 @@ class Bullet : public Base {
 
   void move() override;
   void render() override;
+  bool is_active();
 
  protected:
   bool isActive = false;

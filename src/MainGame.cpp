@@ -9,6 +9,7 @@
 #include "Characters/Robot.hpp"
 #include "Utils/FrameGuider.hpp"
 #include "Utils/PreferenceManager.hpp"
+#include "Weapons/BulletManager.hpp"
 
 int game_frame_int = 0;
 double game_frame = 0;
@@ -281,6 +282,8 @@ void MainGame::initCharacters() {
   for (auto& enemy : enemies) {
     enemy->respawn();
   }
+
+  BulletManager::init(_gRenderer);
 }
 
 void MainGame::initSystems() {
@@ -433,8 +436,11 @@ void MainGame::processInput() {
     }
   }
   bottomBar.update(pacman.get_coins_collected(), pacman.get_active_points());
+  BulletManager::update_bullets();
 
   preRender();
+
+  BulletManager::render_bullets();
 
   coinGrid->render();
   ventGrid->render();
