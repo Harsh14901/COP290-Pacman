@@ -4,6 +4,9 @@
 
 extern bool is_server;
 
+FreezeBullet::FreezeBullet()
+    : Bullet("assets/pngs/pacman_lasers_freeze.png", IDS::FREEZEBULLET_ID) {}
+
 void FreezeBullet::handle_collision() {
   auto collisions = CollisionEngine::getCollisions(ID);
 
@@ -15,30 +18,5 @@ void FreezeBullet::handle_collision() {
       }
     }
   }
-  BulletWeapon::handle_collision();
-}
-
-FreezeBullet::FreezeBullet()
-    : BulletWeapon("assets/pngs/pacman_lasers_freeze.png",
-                   IDS::FREEZEBULLET_ID) {}
-
-void FreezeBullet::move() {
-  if (is_server) {
-    // cout << "Receiving coords" << endl;
-    // BulletWeapon::handle_packets();
-  }
-  handle_collision();
-  if (!isLaunched) return;
-  // cout << "Prior to update:" << this->mPosX << " , " << this->mPosY << endl;
-  mPosX += mVelX;
-  mPosY += mVelY;
-  // cout << "Updating bullet: " << this->mPosX << " , " << this->mPosY << endl;
-
-  mCollider.setX(mPosX);
-  mCollider.setY(mPosY);
-
-  if (!is_server) {
-    // cout << "Broadcasting Coordis" << endl;
-    // BulletWeapon::broadcast_coordinates();
-  }
+  Bullet::handle_collision();
 }

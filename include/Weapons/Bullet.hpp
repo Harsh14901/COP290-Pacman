@@ -13,10 +13,10 @@
 
 using namespace std;
 
-class BulletWeapon : public Base {
+class Bullet : public Base {
  public:
-  BulletWeapon(string asset, string id);
-  BulletWeapon(string asset, int velocity, string id);
+  Bullet(string asset, string id);
+  Bullet(string asset, int velocity, string id);
 
   void shoot(Direction dir, int x, int y);
 
@@ -24,7 +24,7 @@ class BulletWeapon : public Base {
   void render() override;
 
  protected:
-  bool isLaunched = false;
+  bool isActive = false;
   int angle = 0;
 
   void init_collider() override;

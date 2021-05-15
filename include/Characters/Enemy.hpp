@@ -15,7 +15,7 @@
 #include "Grids/WallGrid.hpp"
 #include "Textures/LTexture.hpp"
 #include "Utils/Animator.hpp"
-// #include "Weapons/BulletWeapon.hpp"
+// #include "Weapons/Bullet.hpp"
 #include "AI/GhostAIEngine.hpp"
 #include "Weapons/FreezeBullet.hpp"
 
