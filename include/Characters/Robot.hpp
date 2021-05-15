@@ -1,3 +1,4 @@
+#include "Base.hpp"
 #include "Characters/Character.hpp"
 using namespace std;
 

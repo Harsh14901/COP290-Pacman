@@ -13,6 +13,8 @@ const static int PACMAN_RENDER_HEIGHT = WALL_GRID_HEIGHT;
 const static int WALL_GRID_ROWS = 26;
 const static int WALL_GRID_COLS = 40;
 const static int ENEMY_COUNT = 4;
+const static int PLAYER_VEL = 4;
+const static int BULLET_VEL = 32;
 
 const static int GAMEAREA_WIDTH = WALL_GRID_COLS * WALL_GRID_WIDTH;
 const static int GAMEAREA_HEIGHT = WALL_GRID_ROWS * WALL_GRID_HEIGHT;
@@ -36,7 +38,8 @@ class IDS {
   inline const static string VENT_COLLIDER_ID = "vent";
   inline const static string CHERRY_COLLIDER_ID = "cherry";
   inline const static string NETWORK_ID = "networkmanager";
-  inline const static string FREEZEBULLET_ID = "freezebullet";
+  inline const static string BULLET_ID = "bullet";
+  inline const static string FREEZEBULLET_ID = "freeze";
   inline const static string ROBOT_ID = "robot";
 };
 

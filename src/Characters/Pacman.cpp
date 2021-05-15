@@ -8,10 +8,7 @@ extern bool is_server;
 Pacman::Pacman() : Character(IDS::PACMAN_COLLIDER_ID) {}
 
 void Pacman::init(SDL_Renderer* renderer) {
-  _gDotTexture.setRenderer(renderer);
-  _gDotTexture.loadFromFile("assets/pngs/pac-classic_c-toy.png");
-  _gDotTexture.set_image_dimenstions(DOT_WIDTH, DOT_HEIGHT);
-  CollisionEngine::register_collider(&mCollider);
+  Base::init(renderer);
   chompSound.init("assets/sounds/pacman_chomp.wav", false);
 }
 
@@ -181,7 +178,7 @@ int Pacman::get_active_points() { return activePoints; }
 
 void Pacman::handle_packets() {
   vector<Packet> packets;
-  NetworkManager::get_packets(CHARACTER_ID, packets);
+  NetworkManager::get_packets(ID, packets);
 
   for (auto& p : packets) {
     mPosX = p.posX;
@@ -197,7 +194,7 @@ void Pacman::handle_packets() {
 
 void Pacman::broadcast_coordinates() {
   Packet p;
-  p.id = CHARACTER_ID;
+  p.id = ID;
   p.posX = mPosX;
   p.posY = mPosY;
   p.velX = mVelX;

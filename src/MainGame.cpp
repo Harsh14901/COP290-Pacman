@@ -269,9 +269,8 @@ void MainGame::initCharacters() {
 
   pacman.init(_gRenderer);
 
-  int i = 0;
   for (auto& enemy : enemies) {
-    enemy->init(_gRenderer, i++);
+    enemy->init(_gRenderer);
   }
 
   ghostManager.updateGhostZones();
@@ -409,7 +408,7 @@ void MainGame::processInput() {
           if (evnt.key.keysym.sym == SDLK_TAB) {
             Enemy::switch_active_id();
           } else if (evnt.key.keysym.sym == SDLK_t) {
-            enemies[Enemy::active_id]->shootFreezeBullet();
+            Enemy::get_active_enemy()->shootFreezeBullet();
           }
       }
 

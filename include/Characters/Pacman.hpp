@@ -8,7 +8,6 @@
 
 #include <iostream>
 
-#include "Utils/Animator.hpp"
 #include "Characters/Character.hpp"
 #include "Characters/Enemy.hpp"
 #include "Collision/CollisionEngine.hpp"
@@ -17,8 +16,9 @@
 #include "Grids/CoinGrid.hpp"
 #include "Grids/WallGrid.hpp"
 #include "Textures/LTexture.hpp"
-#include "utils.hpp"
+#include "Utils/Animator.hpp"
 #include "Utils/AudioAsset.hpp"
+#include "utils.hpp"
 
 class Pacman : public Character {
  public:
@@ -28,11 +28,11 @@ class Pacman : public Character {
   int get_coins_collected();
   int get_active_points();
   void render();
-  bool is_dead = false;
-  bool is_invisible = false;
 
   void init(SDL_Renderer* renderer);
 
+  bool is_dead = false;
+  bool is_invisible = false;
 
  protected:
   void handle_collision();
@@ -43,17 +43,14 @@ class Pacman : public Character {
   Animator gulp_animator = Animator(3);
   bool isMouthOpen();
   void incrementActivePoints(int inc);
-  
+
   int coins = 0;
   int cherries = 0;
   int activePoints = 0;
 
-
   AudioAsset chompSound;
-
 
   Animator freezeAnimation = Animator(100);
   Animator invisibleAnimator = Animator(300);
   int getInvisibleAlphaValue();
-
 };

@@ -6,10 +6,11 @@
 // #include "Characters/Enemy.hpp"
 using namespace std;
 
-class FreezeBullet : public BulletWeapon{
-public:
-    FreezeBullet(int vel);
-    void checkImpact();
-    void update();
+class FreezeBullet : public BulletWeapon {
+ public:
+  FreezeBullet();
+  void move() override;
 
+ protected:
+  void handle_collision() override;
 };

@@ -1,26 +1,30 @@
 #include "Characters/Character.hpp"
 
-// TODO: Fix This
-const int Character::DOT_WIDTH = PACMAN_RENDER_WIDTH;
-const int Character::DOT_HEIGHT = PACMAN_RENDER_HEIGHT;
+Character::Character(string id)
+    : Character(id, "assets/pngs/pac-classic_c-toy.png") {}
+
+Character::Character(string id, string asset)
+    : Base(PACMAN_RENDER_WIDTH, PACMAN_RENDER_HEIGHT, PLAYER_VEL, id, asset) {
+  COLLIDER_ID = id;
+}
+
+void Character::init_collider() {
+  // Initialize collider
+
+  // Rectangular collider
+  // auto rect = SDL_Rect{mPosX, mPosY, PACMAN_RENDER_WIDTH,
+  // PACMAN_RENDER_HEIGHT}; mCollider = Collider(PACMAN_ID, rect);
+
+  // Circular collider
+  auto circle = Circle{SDL_Point{mPosX + WIDTH / 2, mPosY + HEIGHT / 2},
+                       max(WIDTH, WIDTH) / 2};
+  mCollider = Collider(COLLIDER_ID, circle);
+}
 
 void Character::render() {
   // Show the dot
-  SDL_Rect rect{DOT_WIDTH * int(_direction), 0, DOT_WIDTH, DOT_HEIGHT};
+  SDL_Rect rect{WIDTH * int(_direction), 0, WIDTH, HEIGHT};
   _gDotTexture.render(mPosX, mPosY, &rect);
-}
-
-void Character::place(SDL_Point p) {
-  mPosX = p.x;
-  mPosY = p.y;
-}
-
-void Character::init(SDL_Renderer* renderer) {
-  cout << CHARACTER_COLLIDER_ID << endl;
-  _gDotTexture.setRenderer(renderer);
-  _gDotTexture.loadFromFile("assets/pngs/pac-classic_c-toy.png");
-  _gDotTexture.set_image_dimenstions(DOT_WIDTH, DOT_HEIGHT);
-  CollisionEngine::register_collider(&mCollider);
 }
 
 void Character::handleEvent(SDL_Event& e) {
@@ -44,34 +48,8 @@ void Character::handleEvent(SDL_Event& e) {
   }
 }
 
-Character::Character() : Character(CHARACTER_COLLIDER_ID) {}
-
-Character::Character(string id) {
-  CHARACTER_ID = id;
-  CHARACTER_COLLIDER_ID = id;
-
-  // Initialize the offsets
-  mPosX = 0;
-  mPosY = 0;
-
-  // Initialize the velocity
-  mVelX = 0;
-  mVelY = 0;
-
-  // Initialize collider
-
-  // Rectangular collider
-  // auto rect = SDL_Rect{mPosX, mPosY, PACMAN_RENDER_WIDTH,
-  // PACMAN_RENDER_HEIGHT}; mCollider = Collider(PACMAN_ID, rect);
-
-  // Circular collider
-  auto circle = Circle{SDL_Point{mPosX + DOT_WIDTH / 2, mPosY + DOT_HEIGHT / 2},
-                       max(DOT_WIDTH, DOT_WIDTH) / 2};
-  mCollider = Collider(CHARACTER_COLLIDER_ID, circle);
-}
-
 void Character::handle_collision() {
-  auto collisions = CollisionEngine::getCollisions(CHARACTER_ID);
+  auto collisions = CollisionEngine::getCollisions(ID);
   int i = 0;
   while (i < collisions.size()) {
     if (collisions[i]->id.find(IDS::COIN_COLLIDER_ID) != -1 ||
@@ -97,7 +75,7 @@ void Character::handle_collision() {
 
 void Character::handle_packets() {
   vector<Packet> packets;
-  NetworkManager::get_packets(CHARACTER_ID, packets);
+  NetworkManager::get_packets(ID, packets);
 
   for (auto& p : packets) {
     mPosX = p.posX;
@@ -109,9 +87,9 @@ void Character::handle_packets() {
 }
 
 void Character::broadcast_coordinates() {
-  // cout << "ID is " << CHARACTER_ID << endl;
+  // cout << "ID is " << ID << endl;
   Packet p;
-  p.id = CHARACTER_ID;
+  p.id = ID;
   p.posX = mPosX;
   p.posY = mPosY;
   p.velX = mVelX;
@@ -121,25 +99,25 @@ void Character::broadcast_coordinates() {
 }
 
 void Character::change_direction(Direction d) {
-  if (WallGrid::getInstance()->can_move(mPosX + DOT_WIDTH / 2,
-                                        mPosY + DOT_HEIGHT / 2, d)) {
+  if (WallGrid::getInstance()->can_move(mPosX + WIDTH / 2, mPosY + HEIGHT / 2,
+                                        d)) {
     mVelX = 0;
     mVelY = 0;
     switch (d) {
       case Direction::LEFT:
-        mVelX = -DOT_VEL;
+        mVelX = -MAX_VEL;
         _direction = Direction::LEFT;
         break;
       case Direction::RIGHT:
-        mVelX = DOT_VEL;
+        mVelX = MAX_VEL;
         _direction = Direction::RIGHT;
         break;
       case Direction::UP:
-        mVelY = -DOT_VEL;
+        mVelY = -MAX_VEL;
         _direction = Direction::UP;
         break;
       case Direction::DOWN:
-        mVelY = DOT_VEL;
+        mVelY = MAX_VEL;
         _direction = Direction::DOWN;
         break;
       default:
@@ -148,8 +126,7 @@ void Character::change_direction(Direction d) {
     _next = Direction::NONE;
 
     // TODO: Remove this hack
-    if (CHARACTER_ID.find(IDS::PACMAN_COLLIDER_ID) == -1)
-      broadcast_coordinates();
+    if (ID.find(IDS::PACMAN_COLLIDER_ID) == -1) broadcast_coordinates();
   } else {
     _next = d;
   }
@@ -163,12 +140,12 @@ void Character::move() {
   mPosX += mVelX * FrameGuider::getFrameDeltaRounded();
 
   // If the dot went too far to the left or right
-  if ((mPosX < 0) || (mPosX + DOT_WIDTH > GAMEAREA_WIDTH)) {
+  if ((mPosX < 0) || (mPosX + WIDTH > GAMEAREA_WIDTH)) {
     // Move back
     if (mPosX < 0)
       mPosX = 0;
     else
-      mPosX = GAMEAREA_WIDTH - DOT_WIDTH;
+      mPosX = GAMEAREA_WIDTH - WIDTH;
 
     mVelX = 0;
   }
@@ -177,12 +154,12 @@ void Character::move() {
   mPosY += mVelY * FrameGuider::getFrameDeltaRounded();
 
   // If the dot went too far up or down
-  if ((mPosY < 0) || (mPosY + DOT_HEIGHT > GAMEAREA_HEIGHT)) {
+  if ((mPosY < 0) || (mPosY + HEIGHT > GAMEAREA_HEIGHT)) {
     // Move back
     if (mPosY < 0)
       mPosY = 0;
     else
-      mPosY = GAMEAREA_HEIGHT - DOT_HEIGHT;
+      mPosY = GAMEAREA_HEIGHT - HEIGHT;
 
     mVelY = 0;
   }

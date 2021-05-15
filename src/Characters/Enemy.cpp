@@ -2,61 +2,71 @@
 
 extern GhostManager ghostManager;
 extern bool is_server;
-
-vector<int> Enemy::ids;
-int Enemy::active_id;
-vector<Enemy*> Enemy::enemies;
+int counter = 0;
+vector<unique_ptr<Enemy>> Enemy::enemies;
+int Enemy::active_index = 0;
 
 void Enemy::make_enemies(int n) {
   enemies.resize(n);
   for (int i = 0; i < n; i++) {
-    enemies[i] = new Enemy(i);
+    enemies[i] = make_unique<Enemy>(i);
   }
 }
 
-vector<Enemy*> Enemy::get_enemies() { return enemies; }
+vector<Enemy*> Enemy::get_enemies() {
+  vector<Enemy*> enemy_ptrs;
+  for (int i = 0; i < enemies.size(); i++) {
+    enemy_ptrs.push_back(enemies[i].get());
+  }
+  return enemy_ptrs;
+}
 
 Enemy::Enemy(int type)
     : Character(IDS::ENEMY_COLLIDER_ID + "_" + to_string(type + 1)) {
-  if (ids.empty()) {
-    id = 0;
-    active_id = 0;
-  } else {
-    auto prev_id = ids.back();
-    id = prev_id + 1;
+  this->type = type + 1;
+  this->id = counter++;
+}
+
+Enemy* Enemy::get_active_enemy() { return enemies[active_index].get(); }
+
+int Enemy::get_active_id() {
+  if (enemies.empty()) {
+    return -1;
   }
-  ids.push_back(id);
-  AIEngine.init(DOT_WIDTH, DOT_HEIGHT, type);
+  if (active_index >= enemies.size()) {
+    active_index = 0;
+  }
+  return enemies[active_index]->id;
 }
 
 void Enemy::switch_active_id() {
   if (is_server) return;
 
-  if (active_id == ids.back()) {
-    active_id = ids.front();
+  if (active_index == enemies.size() - 1) {
+    active_index = 0;
   } else {
-    active_id++;
+    active_index++;
   }
 }
 void Enemy::handleEvent(SDL_Event& e) {
   if (is_server) {
     return;
   }
-  if (id != active_id) {
+  if (id != get_active_id()) {
     return;
   }
   Character::handleEvent(e);
 }
 
-void Enemy::init(SDL_Renderer* renderer, int enemy_type) {
+void Enemy::init(SDL_Renderer* renderer) {
   Character::init(renderer);
-  type = enemy_type;
   spawnAnimator.set_duration(100 + 100 * type);
-  freezeBullet.setRenderer(renderer);
+  AIEngine.init(WIDTH, HEIGHT, type);
+  freezeBullet.init(renderer);
 }
 
 void Enemy::handle_collision() {
-  auto collisions = CollisionEngine::getCollisions(CHARACTER_COLLIDER_ID);
+  auto collisions = CollisionEngine::getCollisions(COLLIDER_ID);
   int i = 0;
 
   while (i < collisions.size()) {
@@ -103,8 +113,8 @@ void Enemy::randomize_direction() {
   for (int i = 0; i < 4; i++) {
     auto d = Direction(i);
 
-    if (WallGrid::getInstance()->can_move(mPosX + DOT_WIDTH / 2,
-                                          mPosY + DOT_HEIGHT / 2, d)) {
+    if (WallGrid::getInstance()->can_move(mPosX + WIDTH / 2, mPosY + HEIGHT / 2,
+                                          d)) {
       // printf("Direction %d is available\n", i);
       available_directions.insert(d);
     }
@@ -136,7 +146,7 @@ void Enemy::move() {
     state = EnemyState::NORMAL;
   }
 
-  freezeBullet.update();
+  freezeBullet.move();
   AIEngine.update(mPosX, mPosY, _direction, state);
 
   if (is_server) {
@@ -172,7 +182,7 @@ void Enemy::move() {
     return;
   } else {
     handle_collision();
-    if (active_id != id) {
+    if (get_active_id() != id) {
       // randomize_direction();
       change_direction(AIEngine.updateDirection());
     }

@@ -8,57 +8,39 @@
 
 #include <iostream>
 
+#include "Base.hpp"
 #include "Collision/CollisionEngine.hpp"
 #include "Constants.hpp"
 #include "Grids/WallGrid.hpp"
-#include "Textures/LTexture.hpp"
 #include "Network/NetworkManager.hpp"
+#include "Textures/LTexture.hpp"
 #include "Utils/FrameGuider.hpp"
 
-class Character {
+class Character : public Base {
  public:
-  // The dimensions of the dot
-  static const int DOT_WIDTH;
-  static const int DOT_HEIGHT;
-  // Maximum axis velocity of the dot
-  static const int DOT_VEL = 4;
-
   // Initializes the variables
-  Character();
   Character(string id);
-  void init(SDL_Renderer* renderer);
+  Character(string id, string asset);
 
   // Takes key presses and adjusts the dot's velocity
-  void handleEvent(SDL_Event& e);
+  void handleEvent(SDL_Event& e) override;
 
   // Moves the dot
-  void move();
+  void move() override;
 
   // Shows the dot on the screen
-  void render();
+  void render() override;
 
-  // Place the pacman at a position.
-  void place(SDL_Point p);
-
-  int mPosX, mPosY;
-
-  // The velocity of the dot
-  int mVelX, mVelY;
-  Direction _direction = Direction::LEFT;
-  Direction _next = Direction::NONE;
-  void change_direction(Direction d);
-
+  void change_direction(Direction d) override;
 
  protected:
   // The X and Y offsets of the dot
-
-  void handle_collision();
-  void handle_packets();
-  void broadcast_coordinates();
+  void init_collider() override;
+  void handle_collision() override;
+  void handle_packets() override;
+  void broadcast_coordinates() override;
 
   // The collider associated with pacman
-  Collider mCollider;
-  string CHARACTER_ID;
-  string CHARACTER_COLLIDER_ID;
-  LTexture _gDotTexture;
+  Direction _next = Direction::NONE;
+  string COLLIDER_ID;
 };
