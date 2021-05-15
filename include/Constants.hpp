@@ -54,6 +54,7 @@ class WeaponStats {
   inline const static int MAG_CAP = 30;
   inline const static int RELOAD_TIME = 250;
   inline const static int MUZZLE_VEL = 32;
+  inline const static int BURST_COUNT = 1;
 };
 
 enum KeyPressSurfaces {

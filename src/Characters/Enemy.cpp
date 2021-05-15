@@ -63,6 +63,7 @@ void Enemy::init(SDL_Renderer* renderer) {
   Character::init(renderer);
   spawnAnimator.set_duration(100 + 100 * type);
   AIEngine.init(WIDTH, HEIGHT, type);
+  weapon.init(BulletType::WALLBUSTER, this, 1);
 }
 
 void Enemy::handle_collision() {

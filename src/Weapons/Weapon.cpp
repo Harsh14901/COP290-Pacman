@@ -1,18 +1,27 @@
 #include "Weapons/Weapon.hpp"
 
-Weapon::Weapon(BulletType type, Character* bearer)
-    : bullet_type(type), bearer(bearer) {}
+Weapon::Weapon() {}
+
+void Weapon::init(BulletType type, Character* bearer, int burst_count) {
+  this->bullet_type = type;
+  this->bearer = bearer;
+  this->burst_count = burst_count;
+}
 
 void Weapon::fire(Direction d, int x, int y) {
   if (reload_animator.isActive()) {
     return;
   }
-  if (bullet_count != 0) {
+  int i = burst_count;
+  while (i > 0 && bullet_count > 0) {
     BulletManager::shoot_bullet(bullet_type, d, x, y);
     bullet_count--;
-  } else {
+    i--;
+  }
+  if (bullet_count == 0) {
     reload();
   }
+
   printf("%s : %d/%d\n", bearer->ID.c_str(), bullet_count, ammo);
 }
 

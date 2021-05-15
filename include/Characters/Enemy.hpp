@@ -8,6 +8,7 @@
 
 #include <iostream>
 
+#include "AI/GhostAIEngine.hpp"
 #include "Characters/Character.hpp"
 #include "Characters/GhostManager.hpp"
 #include "Collision/CollisionEngine.hpp"
@@ -15,8 +16,6 @@
 #include "Grids/WallGrid.hpp"
 #include "Textures/LTexture.hpp"
 #include "Utils/Animator.hpp"
-// #include "Weapons/Bullet.hpp"
-#include "AI/GhostAIEngine.hpp"
 #include "Weapons/FreezeBullet.hpp"
 #include "Weapons/Weapon.hpp"
 
@@ -54,5 +53,5 @@ class Enemy : public Character {
   GhostAIEngine AIEngine;
   Animator weak_state_animator = Animator(400);
   Animator spawnAnimator = Animator(100);
-  Weapon weapon = Weapon(BulletType::FREEZE, this);
+  Weapon weapon;
 };

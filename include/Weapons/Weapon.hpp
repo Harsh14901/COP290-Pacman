@@ -9,10 +9,11 @@ class Weapon {
   int ammo = WeaponStats::AMMO;
   int magazine_cap = WeaponStats::MAG_CAP;
   int reload_time = WeaponStats::RELOAD_TIME;
-  int muzzle_velocity = WeaponStats::MUZZLE_VEL;
+  int burst_count = WeaponStats::BURST_COUNT;
+  BulletType bullet_type = BulletType::FREEZE;
   int bullet_count = magazine_cap;
-  BulletType bullet_type;
-  Weapon(BulletType type, Character* bearer);
+  Weapon();
+  void init(BulletType type, Character* bearer, int burst_count);
   void reload();
   void fire(Direction d, int x, int y);
   bool out_of_ammo();
