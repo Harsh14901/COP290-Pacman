@@ -40,6 +40,7 @@ class IDS {
   inline const static string VENT_COLLIDER_ID = "vent";
   inline const static string CHERRY_COLLIDER_ID = "cherry";
   inline const static string NETWORK_ID = "networkmanager";
+  inline const static string BULLET_MANAGER_ID = "bulletmanager";
   inline const static string BULLET_ID = "bullet";
   inline const static string FREEZEBULLET_ID = "freeze";
   inline const static string ROBOT_ID = "robot";

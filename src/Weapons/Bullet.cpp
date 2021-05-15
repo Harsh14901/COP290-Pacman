@@ -11,34 +11,6 @@ void Bullet::init_collider() {
   mCollider = Collider(ID, rect);
 }
 
-void Bullet::broadcast_coordinates() {
-  if (!isActive) return;
-  Packet p;
-
-  p.id = ID;
-  p.posX = mPosX;
-  p.posY = mPosY;
-  p.velX = mVelX;
-  p.velY = mVelY;
-  p.data = to_string(int(angle));
-  NetworkManager::queue_packet(p);
-}
-
-void Bullet::handle_packets() {
-  vector<Packet> packets;
-  NetworkManager::get_packets(ID, packets);
-
-  for (auto& p : packets) {
-    //   cout << "Server has got what it needs" << endl;
-    isActive = true;
-    mPosX = p.posX;
-    mPosY = p.posY;
-    mVelX = p.velX;
-    mVelY = p.velY;
-    angle = stoi(p.data);
-  }
-}
-
 void Bullet::shoot(Direction dir, int x, int y) {
   mPosX = x;
   mPosY = y;
@@ -59,7 +31,7 @@ void Bullet::shoot(Direction dir, int x, int y) {
     mVelX = MAX_VEL;
     angle = 90;
   }
-  cout << "Launching bullet: " << this->mPosX << " , " << this->mPosY << endl;
+  _direction = dir;
   isActive = true;
 }
 
@@ -88,7 +60,6 @@ void Bullet::move() {
   handle_collision();
 
   if (!is_active()) {
-    // cout << "Not Launched" << endl;
     return;
   }
 
@@ -97,11 +68,6 @@ void Bullet::move() {
 
   mCollider.setX(mPosX);
   mCollider.setY(mPosY);
-
-  // cout << "Updated bullet: " << this->mPosX << " , " << this->mPosY << endl;
-
-  // handle_packets();
-  // broadcast_coordinates();
 }
 
 void Bullet::render() {

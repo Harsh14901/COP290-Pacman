@@ -30,6 +30,4 @@ class Bullet : public Base {
 
   void init_collider() override;
   void handle_collision() override;
-  void handle_packets() override;
-  void broadcast_coordinates() override;
 };
