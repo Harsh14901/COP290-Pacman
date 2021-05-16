@@ -144,9 +144,23 @@ void Enemy::randomize_direction() {
   }
 }
 
+void Enemy::check_emp() {
+  auto swap_vels = [&]() {
+    auto temp = EMP_VEL;
+    EMP_VEL = MAX_VEL;
+    MAX_VEL = temp;
+  };
+  if (empAnimation.isActive() && !is_empd) {
+    swap_vels();
+    is_empd = true;
+  }
+  if (!empAnimation.isActive() && is_empd) {
+    swap_vels();
+    is_empd = false;
+  }
+}
 void Enemy::move() {
-  auto oldX = mPosX, oldY = mPosY;
-
+  check_emp();
   if (state == EnemyState::WEAK && !weak_state_animator.isActive()) {
     state = EnemyState::NORMAL;
   }
@@ -191,11 +205,6 @@ void Enemy::move() {
     }
     Character::move();
   }
-  auto newX = mPosX, newY = mPosY;
-  if (empAnimation.isActive()) {
-    mPosX = (oldX + newX) / 2;
-    mPosY = (oldY + newY) / 2;
-  }
 }
 
 void Enemy::setState(EnemyState st) {
@@ -212,7 +221,33 @@ void Enemy::respawn() {
   spawnAnimator.start();
 }
 
-// void Enemy::shootFreezeBullet() {
-//   // if(is_server) return;
-//   BulletManager::shoot_bullet(BulletType::FREEZE, _direction, mPosX, mPosY);
-// }
+void Enemy::handle_packets() {
+  vector<Packet> packets;
+  NetworkManager::get_packets(ID, packets);
+
+  for (auto& p : packets) {
+    mPosX = p.posX;
+    mPosY = p.posY;
+    mVelX = p.velX;
+    mVelY = p.velY;
+    auto data = convert_string_to_map(p.data);
+    _direction = Direction(stoi(data["direction"]));
+    if (data["empd"] == "1") {
+      emp();
+    }
+  }
+}
+
+void Enemy::broadcast_coordinates() {
+  Packet p;
+  p.id = ID;
+  p.posX = mPosX;
+  p.posY = mPosY;
+  p.velX = mVelX;
+  p.velY = mVelY;
+  unordered_map<string, string> data;
+  data.insert({"direction", to_string(int(_direction))});
+  data.insert({"empd", to_string(empAnimation.isActive())});
+  p.data = map_to_string(data);
+  NetworkManager::queue_packet(p);
+}

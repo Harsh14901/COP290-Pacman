@@ -24,8 +24,8 @@ vector<int> extractIntegerWords(string str) {
   return numbers;
 }
 
-std::map<std::string, std::string> convert_string_to_map(string s) {
-  map<string, string> m;
+unordered_map<string, string> convert_string_to_map(string s) {
+  unordered_map<string, string> m;
 
   string::size_type key_pos = 0;
   string::size_type key_end;
@@ -46,7 +46,7 @@ std::map<std::string, std::string> convert_string_to_map(string s) {
   return m;
 }
 
-string map_to_string(map<string, string> m) {
+string map_to_string(unordered_map<string, string> m) {
   string output = "";
   string convrt = "";
   string result = "";

@@ -47,10 +47,14 @@ class Enemy : public Character {
 
   int getEnemyColor();
   void handle_collision();
+  void handle_packets();
+  void broadcast_coordinates();
 
  private:
   void randomize_direction();
-
+  void check_emp();
+  bool is_empd = false;
+  int EMP_VEL = MAX_VEL / 2;
   GhostAIEngine AIEngine;
   Animator weak_state_animator = Animator(400);
   Animator spawnAnimator = Animator(100);

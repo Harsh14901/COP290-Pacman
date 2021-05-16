@@ -164,8 +164,7 @@ void Pacman::move() {
 
   Character::move();
 
- 
-  if (VentGrid::getInstance()->canTeleport()) {
+   if (VentGrid::getInstance()->canTeleport()) {
     auto newPt = VentGrid::getInstance()->getTeleportLocation();
     mPosX = newPt.first;
     mPosY = newPt.second;
@@ -202,7 +201,7 @@ void Pacman::broadcast_coordinates() {
   p.posY = mPosY;
   p.velX = mVelX;
   p.velY = mVelY;
-  map<string, string> data;
+  unordered_map<string, string> data;
   data.insert({"direction", to_string(int(_direction))});
   data.insert({"is_invisible", to_string(is_invisible)});
   p.data = map_to_string(data);
