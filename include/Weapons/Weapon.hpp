@@ -8,12 +8,12 @@ using namespace std;
 
 class Weapon {
  public:
-  int ammo = WeaponStats::AMMO;
-  int magazine_cap = WeaponStats::MAG_CAP;
-  int reload_time = WeaponStats::RELOAD_TIME;
-  int burst_count = WeaponStats::BURST_COUNT;
-  BulletType bullet_type = BulletType::FREEZE;
-  int bullet_count = magazine_cap;
+  int ammo;
+  int magazine_cap;
+  int reload_time;
+  int burst_count;
+  BulletType bullet_type;
+  int bullet_count;
   Weapon();
   void init(BulletType type, Character* bearer, int burst_count);
   void reload();

@@ -50,9 +50,31 @@ class IDS {
 
 class WeaponStats {
  public:
-  inline const static int AMMO = 240;
-  inline const static int MAG_CAP = 30;
-  inline const static int RELOAD_TIME = 250;
+  class Freeze {
+   public:
+    inline const static int AMMO = 240;
+    inline const static int MAG_CAP = 30;
+    inline const static int RELOAD_TIME = 250;
+  };
+  class WallBuster {
+   public:
+    inline const static int AMMO = 150;
+    inline const static int MAG_CAP = 20;
+    inline const static int RELOAD_TIME = 250;
+  };
+  class EMP {
+   public:
+    inline const static int AMMO = 100;
+    inline const static int MAG_CAP = 10;
+    inline const static int RELOAD_TIME = 300;
+  };
+  class GRENADE {
+   public:
+    inline const static int AMMO = 20;
+    inline const static int MAG_CAP = 2;
+    inline const static int RELOAD_TIME = 200;
+  };
+
   inline const static int MUZZLE_VEL = 32;
   inline const static int BURST_COUNT = 1;
 };

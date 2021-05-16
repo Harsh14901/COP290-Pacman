@@ -6,6 +6,34 @@ void Weapon::init(BulletType type, Character* bearer, int burst_count) {
   this->bullet_type = type;
   this->bearer = bearer;
   this->burst_count = burst_count;
+  switch (type) {
+    case BulletType::FREEZE:
+      ammo = WeaponStats::Freeze::AMMO;
+      magazine_cap = WeaponStats::Freeze::MAG_CAP;
+      reload_time = WeaponStats::Freeze::RELOAD_TIME;
+      break;
+
+    case BulletType::WALLBUSTER:
+      ammo = WeaponStats::WallBuster::AMMO;
+      magazine_cap = WeaponStats::WallBuster::MAG_CAP;
+      reload_time = WeaponStats::WallBuster::RELOAD_TIME;
+      break;
+
+    case BulletType::EMP:
+      ammo = WeaponStats::EMP::AMMO;
+      magazine_cap = WeaponStats::EMP::MAG_CAP;
+      reload_time = WeaponStats::EMP::RELOAD_TIME;
+      break;
+
+    case BulletType::GRENADE:
+      ammo = WeaponStats::GRENADE::AMMO;
+      magazine_cap = WeaponStats::GRENADE::MAG_CAP;
+      reload_time = WeaponStats::GRENADE::RELOAD_TIME;
+      break;
+
+    default:
+      break;
+  }
 }
 
 void Weapon::fire(Direction d, int x, int y) {
