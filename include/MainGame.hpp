@@ -66,8 +66,7 @@ class MainGame {
   AudioAsset pacmanDeathSound;
   AudioAsset pacmanMainMenuMusic;
 
-  BottomBar bottomBar =
-      BottomBar(0, GAMEAREA_HEIGHT, BOTTOM_BAR_WIDTH, BOTTOM_BAR_HEIGHT);
+  BottomBar bottomBar;
 
   WallGrid* wallGrid;
   CoinGrid* coinGrid;

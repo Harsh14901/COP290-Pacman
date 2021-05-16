@@ -34,6 +34,8 @@ void Weapon::init(BulletType type, Character* bearer, int burst_count) {
     default:
       break;
   }
+  bullet_count = magazine_cap;
+  reload_animator.set_duration(reload_time);
 }
 
 void Weapon::fire(Direction d, int x, int y) {
@@ -84,6 +86,7 @@ void Weapon::handleEvent(SDL_Event& e) {
 }
 
 bool Weapon::out_of_ammo() { return ammo == 0 && bullet_count == 0; }
+bool Weapon::is_reloading() { return reload_animator.isActive(); }
 
 Weapon& WeaponSet::get_active_weapon() {
   return (active_weapon == 0) ? primary_weapon : secondary_weapon;
@@ -106,4 +109,38 @@ void WeaponSet::handleEvent(SDL_Event& e) {
     }
   }
   get_active_weapon().handleEvent(e);
+}
+
+string WeaponSet::get_text() {
+  auto& weapon = get_active_weapon();
+  string text;
+  switch (weapon.bullet_type) {
+    case BulletType::FREEZE:
+      text = "Freeze Gun";
+      break;
+
+    case BulletType::WALLBUSTER:
+      text = "Wall Buster";
+      break;
+
+    case BulletType::EMP:
+      text = "EMP";
+      break;
+
+    case BulletType::GRENADE:
+      text = "Land Mine";
+      break;
+
+    default:
+      break;
+  }
+  text += " - ";
+  if (weapon.out_of_ammo()) {
+    text += "No Ammo";
+  } else if (weapon.is_reloading()) {
+    text += "Reloading ..";
+  } else {
+    text += to_string(weapon.bullet_count) + "/" + to_string(weapon.ammo);
+  }
+  return text;
 }

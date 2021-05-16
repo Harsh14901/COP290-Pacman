@@ -174,7 +174,7 @@ void Pacman::move() {
 
 int Pacman::get_coins_collected() { return coins; }
 int Pacman::get_active_points() { return activePoints; }
-
+string Pacman::get_weapon_text() { return weaponSet.get_text(); }
 void Pacman::handle_packets() {
   vector<Packet> packets;
   NetworkManager::get_packets(ID, packets);

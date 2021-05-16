@@ -83,6 +83,8 @@ void Enemy::target_hit(string target_id, Collider* collider) {
   Character::target_hit(target_id, collider);
 }
 
+string Enemy::get_weapon_text() { return weaponSet.get_text(); }
+
 void Enemy::emp() { empAnimation.start(); }
 void Enemy::render() {
   // Show the dot

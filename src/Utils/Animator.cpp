@@ -10,7 +10,7 @@ Animator::Animator(int sf, int dur) {
 }
 
 Animator::Animator(int dur) { duration = dur; }
-
+Animator::Animator() : Animator(0){};
 void Animator::start() {
   start_frame = game_frame_int;
   end_frame = start_frame + duration;
@@ -22,9 +22,7 @@ void Animator::reset() {
   end_frame = -1;
 }
 
-void Animator::set_duration(int dur){
-  duration = dur;
-}
+void Animator::set_duration(int dur) { duration = dur; }
 
 int Animator::get_current_frame() {
   if (!isActive()) return -1;
@@ -36,12 +34,14 @@ double Animator::animation_progress() {
   return (get_current_frame()) / (0.0 + end_frame - start_frame);
 }
 
-double Animator::getAnimationProgressInCurve(AnimationCurve curve,double factor,double start_offset){
-  if(!isActive()) return -99;
+double Animator::getAnimationProgressInCurve(AnimationCurve curve,
+                                             double factor,
+                                             double start_offset) {
+  if (!isActive()) return -99;
 
-
-  if (curve==AnimationCurve::IncreasingFreqSine){
-    double x = (game_frame/(end_frame-start_frame+0.0) - start_offset)*factor;
+  if (curve == AnimationCurve::IncreasingFreqSine) {
+    double x =
+        (game_frame / (end_frame - start_frame + 0.0) - start_offset) * factor;
     return sin(exp(x));
   }
   return -99;

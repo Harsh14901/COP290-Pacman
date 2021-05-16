@@ -28,6 +28,7 @@ class Pacman : public Character {
   void handleEvent(SDL_Event& e);
   int get_coins_collected();
   int get_active_points();
+  string get_weapon_text();
   void render();
 
   void init(SDL_Renderer* renderer);

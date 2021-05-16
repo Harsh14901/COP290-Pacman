@@ -35,6 +35,7 @@ class Enemy : public Character {
   void setState(EnemyState st);
   void respawn();
   void emp();
+  string get_weapon_text();
 
   EnemyState state = EnemyState::NORMAL;
 

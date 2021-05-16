@@ -19,10 +19,11 @@ class Weapon {
   void reload();
   void fire(Direction d, int x, int y);
   bool out_of_ammo();
+  bool is_reloading();
   void handleEvent(SDL_Event& e);
 
  private:
-  Animator reload_animator = Animator(reload_time);
+  Animator reload_animator;
   Character* bearer;
 };
 
@@ -34,4 +35,5 @@ struct WeaponSet {
 
   Weapon& get_active_weapon();
   void handleEvent(SDL_Event& e);
+  string get_text();
 };

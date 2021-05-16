@@ -372,7 +372,7 @@ void MainGame::drawInitScreen() {
   if (!loadMedia()) {
     fatalError("Failed to Load Media: \n" + string(SDL_GetError()));
   }
-
+  bottomBar.init(0, GAMEAREA_HEIGHT, BOTTOM_BAR_WIDTH, BOTTOM_BAR_HEIGHT);
   bottomBar.setRenderer(_gRenderer);
   bottomBar.initViews();
 
@@ -434,7 +434,11 @@ void MainGame::processInput() {
       }
     }
   }
-  bottomBar.update(pacman.get_coins_collected(), pacman.get_active_points());
+  string weapon_text = (client != nullptr && is_two_player)
+                           ? Enemy::get_active_enemy()->get_weapon_text()
+                           : pacman.get_weapon_text();
+  bottomBar.update(pacman.get_coins_collected(), pacman.get_active_points(),
+                   weapon_text);
   BulletManager::update_bullets();
 
   preRender();
