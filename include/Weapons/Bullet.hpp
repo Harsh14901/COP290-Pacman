@@ -29,5 +29,5 @@ class Bullet : public Base {
   int angle = 0;
 
   void init_collider() override;
-  void handle_collision() override;
+  void target_hit(string target_id, Collider* collider = nullptr) override;
 };

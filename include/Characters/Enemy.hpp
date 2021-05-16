@@ -16,7 +16,6 @@
 #include "Grids/WallGrid.hpp"
 #include "Textures/LTexture.hpp"
 #include "Utils/Animator.hpp"
-#include "Weapons/FreezeBullet.hpp"
 #include "Weapons/Weapon.hpp"
 
 class Enemy : public Character {
@@ -45,14 +44,17 @@ class Enemy : public Character {
   static int active_index;
   static vector<unique_ptr<Enemy>> enemies;
 
-  int getEnemyColor();
-  void handle_collision();
+  void init_targets();
+  void target_hit(string target_id, Collider* collider = nullptr);
+
   void handle_packets();
   void broadcast_coordinates();
 
  private:
   void randomize_direction();
   void check_emp();
+  int getEnemyColor();
+
   bool is_empd = false;
   int EMP_VEL = MAX_VEL / 2;
   GhostAIEngine AIEngine;

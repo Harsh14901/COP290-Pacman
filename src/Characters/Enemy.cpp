@@ -67,28 +67,20 @@ void Enemy::init(SDL_Renderer* renderer) {
   weaponSet.secondary_weapon.init(BulletType::FREEZE, this, 1);
 }
 
-void Enemy::handle_collision() {
-  auto collisions = CollisionEngine::getCollisions(COLLIDER_ID);
-  int i = 0;
+void Enemy::init_targets() {
+  add_target(IDS::GRENADE_ID);
+  add_target(IDS::EMP_ID);
+  Character::init_targets();
+}
 
-  while (i < collisions.size()) {
-    if (collisions[i]->id.find(IDS::COIN_COLLIDER_ID) != -1 ||
-        collisions[i]->id.find(IDS::CHERRY_COLLIDER_ID) != -1) {
-      i++;
-      continue;
-    }
-    // cout << "Enemy collided with " << collisions[i]->id << endl;
-    if (collisions[i]->id.find(IDS::ENEMY_COLLIDER_ID) != -1 ||
-        collisions[i]->id.find(IDS::FREEZEBULLET_ID) != -1) {
-      i++;
-      // cout << "Enemy Collided with another enemy" << endl;
-      continue;
-    }
-
-    // cout << "Collision with something: " << collisions[i]->id << endl;
-    Character::handle_collision();
-    break;
+void Enemy::target_hit(string target_id, Collider* collider) {
+  if (target_id == IDS::GRENADE_ID) {
+    respawn();
   }
+  if (target_id == IDS::EMP_ID) {
+    emp();
+  }
+  Character::target_hit(target_id, collider);
 }
 
 void Enemy::emp() { empAnimation.start(); }
@@ -245,9 +237,11 @@ void Enemy::broadcast_coordinates() {
   p.posY = mPosY;
   p.velX = mVelX;
   p.velY = mVelY;
+
   unordered_map<string, string> data;
   data.insert({"direction", to_string(int(_direction))});
   data.insert({"empd", to_string(empAnimation.isActive())});
   p.data = map_to_string(data);
+
   NetworkManager::queue_packet(p);
 }

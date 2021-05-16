@@ -36,23 +36,30 @@ class Pacman : public Character {
   bool is_invisible = false;
 
  protected:
-  void handle_collision();
-  void handle_packets();
-  void broadcast_coordinates();
-
- private:
-  Animator gulp_animator = Animator(3);
-  bool isMouthOpen();
-  void incrementActivePoints(int inc);
-
   int coins = 0;
   int cherries = 0;
   int activePoints = 0;
 
+  void init_targets();
+  void target_hit(string target_id, Collider* collider = nullptr);
+
+  void handle_packets();
+  void broadcast_coordinates();
+
+ private:
+  bool isMouthOpen();
+  void incrementActivePoints(int inc);
+  int getInvisibleAlphaValue();
+
+  void collect_coins(int i, int j);
+  void collect_cherries(int i, int j);
+  void enemy_collision(int num);
+  void freeze();
+
   AudioAsset chompSound;
   WeaponSet weaponSet;
 
+  Animator gulp_animator = Animator(3);
   Animator freezeAnimation = Animator(100);
   Animator invisibleAnimator = Animator(300);
-  int getInvisibleAlphaValue();
 };

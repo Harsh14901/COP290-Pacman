@@ -36,19 +36,6 @@ void Bullet::shoot(Direction dir, int x, int y) {
   isActive = true;
 }
 
-void Bullet::handle_collision() {
-  auto collisions = CollisionEngine::getCollisions(ID);
-
-  for (auto& item : collisions) {
-    if (item->id.find(IDS::WALL_COLLIDER_ID) != -1) {
-      auto temp = extractIntegerWords(item->id);
-      if (temp.size() == 2) {
-        isActive = false;
-      }
-    }
-  }
-}
-
 bool Bullet::is_active() {
   if (mPosX > GAMEAREA_WIDTH || mPosY > GAMEAREA_HEIGHT || mPosX < 0 ||
       mPosY < 0) {
@@ -75,4 +62,14 @@ void Bullet::render() {
   if (!is_active()) return;
 
   _gDotTexture.render(mPosX, mPosY, NULL, angle);
+}
+
+void Bullet::target_hit(string target_id, Collider* collider) {
+  if (target_id == IDS::WALL_COLLIDER_ID) {
+    if (collider == nullptr) return;
+    auto temp = extractIntegerWords(collider->id);
+    if (temp.size() == 2) {
+      isActive = false;
+    }
+  }
 }

@@ -28,10 +28,9 @@ SDL_Point WallGrid::get_empty_location() {
 }
 
 // TODO: Fix these constants
-SDL_Point WallGrid::getRenderPointFromCoordi(int x,int y){
-  return SDL_Point{x * 32, y * 32};
+SDL_Point WallGrid::getRenderPointFromCoordi(int x, int y) {
+  return SDL_Point{x * OBJECT_WIDTH, y * OBJECT_HEIGHT};
 }
-
 
 bool WallGrid::can_move(int posX, int posY, Direction d) {
   int row = posY / OBJECT_HEIGHT;
@@ -62,9 +61,7 @@ bool WallGrid::can_move(int posX, int posY, Direction d) {
   return ans;
 }
 
-bool WallGrid::is_empty(int i,int j){
-  return !objects[i][j];
-}
+bool WallGrid::is_empty(int i, int j) { return !objects[i][j]; }
 
 void WallGrid::generate() {
   if (system("node src/maze_generator.js > map.txt")) {
@@ -78,7 +75,7 @@ void WallGrid::generate() {
   if (myfile.is_open()) {
     while (getline(myfile, line)) {
       for (char& c : line) {
-        if (c == '|' || c == '_' ) {
+        if (c == '|' || c == '_') {
           set_object(i, j);
         }
         j++;

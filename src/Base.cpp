@@ -9,6 +9,7 @@ void Base::init(SDL_Renderer* renderer) {
   _gDotTexture.loadFromFile(ASSET);
   _gDotTexture.set_image_dimenstions(WIDTH, HEIGHT);
   init_collider();
+  init_targets();
   CollisionEngine::register_collider(&mCollider);
 }
 void Base::handleEvent(SDL_Event& e) {}
@@ -29,7 +30,28 @@ void Base::init_collider() {
   mCollider = Collider(ID, rect);
 }
 
-void Base::handle_collision() {}
+void Base::init_targets() { add_target(IDS::WALL_COLLIDER_ID); }
+
+void Base::add_target(string target_id) {
+  if (find(collider_targets.begin(), collider_targets.end(), target_id) ==
+      collider_targets.end()) {
+    collider_targets.push_back(target_id);
+  }
+}
+
+void Base::handle_collision() {
+  auto collisions = CollisionEngine::getCollisions(ID);
+
+  for (auto& collider : collisions) {
+    for (auto& target : collider_targets) {
+      if (collider->id.find(target) != string::npos) {
+        target_hit(target, collider);
+      }
+    }
+  }
+}
+
+void Base::target_hit(string target_id, Collider* collider) {}
 void Base::handle_packets() {}
 void Base::broadcast_coordinates() {}
 

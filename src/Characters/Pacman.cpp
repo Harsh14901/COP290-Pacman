@@ -2,7 +2,6 @@
 
 #include "Grids/VentGrid.hpp"
 
-extern vector<Enemy*> enemies;
 extern bool is_server;
 
 Pacman::Pacman() : Character(IDS::PACMAN_COLLIDER_ID) {}
@@ -12,6 +11,14 @@ void Pacman::init(SDL_Renderer* renderer) {
   chompSound.init("assets/sounds/pacman_chomp.wav", false);
   weaponSet.primary_weapon.init(BulletType::EMP, this, 1);
   weaponSet.secondary_weapon.init(BulletType::GRENADE, this, 1);
+}
+
+void Pacman::init_targets() {
+  add_target(IDS::COIN_COLLIDER_ID);
+  add_target(IDS::CHERRY_COLLIDER_ID);
+  add_target(IDS::ENEMY_COLLIDER_ID);
+  add_target(IDS::FREEZEBULLET_ID);
+  Character::init_targets();
 }
 
 void Pacman::handleEvent(SDL_Event& e) {
@@ -67,79 +74,70 @@ void Pacman::incrementActivePoints(int inc) {
   activePoints = max(0, min(activePoints + inc, 100));
 }
 
-void Pacman::handle_collision() {
-  auto collisions = CollisionEngine::getCollisions(IDS::PACMAN_COLLIDER_ID);
-  int i = 0;
-  // cout << "Inside pacman collision" << endl;
+void Pacman::target_hit(string target_id, Collider* collider) {
+  if (collider != nullptr) {
+    auto temp = extractIntegerWords(collider->id);
+    if (target_id == IDS::COIN_COLLIDER_ID) {
+      if (temp.size() == 2) {
+        collect_coins(temp[0], temp[1]);
+      }
+    }
+    if (target_id == IDS::CHERRY_COLLIDER_ID) {
+      if (temp.size() == 2) {
+        collect_cherries(temp[0], temp[1]);
+      }
+    }
+    if (target_id == IDS::ENEMY_COLLIDER_ID) {
+      if (temp.size() == 1) {
+        enemy_collision(temp[0] - 1);
+      }
+    }
+  }
+  if (target_id == IDS::FREEZEBULLET_ID) {
+    freeze();
+  }
+  Character::target_hit(target_id, collider);
+}
 
+void Pacman::collect_coins(int i, int j) {
   auto coinGrid = CoinGrid::getInstance();
+
+  coins++;
+  incrementActivePoints(1);
+
+  chompSound.play();
+  gulp_animator.start();
+
+  coinGrid->unset_object(i, j);
+}
+void Pacman::collect_cherries(int i, int j) {
   auto cherryGrid = CherryGrid::getInstance();
   auto enemies = Enemy::get_enemies();
 
-  // if(!collisions.empty()){
-  while (i < collisions.size()) {
-    if (collisions[i]->id.find(IDS::COIN_COLLIDER_ID) != string::npos) {
-      // Coin Collected
-      // cout << "Coin Collected" << endl;
-      i++;
-      coins++;
-      incrementActivePoints(1);
-      chompSound.play();
-      auto temp = extractIntegerWords(collisions[i - 1]->id);
-      if (temp.size() == 2) {
-        coinGrid->unset_object(temp[0], temp[1]);
-      }
-      gulp_animator.start();
-      continue;
-    }
-    if (collisions[i]->id.find(IDS::CHERRY_COLLIDER_ID) != string::npos) {
-      // cout << "Cherry Collected" << endl;
-      i++;
-      cherries++;
-      incrementActivePoints(5);
-      auto temp = extractIntegerWords(collisions[i - 1]->id);
-      if (temp.size() == 2) {
-        cherryGrid->unset_object(temp[0], temp[1]);
-      }
-      for (auto& x : enemies) {
-        x->setState(EnemyState::WEAK);
-      }
-      continue;
-    }
-    if (collisions[i]->id.find(IDS::ENEMY_COLLIDER_ID) != string::npos) {
-      // Assert: Game Over
-      i++;
-      auto temp = extractIntegerWords(collisions[i - 1]->id);
-      if (temp.size() == 1) {
-        temp[0]--;
-        if (enemies[temp[0]]->state != EnemyState::WEAK && !is_invisible) {
-          is_dead = true;
-          return;
-        } else {
-          incrementActivePoints(50);
-          enemies[temp[0]]->respawn();
-        }
-      }
-      continue;
-    }
-    if (collisions[i]->id.find(IDS::FREEZEBULLET_ID) != string::npos) {
-      cout << "Time to Freeze" << endl;
-      // is_dead = true;
-      i++;
-      incrementActivePoints(-20);
-      freezeAnimation.start();
-      continue;
-    }
-    if (collisions[i]->id.find(IDS::VENT_COLLIDER_ID) != string::npos) {
-      i++;
-      continue;
-    }
+  cherries++;
+  incrementActivePoints(5);
+  cherryGrid->unset_object(i, j);
 
-    // cout << "Collision of pacman with " << collisions[i]->id << endl;
-    Character::handle_collision();
-    break;
+  for (auto& x : enemies) {
+    x->setState(EnemyState::WEAK);
   }
-  // cout << "Outside pacman collision" << endl;
+}
+
+void Pacman::enemy_collision(int num) {
+  auto enemies = Enemy::get_enemies();
+
+  if (enemies[num]->state != EnemyState::WEAK && !is_invisible) {
+    is_dead = true;
+  } else {
+    incrementActivePoints(50);
+    enemies[num]->respawn();
+  }
+}
+
+void Pacman::freeze() {
+  cout << "Time to Freeze" << endl;
+  incrementActivePoints(-20);
+  freezeAnimation.start();
 }
 
 bool Pacman::isMouthOpen() {
@@ -154,7 +152,6 @@ bool Pacman::isMouthOpen() {
 
 void Pacman::move() {
   if (freezeAnimation.isActive()) {
-    cout << "Freeze is active" << endl;
     return;
   }
   if (!is_server) {
@@ -164,7 +161,7 @@ void Pacman::move() {
 
   Character::move();
 
-   if (VentGrid::getInstance()->canTeleport()) {
+  if (VentGrid::getInstance()->canTeleport()) {
     auto newPt = VentGrid::getInstance()->getTeleportLocation();
     mPosX = newPt.first;
     mPosY = newPt.second;

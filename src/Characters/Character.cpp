@@ -48,16 +48,8 @@ void Character::handleEvent(SDL_Event& e) {
   }
 }
 
-void Character::handle_collision() {
-  auto collisions = CollisionEngine::getCollisions(ID);
-  int i = 0;
-  while (i < collisions.size()) {
-    if (collisions[i]->id.find(IDS::COIN_COLLIDER_ID) != -1 ||
-        collisions[i]->id.find(IDS::VENT_COLLIDER_ID) != -1 ||
-        collisions[i]->id.find(IDS::GRENADE_ID) != -1) {
-      i++;
-      continue;
-    }
+void Character::target_hit(string target_id, Collider* collider) {
+  if (target_id == IDS::WALL_COLLIDER_ID) {
     switch (_direction) {
       case Direction::LEFT:
       case Direction::RIGHT:
@@ -70,7 +62,6 @@ void Character::handle_collision() {
       default:
         break;
     }
-    break;
   }
 }
 
