@@ -23,13 +23,13 @@ SDL_Texture* SettingsScreen::loadTexture(string path){
 void SettingsScreen::setRenderer(SDL_Renderer* _gRenderer){
     this->_gRenderer = _gRenderer;
 
-    _backgroundTexture = loadTexture("assets/backgrounds/settings_back.jpg");
+    _backgroundTexture = loadTexture("assets/backgrounds/settings_background2.png");
     SDL_SetTextureAlphaMod(_backgroundTexture, 100);
     cout << "Height an W are:" << h << " " << w << endl;
 
     // First Section: Width/3, Height Full
     int offX = 0.06*w + 0;
-    int offY = h/8.0  + 0;
+    int offY = h/7.0  + 0;
     themeButtons[0].init(offX + 0.03 * w,offY + 0.10 * h,
                      0.16 * w, 0.07 * h,
                      "assets/buttons/settings/pacman.png",
@@ -49,19 +49,38 @@ void SettingsScreen::setRenderer(SDL_Renderer* _gRenderer){
     for(int i=0;i<themeOptions;i++){
         themeButtons[i].setRenderer(_gRenderer);
     }
+
+    themeSectionText.setRenderer(_gRenderer);
+    musicSelectionText.setRenderer(_gRenderer);
+
     sfxText.setRenderer(_gRenderer);
     musicText.setRenderer(_gRenderer);
+    sfxTextSelected.setRenderer(_gRenderer);
+    musicTextSelected.setRenderer(_gRenderer);
 
-    offX = (0.34 +0.06)*w;
-    offY = h/8.0  + 0;
+
+    offX = (0.28 +0.06)*w;
+    offY = h/7.0  + 0;
+
+    musicSelectionText.loadFromRenderedText(
+      "SOUNDS", {255, 255, 255}, TTF_OpenFont("assets/fonts/win_font.ttf", 80));
+
+    themeSectionText.loadFromRenderedText(
+      "THEMES", {255, 255, 255}, TTF_OpenFont("assets/fonts/win_font.ttf", 80));
 
     sfxText.loadFromRenderedText(
-      "SFX", {255, 255, 255}, TTF_OpenFont("assets/fonts/win_font.ttf", 60));
+      "SFX", {255, 255, 255}, TTF_OpenFont("assets/fonts/Rajdhani.ttf", 60));
     musicText.loadFromRenderedText(
-      "MUSIC", {255, 255, 255}, TTF_OpenFont("assets/fonts/win_font.ttf", 60));
+      "MUSIC", {255, 255, 255}, TTF_OpenFont("assets/fonts/Rajdhani.ttf", 60));
 
-    sfxButton.init(  offX+0.16*w,offY + 0.21*h,0.12*w,0.08*h,"assets/buttons/settings/switch_on.png","assets/buttons/settings/switch_off.png");
-    musicButton.init(offX+0.16*w,offY + 0.11*h,0.12*w,0.08*h,"assets/buttons/settings/switch_on.png","assets/buttons/settings/switch_off.png");
+    sfxTextSelected.loadFromRenderedText(
+      "SFX", {210, 255, 30}, TTF_OpenFont("assets/fonts/Rajdhani.ttf", 60));
+    musicTextSelected.loadFromRenderedText(
+      "MUSIC", {210, 255, 30}, TTF_OpenFont("assets/fonts/Rajdhani.ttf", 60));
+
+
+    sfxButton.init(  offX+0.16*w,offY + 0.09*h,0.12*w,0.08*h,"assets/buttons/settings/switch_modern_on.png","assets/buttons/settings/switch_modern_off.png");
+    musicButton.init(offX+0.16*w,offY + 0.19*h,0.12*w,0.08*h,"assets/buttons/settings/switch_modern_on.png","assets/buttons/settings/switch_modern_off.png");
 
     sfxButton.setRenderer(_gRenderer);
     musicButton.setRenderer(_gRenderer);
@@ -123,8 +142,22 @@ void SettingsScreen::render() {
         themeButtons[i].render();
     }
 
-    musicText.render(0.43*w,0.11*h+h/8.0);
-    sfxText.render(0.43*w,0.21*h+h/8.0);
+    if(sectionCursor==1){
+        if(current_music_option_selected==0){
+            musicText.render(0.37*w,0.09*h+h/7.0);
+            sfxTextSelected.render(0.37*w,0.19*h+h/7.0);
+        }else{
+            musicTextSelected.render(0.37*w,0.09*h+h/7.0);
+            sfxText.render(0.37*w,0.19*h+h/7.0);
+        }
+    }else{
+        musicText.render(0.37*w,0.09*h+h/7.0);
+        sfxText.render(0.37*w,0.19*h+h/7.0);
+    }
+
+    themeSectionText.render(0.085*w,0.12*h);
+    musicSelectionText.render(0.405*w,0.12*h);
+
 
     musicButton.set_clicked(musicToggle);
     sfxButton.set_clicked(sfxToggle);

@@ -35,6 +35,12 @@ private:
     ImageButton sfxButton;
     LTexture musicText;
     LTexture sfxText;
+    LTexture musicTextSelected;
+    LTexture sfxTextSelected;
+
+    LTexture themeSectionText;
+    LTexture musicSelectionText;
+
     int selectedTheme = 0;
     int sectionCursor = 0;
     int num_sections = 3;
