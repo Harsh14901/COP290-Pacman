@@ -2,6 +2,7 @@
 
 #include "Constants.hpp"
 #include "Weapons/Bullet.hpp"
+#include "Utils/AssetManager.hpp"
 using namespace std;
 
 class FreezeBullet : public Bullet {

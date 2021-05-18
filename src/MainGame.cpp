@@ -9,9 +9,11 @@
 #include "Characters/Robot.hpp"
 #include "Utils/FrameGuider.hpp"
 #include "Utils/PreferenceManager.hpp"
+#include "Utils/AssetManager.hpp"
 
 int game_frame_int = 0;
 double game_frame = 0;
+AssetManager assetManager;
 
 PreferenceManager prefManager = PreferenceManager(true);
 GhostManager ghostManager;
@@ -224,6 +226,9 @@ void MainGame::networkMenu() {
 }
 
 void MainGame::runGame() {
+
+
+
   initSystems();
 
   auto option = mainMenu();
@@ -286,6 +291,8 @@ void MainGame::initCharacters() {
 }
 
 void MainGame::initSystems() {
+  cout << "Initing Assets" << endl;
+
   // SDL_Init(SDL_INIT_EVERYTHING);
 
   SDL_Surface* screenSurface = NULL;

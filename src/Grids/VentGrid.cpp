@@ -1,7 +1,8 @@
 #include <Grids/VentGrid.hpp>
 #include "math.h"
+#include "Utils/AssetManager.hpp"
 VentGrid* VentGrid::_instance = nullptr;
-
+extern AssetManager assetManager;
 
 // extern WallGrid wallGrid;
 
@@ -13,7 +14,7 @@ VentGrid* VentGrid::getInstance() {
 }
 
 VentGrid::VentGrid()
-    : ObjectGrid(IDS::VENT_COLLIDER_ID, "assets/pngs/amongus_vent.png", 1) {
+    : ObjectGrid(IDS::VENT_COLLIDER_ID, assetManager.get_asset(ThemeAssets::VENT_PNG), 1) {
 
     }
 

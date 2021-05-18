@@ -43,7 +43,7 @@ void Pacman::handleEvent(SDL_Event& e) {
 void Pacman::render() {
   // Show the dot
   int mouth_fac = isMouthOpen() ? 0 : 2;
-  SDL_Rect rect{138 * 4, 171 * ((2 - (int(_direction) % 2)) + mouth_fac), 138,
+  SDL_Rect rect{0, 171 * ((1 - (int(_direction) % 2)) + mouth_fac), 162,
                 171};
 
   _gDotTexture.setAlpha(getInvisibleAlphaValue());

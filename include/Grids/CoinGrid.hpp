@@ -11,6 +11,7 @@
 #include "Grids/ObjectGrid.hpp"
 #include "Network/NetworkManager.hpp"
 #include "Textures/LTexture.hpp"
+#include "Utils/AssetManager.hpp"
 
 class CoinGrid : public ObjectGrid {
  public:

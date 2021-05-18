@@ -1,6 +1,6 @@
 #include <Grids/CoinGrid.hpp>
 CoinGrid* CoinGrid::_instance = nullptr;
-
+extern AssetManager assetManager;
 CoinGrid* CoinGrid::getInstance() {
   if (_instance == nullptr) {
     _instance = new CoinGrid();
@@ -9,7 +9,7 @@ CoinGrid* CoinGrid::getInstance() {
 }
 
 CoinGrid::CoinGrid()
-    : ObjectGrid(IDS::COIN_COLLIDER_ID, "assets/pngs/coin2.png", 1.2) {}
+    : ObjectGrid(IDS::COIN_COLLIDER_ID, assetManager.get_asset(ThemeAssets::COIN_PNG), 1.2) {}
 
 void CoinGrid::generate() {
   string line;

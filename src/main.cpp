@@ -14,6 +14,8 @@ void signal_handler(int signal_num) {
 }
 
 int main(int argc, char* argv[]) {
+
+
   signal(SIGINT, signal_handler);
   string host = "";
 

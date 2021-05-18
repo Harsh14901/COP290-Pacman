@@ -2,6 +2,7 @@
 
 #include <regex>
 
+
 vector<int> extractIntegerWords(string str) {
   vector<int> numbers;
   int num = 0;

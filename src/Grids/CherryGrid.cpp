@@ -1,6 +1,6 @@
 #include <Grids/CherryGrid.hpp>
 CherryGrid* CherryGrid::_instance = nullptr;
-
+extern AssetManager assetManager;
 CherryGrid* CherryGrid::getInstance() {
   if (_instance == nullptr) {
     _instance = new CherryGrid();
@@ -9,7 +9,7 @@ CherryGrid* CherryGrid::getInstance() {
 }
 
 CherryGrid::CherryGrid()
-    : ObjectGrid(IDS::CHERRY_COLLIDER_ID, "assets/pngs/pac-cherry.png", 1.2) {}
+    : ObjectGrid(IDS::CHERRY_COLLIDER_ID, assetManager.get_asset(ThemeAssets::CHERRY_PNG), 1.2) {}
 
 void CherryGrid::generate() {
   //   if (system("node src/maze_generator.js > map.txt")) {

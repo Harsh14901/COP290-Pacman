@@ -1,7 +1,7 @@
 #include "Weapons/BulletVariants.hpp"
 
 #include "Grids/WallGrid.hpp"
-
+extern AssetManager assetManager;
 ////////////////////////////////////////////////////////////////////////////////
 /*
     FREEZEBULLET
@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 FreezeBullet::FreezeBullet()
-    : Bullet("assets/pngs/pacman_lasers_freeze.png",
+    : Bullet(assetManager.get_asset(ThemeAssets::FREEZEBULLET_PNG),
              IDS::BULLET_ID + "_" + IDS::FREEZEBULLET_ID + "_" +
                  to_string(rand())) {}
 
@@ -31,7 +31,7 @@ void FreezeBullet::target_hit(string target_id, Collider* collider) {
 */
 ////////////////////////////////////////////////////////////////////////////////
 Grenade::Grenade()
-    : Bullet("assets/pngs/pacman_lasers_freeze.png", 0,
+    : Bullet(assetManager.get_asset(ThemeAssets::FREEZEBULLET_PNG), 0,
              IDS::BULLET_ID + "_" + IDS::GRENADE_ID + "_" + to_string(rand())) {
 }
 
@@ -60,7 +60,7 @@ void Grenade::target_hit(string target_id, Collider* collider) {
 ////////////////////////////////////////////////////////////////////////////////
 
 EMPBullet::EMPBullet()
-    : Bullet("assets/pngs/pacman_lasers_freeze.png",
+    : Bullet(assetManager.get_asset(ThemeAssets::FREEZEBULLET_PNG),
              IDS::BULLET_ID + "_" + IDS::EMP_ID + "_" + to_string(rand())) {}
 
 void EMPBullet::init_targets() {
@@ -88,7 +88,7 @@ void EMPBullet::target_hit(string target_id, Collider* collider) {
 ////////////////////////////////////////////////////////////////////////////////
 
 WallBusterBullet::WallBusterBullet()
-    : Bullet("assets/pngs/pacman_lasers_freeze.png",
+    : Bullet(assetManager.get_asset(ThemeAssets::FREEZEBULLET_PNG),
              IDS::BULLET_ID + "_" + IDS::WALLBUSTER_ID + "_" +
                  to_string(rand())) {}
 

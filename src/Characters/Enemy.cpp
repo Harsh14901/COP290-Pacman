@@ -1,8 +1,11 @@
 #include "Characters/Enemy.hpp"
+#include "Utils/AssetManager.hpp"
 
+extern AssetManager assetManager;
 extern GhostManager ghostManager;
 extern bool is_server;
 int counter = 0;
+
 vector<unique_ptr<Enemy>> Enemy::enemies;
 int Enemy::active_index = 0;
 
@@ -22,7 +25,7 @@ vector<Enemy*> Enemy::get_enemies() {
 }
 
 Enemy::Enemy(int type)
-    : Character(IDS::ENEMY_COLLIDER_ID + "_" + to_string(type + 1)) {
+    : Character(IDS::ENEMY_COLLIDER_ID + "_" + to_string(type + 1),assetManager.get_asset(ThemeAssets::ENEMY_SPRITE)) {
   this->type = type + 1;
   this->id = counter++;
 }
@@ -89,7 +92,7 @@ void Enemy::emp() { empAnimation.start(); }
 void Enemy::render() {
   // Show the dot
   int typeValue = getEnemyColor();
-  SDL_Rect rect{138 * (2 + int(_direction) % 2), 171 * typeValue, 138, 171};
+  SDL_Rect rect{142 * (int(_direction) % 2), 171 * typeValue, 142, 171};
   _gDotTexture.render(mPosX, mPosY, &rect, 90 * (int(_direction) / 2));
 }
 
