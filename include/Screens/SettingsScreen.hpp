@@ -5,6 +5,7 @@
 #include "Textures/LTexture.hpp"
 #include "UI/ImageButton.hpp"
 #include "PreferenceManager.hpp"
+
 using namespace std;
 
 class SettingsScreen
@@ -30,5 +31,19 @@ private:
 
     const static int themeOptions = 4;
     ImageButton themeButtons[themeOptions];
+    ImageButton musicButton;
+    ImageButton sfxButton;
+    LTexture musicText;
+    LTexture sfxText;
     int selectedTheme = 0;
+    int sectionCursor = 0;
+    int num_sections = 3;
+
+    int current_music_option_selected = 0;
+    bool musicToggle = false;
+    bool sfxToggle = false;
+
+    void handleThemeEvent(int keycode);
+    void handleSoundEvent(int keycode);
+
 };
