@@ -119,19 +119,16 @@ void MainGame::mainMenuRender(int option) {
 
   pacmanHeadingText.render(SCREEN_WIDTH / 2 - pacmanHeadingText.getWidth() / 2,
                            SCREEN_HEIGHT * 0.12);
+  int i = 0;
+  player1Button.set_clicked(0==option);
+  player1Button.render();
+  player2Button.set_clicked(1==option);
+  player2Button.render();
+  settingsButton.set_clicked(2==option);
+  settingsButton.render();
+  quitButton.set_clicked(3==option);
+  quitButton.render();
 
-  if (option == 0) {
-    p1TextLarger.render(SCREEN_WIDTH / 2 - p1TextLarger.getWidth() / 2,
-                        SCREEN_HEIGHT * 0.52 - p1TextLarger.getHeight() / 2);
-    p2Text.render(SCREEN_WIDTH / 2 - p2Text.getWidth() / 2,
-                  SCREEN_HEIGHT * 0.67 - p2Text.getHeight() / 2 +
-                      p1TextLarger.getHeight() - p1Text.getHeight());
-  } else {
-    p1Text.render(SCREEN_WIDTH / 2 - p1Text.getWidth() / 2,
-                  SCREEN_HEIGHT * 0.5 - p1Text.getHeight() / 2);
-    p2TextLarger.render(SCREEN_WIDTH / 2 - p2TextLarger.getWidth() / 2,
-                        SCREEN_HEIGHT * 0.65 - p2TextLarger.getHeight() / 2);
-  }
   SDL_RenderPresent(_gRenderer);
 }
 
@@ -140,7 +137,7 @@ int MainGame::mainMenu() {
   SDL_Event evnt;
 
   int menuOption = 0;
-  int totalMenuOptions = 2;
+  int totalMenuOptions = 4;
   int option = 0;
   while (_gameState == GameState::MAIN_MENU) {
     while (SDL_PollEvent(&evnt) && _gameState != GameState::EXIT) {
@@ -172,11 +169,24 @@ int MainGame::mainMenu() {
 }
 
 void MainGame::initMainMenuSystems() {
+
+  player1Button.init(0.35*SCREEN_WIDTH,0.40*SCREEN_HEIGHT,0.3*SCREEN_WIDTH,0.1*SCREEN_HEIGHT,
+                            "assets/buttons/main_menu/player1.jpeg","assets/buttons/main_menu/player1_out.jpeg");
+  player2Button.init(0.35*SCREEN_WIDTH,0.55*SCREEN_HEIGHT,0.3*SCREEN_WIDTH,0.1*SCREEN_HEIGHT,
+                            "assets/buttons/main_menu/player2.jpeg","assets/buttons/main_menu/player2_out.jpeg");
+  settingsButton.init(0.35*SCREEN_WIDTH,0.70*SCREEN_HEIGHT,0.3*SCREEN_WIDTH,0.1*SCREEN_HEIGHT,
+                            "assets/buttons/main_menu/settings.jpeg","assets/buttons/main_menu/settings_out.jpeg");
+  quitButton.init(0.35*SCREEN_WIDTH,0.85*SCREEN_HEIGHT,0.3*SCREEN_WIDTH,0.1*SCREEN_HEIGHT,
+                            "assets/buttons/main_menu/quit.jpeg","assets/buttons/main_menu/quit_out.jpeg");
+
+
+  player1Button.setRenderer(_gRenderer);
+  player2Button.setRenderer(_gRenderer);
+  settingsButton.setRenderer(_gRenderer);
+  quitButton.setRenderer(_gRenderer);
+
+
   pacmanHeadingText.setRenderer(_gRenderer);
-  p1Text.setRenderer(_gRenderer);
-  p2Text.setRenderer(_gRenderer);
-  p1TextLarger.setRenderer(_gRenderer);
-  p2TextLarger.setRenderer(_gRenderer);
 
   _mainMenuTexture = loadTexture("assets/backgrounds/mainScreenBackground.png");
 
@@ -185,14 +195,6 @@ void MainGame::initMainMenuSystems() {
 
   pacmanHeadingText.loadFromRenderedText(
       "Pacman", {210, 255, 30}, TTF_OpenFont("assets/fonts/crackman.ttf", 160));
-  p1Text.loadFromRenderedText("1 Player", {210, 255, 230},
-                              TTF_OpenFont("assets/fonts/lazy.ttf", 80));
-  p2Text.loadFromRenderedText("2 Player", {210, 255, 230},
-                              TTF_OpenFont("assets/fonts/lazy.ttf", 80));
-  p1TextLarger.loadFromRenderedText("1 Player", {210, 255, 230},
-                                    TTF_OpenFont("assets/fonts/lazy.ttf", 120));
-  p2TextLarger.loadFromRenderedText("2 Player", {210, 255, 230},
-                                    TTF_OpenFont("assets/fonts/lazy.ttf", 120));
 }
 
 void MainGame::networkMenu() {

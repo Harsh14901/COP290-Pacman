@@ -18,6 +18,7 @@
 #include "Textures/LTexture.hpp"
 #include "UI/BottomBar.hpp"
 #include "Utils/AudioAsset.hpp"
+#include "UI/ImageButton.hpp"
 
 using namespace std;
 
@@ -58,6 +59,11 @@ class MainGame {
   LTexture p2Text;
   LTexture p1TextLarger;
   LTexture p2TextLarger;
+  ImageButton player1Button;
+  ImageButton player2Button;
+  ImageButton settingsButton;
+  ImageButton quitButton;
+
   LTexture networkTextTexture;
 
   Animator gameEndAnimator = Animator(360);
