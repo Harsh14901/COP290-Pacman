@@ -12,9 +12,20 @@ void SettingsScreen::init(int x,int y,int w, int h){
     this->h = h;
 }
 
+SDL_Texture* SettingsScreen::loadTexture(string path){
+    SDL_Texture* newTexture = NULL;
+    SDL_Surface* loadedSurface = IMG_Load(path.c_str());
+    newTexture = SDL_CreateTextureFromSurface(_gRenderer, loadedSurface);
+    SDL_FreeSurface(loadedSurface);
+    return newTexture;
+}
+
 void SettingsScreen::setRenderer(SDL_Renderer* _gRenderer){
     this->_gRenderer = _gRenderer;
 
+    _backgroundTexture = loadTexture("assets/backgrounds/settings_back.jpg");
+    SDL_SetTextureAlphaMod(_backgroundTexture, 100);
+    cout << "Height an W are:" << h << " " << w << endl;
 
     // First Section: Width/3, Height Full
     int offX = 0.06*w + 0;
@@ -103,6 +114,8 @@ void SettingsScreen::handleEvent(SDL_Event &evnt){
 
 
 void SettingsScreen::render() {
+
+    SDL_RenderCopy(_gRenderer, _backgroundTexture, NULL, NULL);
 
 
     for(int i=0;i<themeOptions;i++){

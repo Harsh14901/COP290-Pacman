@@ -45,5 +45,7 @@ private:
 
     void handleThemeEvent(int keycode);
     void handleSoundEvent(int keycode);
+    SDL_Texture* loadTexture(string path);
+    SDL_Texture* _backgroundTexture = NULL;
 
 };
