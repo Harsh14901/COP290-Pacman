@@ -15,3 +15,17 @@ class BoostGrid : public ObjectGrid {
   Animator startDelay;
   Animator potionAnimator;
 };
+
+class InvisibilityGrid : public ObjectGrid {
+ public:
+  InvisibilityGrid();
+
+  static InvisibilityGrid* getInstance();
+  void generate() override;
+
+ private:
+  static unique_ptr<InvisibilityGrid> _instance;
+  WallGrid* wallGrid;
+  Animator startDelay;
+  Animator potionAnimator;
+};

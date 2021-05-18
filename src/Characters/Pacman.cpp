@@ -31,6 +31,7 @@ void Pacman::init_targets() {
   add_target(IDS::ENEMY_COLLIDER_ID);
   add_target(IDS::FREEZEBULLET_ID);
   add_target(IDS::BOOST_ID);
+  add_target(IDS::INVISIBILITY_ID);
   Character::init_targets();
 }
 
@@ -39,13 +40,7 @@ void Pacman::handleEvent(SDL_Event& e) {
     return;
   }
   if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
-    if (e.key.keysym.sym == SDLK_q) {
-      if (!is_invisible && get_active_points() >= 50) {
-        is_invisible = true;
-        invisibleAnimator.start();
-        incrementActivePoints(-50);
-      }
-    } else if (e.key.keysym.sym == SDLK_v) {
+    if (e.key.keysym.sym == SDLK_v) {
       VentGrid::getInstance()->handleOpening(mPosX / 32, mPosY / 32);
     }
   }
@@ -110,6 +105,12 @@ void Pacman::target_hit(string target_id, Collider* collider) {
         BoostGrid::getInstance()->unset_object(temp[0], temp[1]);
       }
     }
+    if (target_id == IDS::INVISIBILITY_ID) {
+      if (temp.size() == 2) {
+        make_invisible();
+        InvisibilityGrid::getInstance()->unset_object(temp[0], temp[1]);
+      }
+    }
   }
   if (target_id == IDS::FREEZEBULLET_ID) {
     freeze();
@@ -169,6 +170,14 @@ bool Pacman::isMouthOpen() {
 }
 
 void Pacman::boost() { boostAnimator.start(); }
+
+void Pacman::make_invisible() {
+  if (!is_invisible && get_active_points() >= 50) {
+    is_invisible = true;
+    invisibleAnimator.start();
+    incrementActivePoints(-50);
+  }
+}
 
 void Pacman::check_boost() {
   auto swap_vels = [&]() {

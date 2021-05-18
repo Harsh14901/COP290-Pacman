@@ -80,6 +80,7 @@ class MainGame {
   CherryGrid* cherryGrid;
   VentGrid* ventGrid;
   BoostGrid* boostGrid;
+  InvisibilityGrid* invisibilityGrid;
   Pacman* pacman;
 
  private:

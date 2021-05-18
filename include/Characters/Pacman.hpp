@@ -66,6 +66,8 @@ class Pacman : public Character {
   void boost();
   void check_boost();
 
+  void make_invisible();
+
   AudioAsset chompSound;
   WeaponSet weaponSet;
 

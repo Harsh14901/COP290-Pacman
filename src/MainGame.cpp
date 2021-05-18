@@ -44,6 +44,7 @@ MainGame::MainGame() {
   wallGrid = WallGrid::getInstance();
   ventGrid = VentGrid::getInstance();
   boostGrid = BoostGrid::getInstance();
+  invisibilityGrid = InvisibilityGrid::getInstance();
 
   _gameState = GameState::MAIN_MENU;
 }
@@ -262,6 +263,7 @@ void MainGame::initCharacters() {
   init_grids.push(ventGrid);
   init_grids.push(cherryGrid);
   init_grids.push(boostGrid);
+  init_grids.push(invisibilityGrid);
 
   while (!init_grids.empty()) {
     auto grid = init_grids.front();
@@ -452,6 +454,7 @@ void MainGame::processInput() {
                    weapon_text);
   BulletManager::update_bullets();
   boostGrid->generate();
+  invisibilityGrid->generate();
 
   preRender();
 
@@ -461,6 +464,7 @@ void MainGame::processInput() {
   ventGrid->render();
   cherryGrid->render();
   boostGrid->render();
+  invisibilityGrid->render();
 
   pacman->render();
   bottomBar.render();
