@@ -61,10 +61,16 @@ class Pacman : public Character {
   void enemy_collision(int num);
   void freeze();
 
+  int BOOST_VEL = 8;
+  bool is_boosted = false;
+  void boost();
+  void check_boost();
+
   AudioAsset chompSound;
   WeaponSet weaponSet;
 
   Animator gulp_animator = Animator(3);
   Animator freezeAnimation = Animator(100);
   Animator invisibleAnimator = Animator(300);
+  Animator boostAnimator;
 };

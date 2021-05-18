@@ -12,5 +12,4 @@ class Robot : public Character {
 
  private:
   queue<Direction> direction_sequence;
-  bool fits_in_cell();
 };

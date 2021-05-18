@@ -14,6 +14,7 @@ const static int WALL_GRID_ROWS = 26;
 const static int WALL_GRID_COLS = 40;
 const static int ENEMY_COUNT = 1;
 const static int PLAYER_VEL = 4;
+const static int MAX_POINTS = 500;
 
 const static int GAMEAREA_WIDTH = WALL_GRID_COLS * WALL_GRID_WIDTH;
 const static int GAMEAREA_HEIGHT = WALL_GRID_ROWS * WALL_GRID_HEIGHT;
@@ -46,6 +47,8 @@ class IDS {
   inline const static string EMP_ID = "emp";
   inline const static string GRENADE_ID = "grenade";
   inline const static string ROBOT_ID = "robot";
+  inline const static string BOOST_ID = "boost";
+  inline const static string INVISIBILITY_ID = "invisible";
 };
 
 class WeaponStats {

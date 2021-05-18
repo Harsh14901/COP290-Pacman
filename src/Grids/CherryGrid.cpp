@@ -1,10 +1,10 @@
 #include <Grids/CherryGrid.hpp>
-CherryGrid* CherryGrid::_instance = nullptr;
+unique_ptr<CherryGrid> CherryGrid::_instance;
 CherryGrid* CherryGrid::getInstance() {
   if (_instance == nullptr) {
-    _instance = new CherryGrid();
+    _instance = make_unique<CherryGrid>();
   }
-  return _instance;
+  return _instance.get();
 }
 
 CherryGrid::CherryGrid()

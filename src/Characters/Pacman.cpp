@@ -1,5 +1,6 @@
 #include "Characters/Pacman.hpp"
 
+#include "Grids/PotionGrid.hpp"
 #include "Grids/VentGrid.hpp"
 #include "Utils/AssetManager.hpp"
 
@@ -20,6 +21,8 @@ void Pacman::init(SDL_Renderer* renderer) {
   chompSound.init(AssetManager::get_asset(ThemeAssets::COIN_SOUND), false);
   weaponSet.primary_weapon.init(BulletType::EMP, this, 1);
   weaponSet.secondary_weapon.init(BulletType::GRENADE, this, 1);
+
+  boostAnimator.set_duration(200);
 }
 
 void Pacman::init_targets() {
@@ -27,6 +30,7 @@ void Pacman::init_targets() {
   add_target(IDS::CHERRY_COLLIDER_ID);
   add_target(IDS::ENEMY_COLLIDER_ID);
   add_target(IDS::FREEZEBULLET_ID);
+  add_target(IDS::BOOST_ID);
   Character::init_targets();
 }
 
@@ -100,6 +104,12 @@ void Pacman::target_hit(string target_id, Collider* collider) {
         enemy_collision(temp[0] - 1);
       }
     }
+    if (target_id == IDS::BOOST_ID) {
+      if (temp.size() == 2) {
+        boost();
+        BoostGrid::getInstance()->unset_object(temp[0], temp[1]);
+      }
+    }
   }
   if (target_id == IDS::FREEZEBULLET_ID) {
     freeze();
@@ -158,15 +168,41 @@ bool Pacman::isMouthOpen() {
   return true;
 }
 
+void Pacman::boost() { boostAnimator.start(); }
+
+void Pacman::check_boost() {
+  auto swap_vels = [&]() {
+    auto temp = BOOST_VEL;
+    BOOST_VEL = MAX_VEL;
+    MAX_VEL = temp;
+  };
+  if (!WallGrid::getInstance()->fits_in_cell(mPosX, mPosY)) {
+    return;
+  }
+  if (boostAnimator.isActive() && !is_boosted) {
+    swap_vels();
+    is_boosted = true;
+    change_direction(_direction);
+    cout << "Boosted velocity: " << MAX_VEL << endl;
+  }
+  if (!boostAnimator.isActive() && is_boosted) {
+    swap_vels();
+    is_boosted = false;
+    change_direction(_direction);
+
+    cout << "Restoring velocity: " << MAX_VEL << endl;
+  }
+}
 void Pacman::move() {
   if (freezeAnimation.isActive()) {
     return;
   }
+
   if (!is_server) {
     handle_packets();
   }
   handle_collision();
-
+  check_boost();
   Character::move();
 
   if (VentGrid::getInstance()->canTeleport()) {
@@ -196,6 +232,9 @@ void Pacman::handle_packets() {
     // cout << "See this "<< is_server<< " " << data["is_invisible"] << endl;
     _direction = Direction(stoi(data["direction"]));
     if (!is_server) is_invisible = data["is_invisible"] == "1";
+    if (data["is_boosted"] == "1") {
+      boost();
+    }
   }
 }
 
@@ -209,6 +248,7 @@ void Pacman::broadcast_coordinates() {
   unordered_map<string, string> data;
   data.insert({"direction", to_string(int(_direction))});
   data.insert({"is_invisible", to_string(is_invisible)});
+  data.insert({"is_boosted", to_string(is_boosted)});
   p.data = map_to_string(data);
   // cout << "data is " << p.data << endl;
   NetworkManager::queue_packet(p);

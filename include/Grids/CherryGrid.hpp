@@ -16,12 +16,11 @@
 
 class CherryGrid : public ObjectGrid {
  public:
+  CherryGrid();
+
   static CherryGrid* getInstance();
   void generate() override;
 
- protected:
-  CherryGrid();
-
  private:
-  static CherryGrid* _instance;
+  static unique_ptr<CherryGrid> _instance;
 };

@@ -13,12 +13,13 @@
 #include "Characters/Pacman.hpp"
 #include "Constants.hpp"
 #include "Grids/CherryGrid.hpp"
+#include "Grids/PotionGrid.hpp"
 #include "Grids/VentGrid.hpp"
 #include "Network/NetworkManager.hpp"
 #include "Textures/LTexture.hpp"
 #include "UI/BottomBar.hpp"
-#include "Utils/AudioAsset.hpp"
 #include "UI/ImageButton.hpp"
+#include "Utils/AudioAsset.hpp"
 
 using namespace std;
 
@@ -78,6 +79,7 @@ class MainGame {
   CoinGrid* coinGrid;
   CherryGrid* cherryGrid;
   VentGrid* ventGrid;
+  BoostGrid* boostGrid;
   Pacman* pacman;
 
  private:

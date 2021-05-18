@@ -43,6 +43,7 @@ MainGame::MainGame() {
   cherryGrid = CherryGrid::getInstance();
   wallGrid = WallGrid::getInstance();
   ventGrid = VentGrid::getInstance();
+  boostGrid = BoostGrid::getInstance();
 
   _gameState = GameState::MAIN_MENU;
 }
@@ -121,13 +122,13 @@ void MainGame::mainMenuRender(int option) {
   pacmanHeadingText.render(SCREEN_WIDTH / 2 - pacmanHeadingText.getWidth() / 2,
                            SCREEN_HEIGHT * 0.12);
   int i = 0;
-  player1Button.set_clicked(0==option);
+  player1Button.set_clicked(0 == option);
   player1Button.render();
-  player2Button.set_clicked(1==option);
+  player2Button.set_clicked(1 == option);
   player2Button.render();
-  settingsButton.set_clicked(2==option);
+  settingsButton.set_clicked(2 == option);
   settingsButton.render();
-  quitButton.set_clicked(3==option);
+  quitButton.set_clicked(3 == option);
   quitButton.render();
 
   SDL_RenderPresent(_gRenderer);
@@ -170,22 +171,26 @@ int MainGame::mainMenu() {
 }
 
 void MainGame::initMainMenuSystems() {
-
-  player1Button.init(0.35*SCREEN_WIDTH,0.40*SCREEN_HEIGHT,0.3*SCREEN_WIDTH,0.1*SCREEN_HEIGHT,
-                            "assets/buttons/main_menu/player1.jpeg","assets/buttons/main_menu/player1_out.jpeg");
-  player2Button.init(0.35*SCREEN_WIDTH,0.55*SCREEN_HEIGHT,0.3*SCREEN_WIDTH,0.1*SCREEN_HEIGHT,
-                            "assets/buttons/main_menu/player2.jpeg","assets/buttons/main_menu/player2_out.jpeg");
-  settingsButton.init(0.35*SCREEN_WIDTH,0.70*SCREEN_HEIGHT,0.3*SCREEN_WIDTH,0.1*SCREEN_HEIGHT,
-                            "assets/buttons/main_menu/settings.jpeg","assets/buttons/main_menu/settings_out.jpeg");
-  quitButton.init(0.35*SCREEN_WIDTH,0.85*SCREEN_HEIGHT,0.3*SCREEN_WIDTH,0.1*SCREEN_HEIGHT,
-                            "assets/buttons/main_menu/quit.jpeg","assets/buttons/main_menu/quit_out.jpeg");
-
+  player1Button.init(0.35 * SCREEN_WIDTH, 0.40 * SCREEN_HEIGHT,
+                     0.3 * SCREEN_WIDTH, 0.1 * SCREEN_HEIGHT,
+                     "assets/buttons/main_menu/player1.jpeg",
+                     "assets/buttons/main_menu/player1_out.jpeg");
+  player2Button.init(0.35 * SCREEN_WIDTH, 0.55 * SCREEN_HEIGHT,
+                     0.3 * SCREEN_WIDTH, 0.1 * SCREEN_HEIGHT,
+                     "assets/buttons/main_menu/player2.jpeg",
+                     "assets/buttons/main_menu/player2_out.jpeg");
+  settingsButton.init(0.35 * SCREEN_WIDTH, 0.70 * SCREEN_HEIGHT,
+                      0.3 * SCREEN_WIDTH, 0.1 * SCREEN_HEIGHT,
+                      "assets/buttons/main_menu/settings.jpeg",
+                      "assets/buttons/main_menu/settings_out.jpeg");
+  quitButton.init(0.35 * SCREEN_WIDTH, 0.85 * SCREEN_HEIGHT, 0.3 * SCREEN_WIDTH,
+                  0.1 * SCREEN_HEIGHT, "assets/buttons/main_menu/quit.jpeg",
+                  "assets/buttons/main_menu/quit_out.jpeg");
 
   player1Button.setRenderer(_gRenderer);
   player2Button.setRenderer(_gRenderer);
   settingsButton.setRenderer(_gRenderer);
   quitButton.setRenderer(_gRenderer);
-
 
   pacmanHeadingText.setRenderer(_gRenderer);
 
@@ -256,6 +261,7 @@ void MainGame::initCharacters() {
   init_grids.push(coinGrid);
   init_grids.push(ventGrid);
   init_grids.push(cherryGrid);
+  init_grids.push(boostGrid);
 
   while (!init_grids.empty()) {
     auto grid = init_grids.front();
@@ -445,6 +451,7 @@ void MainGame::processInput() {
   bottomBar.update(pacman->get_coins_collected(), pacman->get_active_points(),
                    weapon_text);
   BulletManager::update_bullets();
+  boostGrid->generate();
 
   preRender();
 
@@ -453,6 +460,7 @@ void MainGame::processInput() {
   coinGrid->render();
   ventGrid->render();
   cherryGrid->render();
+  boostGrid->render();
 
   pacman->render();
   bottomBar.render();

@@ -15,12 +15,11 @@
 
 class CoinGrid : public ObjectGrid {
  public:
+  CoinGrid();
+
   static CoinGrid* getInstance();
   void generate() override;
 
- protected:
-  CoinGrid();
-
  private:
-  static CoinGrid* _instance;
+  static unique_ptr<CoinGrid> _instance;
 };

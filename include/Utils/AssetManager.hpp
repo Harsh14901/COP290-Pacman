@@ -29,6 +29,9 @@ enum ThemeAssets {
 
   WALLBUSTER_PNG,
   WALLBUSTER_SOUND,
+
+  BOOST_PNG,
+  INVISIBILITY_PNG,
   E_Last
 };
 

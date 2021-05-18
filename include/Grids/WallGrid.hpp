@@ -13,6 +13,8 @@
 #include "Textures/LTexture.hpp"
 class WallGrid : public ObjectGrid {
  public:
+  WallGrid();
+
   static WallGrid* getInstance();
 
   // Get an empty location in the matrix
@@ -27,10 +29,8 @@ class WallGrid : public ObjectGrid {
   void generate() override;
 
   bool is_empty(int i, int j);
-
- protected:
-  WallGrid();
+  bool fits_in_cell(int x, int y);
 
  private:
-  static WallGrid* _instance;
+  static unique_ptr<WallGrid> _instance;
 };

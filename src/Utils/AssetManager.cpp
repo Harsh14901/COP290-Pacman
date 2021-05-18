@@ -26,7 +26,8 @@ void AssetManager::init(Themes startTheme) {
       {WALLBUSTER_SOUND, "freeze_bullet.wav"},
       {FREEZEBULLET_PNG, "freeze_bullet.png"},
       {FREEZEBULLET_SOUND, "freeze_bullet.wav"},
-
+      {BOOST_PNG, "boost_potion.png"},
+      {INVISIBILITY_PNG, "invisibility_potion.png"},
   });
 }
 void AssetManager::set_theme(Themes theme) { selected_theme = theme; }

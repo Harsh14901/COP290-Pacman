@@ -1,10 +1,10 @@
 #include <Grids/CoinGrid.hpp>
-CoinGrid* CoinGrid::_instance = nullptr;
+unique_ptr<CoinGrid> CoinGrid::_instance;
 CoinGrid* CoinGrid::getInstance() {
   if (_instance == nullptr) {
-    _instance = new CoinGrid();
+    _instance = make_unique<CoinGrid>();
   }
-  return _instance;
+  return _instance.get();
 }
 
 CoinGrid::CoinGrid()

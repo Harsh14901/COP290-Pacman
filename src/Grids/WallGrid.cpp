@@ -1,13 +1,12 @@
 #include <Grids/WallGrid.hpp>
 
 #include "Constants.hpp"
-WallGrid* WallGrid::_instance = nullptr;
-
+unique_ptr<WallGrid> WallGrid::_instance;
 WallGrid* WallGrid::getInstance() {
   if (_instance == nullptr) {
-    _instance = new WallGrid();
+    _instance = make_unique<WallGrid>();
   }
-  return _instance;
+  return _instance.get();
 }
 
 WallGrid::WallGrid()
@@ -86,4 +85,11 @@ void WallGrid::generate() {
     }
     myfile.close();
   }
+}
+
+bool WallGrid::fits_in_cell(int x, int y) {
+  auto indices = get_maze_point(SDL_Point{x, y});
+  auto cell_coords = get_canvas_point(indices);
+
+  return (cell_coords.x == x && cell_coords.y == y);
 }

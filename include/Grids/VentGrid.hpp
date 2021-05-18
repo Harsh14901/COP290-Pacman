@@ -16,6 +16,8 @@
 
 class VentGrid : public ObjectGrid {
  public:
+  VentGrid();
+
   static VentGrid* getInstance();
   void generate() override;
   void render();
@@ -25,10 +27,8 @@ class VentGrid : public ObjectGrid {
   bool canTeleport();
 
  protected:
-  VentGrid();
-
  private:
-  static VentGrid* _instance;
+  static unique_ptr<VentGrid> _instance;
   vector<pair<int, int>> vents;
   Animator openingAnimator = Animator(60);
   bool isOpen = false;

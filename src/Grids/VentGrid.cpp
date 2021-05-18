@@ -2,15 +2,13 @@
 
 #include "Utils/AssetManager.hpp"
 #include "math.h"
-VentGrid* VentGrid::_instance = nullptr;
-
+unique_ptr<VentGrid> VentGrid::_instance;
 VentGrid* VentGrid::getInstance() {
   if (_instance == nullptr) {
-    _instance = new VentGrid();
+    _instance = make_unique<VentGrid>();
   }
-  return _instance;
+  return _instance.get();
 }
-
 VentGrid::VentGrid()
     : ObjectGrid(IDS::VENT_COLLIDER_ID,
                  AssetManager::get_asset(ThemeAssets::VENT_PNG), 1) {}

@@ -2,17 +2,9 @@
 
 Robot::Robot() : Character(IDS::ROBOT_ID) {}
 
-bool Robot::fits_in_cell() {
-  auto wallGrid = WallGrid::getInstance();
-
-  auto indices = wallGrid->get_maze_point(SDL_Point{mPosX, mPosY});
-  auto cell_coords = wallGrid->get_canvas_point(indices);
-
-  return (cell_coords.x == mPosX && cell_coords.y == mPosY);
-}
-
 bool Robot::is_terminated() {
-  return direction_sequence.empty() && fits_in_cell();
+  return direction_sequence.empty() &&
+         WallGrid::getInstance()->fits_in_cell(mPosX, mPosY);
 }
 
 void Robot::load_directions(queue<Direction>& dir_seq) {
@@ -20,7 +12,7 @@ void Robot::load_directions(queue<Direction>& dir_seq) {
 }
 
 void Robot::move() {
-  if (fits_in_cell()) {
+  if (WallGrid::getInstance()->fits_in_cell(mPosX, mPosY)) {
     change_direction(direction_sequence.front());
     direction_sequence.pop();
   }
