@@ -111,6 +111,29 @@ void ObjectGrid::broadcast() {
   NetworkManager::send_all();
 }
 
+void ObjectGrid::broadcast(int i, int j) {
+  Packet p;
+  p.id = OBJECT_ID;
+  p.posX = i;
+  p.posY = j;
+  p.data = to_string(is_set(i, j));
+
+  NetworkManager::queue_packet(p);
+}
+
+void ObjectGrid::handle_packets() {
+  vector<Packet> packets;
+  NetworkManager::get_packets(OBJECT_ID, packets);
+
+  for (auto& p : packets) {
+    if (p.data == "1") {
+      set_object(p.posX, p.posY);
+    } else {
+      unset_object(p.posX, p.posY);
+    }
+  }
+}
+
 void ObjectGrid::packets2objects() {
   NetworkManager::recv_all();
   vector<Packet> packets;

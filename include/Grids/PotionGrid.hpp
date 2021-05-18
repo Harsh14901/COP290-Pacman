@@ -1,31 +1,33 @@
+#include "Constants.hpp"
 #include "Grids/ObjectGrid.hpp"
 #include "Grids/WallGrid.hpp"
 #include "Utils/Animator.hpp"
-
-class BoostGrid : public ObjectGrid {
+class PotionGrid : public ObjectGrid {
  public:
-  BoostGrid();
-
-  static BoostGrid* getInstance();
+  PotionGrid(string id, string asset, int interval, int active_time);
   void generate() override;
 
- private:
-  static unique_ptr<BoostGrid> _instance;
-  WallGrid* wallGrid;
+ protected:
   Animator startDelay;
   Animator potionAnimator;
 };
 
-class InvisibilityGrid : public ObjectGrid {
+class BoostGrid : public PotionGrid {
+ public:
+  BoostGrid();
+
+  static BoostGrid* getInstance();
+
+ private:
+  static unique_ptr<BoostGrid> _instance;
+};
+
+class InvisibilityGrid : public PotionGrid {
  public:
   InvisibilityGrid();
 
   static InvisibilityGrid* getInstance();
-  void generate() override;
 
  private:
   static unique_ptr<InvisibilityGrid> _instance;
-  WallGrid* wallGrid;
-  Animator startDelay;
-  Animator potionAnimator;
 };
