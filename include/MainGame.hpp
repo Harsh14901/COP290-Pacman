@@ -78,6 +78,7 @@ class MainGame {
   CoinGrid* coinGrid;
   CherryGrid* cherryGrid;
   VentGrid* ventGrid;
+  Pacman* pacman;
 
  private:
   void drawInitScreen();

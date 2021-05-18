@@ -1,11 +1,10 @@
 #include "Characters/Character.hpp"
+
 #include "Utils/AssetManager.hpp"
 #include "utils.hpp"
 
-extern AssetManager assetManager;
-
 Character::Character(string id)
-    : Character(id, assetManager.get_asset(ThemeAssets::PACMAN_SPRITE)) {}
+    : Character(id, AssetManager::get_asset(ThemeAssets::PACMAN_SPRITE)) {}
 
 Character::Character(string id, string asset)
     : Base(PACMAN_RENDER_WIDTH, PACMAN_RENDER_HEIGHT, PLAYER_VEL, id, asset) {

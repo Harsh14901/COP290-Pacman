@@ -1,14 +1,20 @@
 #include "Weapons/BulletManager.hpp"
+
 #include "Utils/AssetManager.hpp"
 vector<unique_ptr<Bullet>> BulletManager::active_bullets;
 SDL_Renderer* BulletManager::renderer;
-AudioAsset BulletManager::emp_bullet_sound;
+unordered_map<BulletType, unique_ptr<AudioAsset>> BulletManager::sounds;
 
-extern AssetManager assetManager;
-
-void BulletManager::init(SDL_Renderer* r) { 
-  renderer = r; 
-  emp_bullet_sound.init(assetManager.get_asset(ThemeAssets::FREEZEBULLET_SOUND),false);
+void BulletManager::init(SDL_Renderer* r) {
+  renderer = r;
+  sounds[BulletType::FREEZE] = make_unique<AudioAsset>(
+      AssetManager::get_asset(FREEZEBULLET_SOUND), false);
+  sounds[BulletType::EMP] =
+      make_unique<AudioAsset>(AssetManager::get_asset(EMP_SOUND), false);
+  sounds[BulletType::GRENADE] =
+      make_unique<AudioAsset>(AssetManager::get_asset(GRENADE_SOUND), false);
+  sounds[BulletType::WALLBUSTER] =
+      make_unique<AudioAsset>(AssetManager::get_asset(WALLBUSTER_SOUND), false);
 }
 
 void BulletManager::shoot_bullet(BulletType type, Direction d, int x, int y,
@@ -18,7 +24,6 @@ void BulletManager::shoot_bullet(BulletType type, Direction d, int x, int y,
       active_bullets.push_back(make_unique<FreezeBullet>());
       break;
     case BulletType::EMP:
-      emp_bullet_sound.play();
       active_bullets.push_back(make_unique<EMPBullet>());
       break;
     case BulletType::WALLBUSTER:
@@ -32,7 +37,10 @@ void BulletManager::shoot_bullet(BulletType type, Direction d, int x, int y,
   }
   auto bullet_ptr = active_bullets.back().get();
   bullet_ptr->init(renderer);
+
+  sounds[type].get()->play();
   bullet_ptr->shoot(d, x, y);
+
   if (broadcast) {
     broadcast_bullet(bullet_ptr, type);
   }

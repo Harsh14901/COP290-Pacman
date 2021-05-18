@@ -2,7 +2,6 @@
 
 #include <regex>
 
-
 vector<int> extractIntegerWords(string str) {
   vector<int> numbers;
   int num = 0;
@@ -91,4 +90,10 @@ SDL_Color HSVtoRGB(float H, float S, float V) {
   unsigned char B = (b + m) * 255;
 
   return SDL_Color{R, G, B, 255};
+}
+
+bool fileExists(string path) {
+  ifstream f;
+  f.open(path);
+  return bool(f);
 }

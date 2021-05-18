@@ -1,52 +1,50 @@
 #pragma once
 
-#include <iostream>
-#include "map"
-#include "vector"
 #include <bits/stdc++.h>
 
+#include "Constants.hpp"
+#include "utils.hpp"
 using namespace std;
 
-enum Themes {
-    MASTER,
-    PACMAN,
-    AVENGERS,
-    T_Last  // Placeholder
-};
+enum Themes { MASTER, PACMAN, AVENGERS, T_Last };
 
-enum ThemeAssets{
-    FOLDER_NAME,  // should not be accessed by outside
-    PACMAN_SPRITE,
-    ENEMY_SPRITE,
-    VENT_PNG,  // Note corresponding vent open and close are calculated automatically
-    COIN_PNG,
-    COIN_SOUND,
-    CHERRY_PNG,
-    FREEZEBULLET_PNG,
-    FREEZEBULLET_SOUND,
-    E_Last
-};
+enum ThemeAssets {
 
+  PACMAN_SPRITE,
+  ENEMY_SPRITE,
+  VENT_PNG,  // Note corresponding vent open and close are calculated
+             // automatically
+  COIN_PNG,
+  COIN_SOUND,
+  CHERRY_PNG,
+
+  FREEZEBULLET_PNG,
+  FREEZEBULLET_SOUND,
+
+  EMP_PNG,
+  EMP_SOUND,
+
+  GRENADE_PNG,
+  GRENADE_SOUND,
+
+  WALLBUSTER_PNG,
+  WALLBUSTER_SOUND,
+  E_Last
+};
 
 // The main purpose of this class is to get back asset string from theme and key
-class AssetManager{
-public:
+class AssetManager {
+ public:
+  static void set_theme(Themes theme);
+  static Themes get_theme();
+  static string get_asset(ThemeAssets key);
+  static void init(Themes startTheme);
 
-    AssetManager();
+ private:
+  static Themes selected_theme;
+  static unordered_map<Themes, string> theme_folders;
+  static unordered_map<ThemeAssets, string> asset_files;
+  static string asset_folder;
 
-    void set_theme(Themes theme);
-    Themes get_theme();
-
-    string get_asset(ThemeAssets key);
-
-    void init(Themes startTheme);
-
-
-private:
-    Themes selected_theme;
-    map<Themes,map<ThemeAssets,string>> data;
-    string getFolderNameAppended(string fol,string val);
-
-
-
+  static string get_asset(Themes theme, ThemeAssets asset);
 };

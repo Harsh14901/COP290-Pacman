@@ -1,86 +1,54 @@
 #include "Utils/AssetManager.hpp"
 
-AssetManager::AssetManager(){
+string AssetManager::asset_folder;
+Themes AssetManager::selected_theme = Themes::MASTER;
+unordered_map<Themes, string> AssetManager::theme_folders;
+unordered_map<ThemeAssets, string> AssetManager::asset_files;
 
-    map<ThemeAssets,string> pacman_theme;
-    pacman_theme.insert({ThemeAssets::FOLDER_NAME,"assets/pngs/pacman"});
-    pacman_theme.insert({ThemeAssets::PACMAN_SPRITE,"pac_sprite.png"});
-    pacman_theme.insert({ThemeAssets::ENEMY_SPRITE,"enemy_sprite.png"});
-    pacman_theme.insert({ThemeAssets::VENT_PNG,"vent.png"});
-    pacman_theme.insert({ThemeAssets::COIN_PNG,"coin.png"});
-    pacman_theme.insert({ThemeAssets::COIN_SOUND,"coin_collect.mp3"});
-    pacman_theme.insert({ThemeAssets::CHERRY_PNG,"cherry.png"});
-    pacman_theme.insert({ThemeAssets::FREEZEBULLET_PNG,"freeze_bullet.png"});
-    pacman_theme.insert({ThemeAssets::FREEZEBULLET_SOUND,"freezeBullet.wav"});
+void AssetManager::init(Themes startTheme) {
+  selected_theme = startTheme;
+  asset_folder = "assets/themes/";
+  theme_folders = unordered_map<Themes, string>(
+      {{MASTER, "master/"}, {PACMAN, "pacman/"}, {AVENGERS, "avengers/"}});
+  asset_files = unordered_map<ThemeAssets, string>({
+      {PACMAN_SPRITE, "player.png"},
+      {ENEMY_SPRITE, "enemy.png"},
+      {VENT_PNG, "vent.png"},
+      {COIN_PNG, "coin.png"},
+      {CHERRY_PNG, "cherry.png"},
+      {COIN_SOUND, "coin_collect.mp3"},
 
-    map<ThemeAssets,string> avengers_theme;
-    avengers_theme.insert({ThemeAssets::FOLDER_NAME,"assets/pngs/avengers"});
-    avengers_theme.insert({ThemeAssets::PACMAN_SPRITE,"iron_man.png"});
+      {EMP_PNG, "freeze_bullet.png"},
+      {EMP_SOUND, "freeze_bullet.wav"},
+      {GRENADE_PNG, "freeze_bullet.png"},
+      {GRENADE_SOUND, "freeze_bullet.wav"},
+      {WALLBUSTER_PNG, "freeze_bullet.png"},
+      {WALLBUSTER_SOUND, "freeze_bullet.wav"},
+      {FREEZEBULLET_PNG, "freeze_bullet.png"},
+      {FREEZEBULLET_SOUND, "freeze_bullet.wav"},
 
-    data.insert({Themes::MASTER,pacman_theme});
-    data.insert({Themes::PACMAN,pacman_theme});
-    data.insert({Themes::AVENGERS,avengers_theme});
+  });
+}
+void AssetManager::set_theme(Themes theme) { selected_theme = theme; }
 
-    cout <<"YEP: " <<  data[selected_theme][PACMAN_SPRITE];
-    init(Themes::AVENGERS);
+Themes AssetManager::get_theme() { return selected_theme; }
+
+string AssetManager::get_asset(ThemeAssets key) {
+  if (theme_folders.empty() && asset_files.empty()) {
+    init(MASTER);
+  }
+  auto asset = get_asset(selected_theme, key);
+  if (!fileExists(asset)) {
+    asset = get_asset(MASTER, key);
+  }
+
+  if (!fileExists(asset)) {
+    fatalError("Asset could not be found: " + asset);
+  }
+
+  return asset;
 }
 
-string AssetManager::getFolderNameAppended(string fol,string val){
-    return fol +"/"+val;
-}
-
-// Never call this twice
-void AssetManager::init(Themes startTheme){
-    selected_theme = startTheme;
-    cout << "Initing" << endl;
-
-    // First iterate over each theme avaialble in map
-    // Note first theme shud be master, and it SHUD contain all keys
-    // now iterate over ThemeAssets keys, if any is missing, pick from master else simply append the folder to the name and we are done
-    // Now after closing all loops iterate over Themes and if any is missing, simply pick from master
-    for (auto const& x : data)
-    {
-        auto theme_data = x.second;
-        if(x.first==Themes::MASTER){
-            cout << "Initialising theme " << "Master" << endl;
-        }else{
-            cout << "Initialising theme " << "Something Else, if it comes before Master, report issue" << endl;
-        }
-        for (ThemeAssets ta = ThemeAssets(ThemeAssets::FOLDER_NAME+1); ta < ThemeAssets::E_Last; ta = ThemeAssets(ta + 1)){
-            if(theme_data.find(ta)==theme_data.end()){
-                theme_data[ta] = data[Themes::MASTER][ta];
-            }else{
-                theme_data[ta] = getFolderNameAppended(theme_data[ThemeAssets::FOLDER_NAME],theme_data[ta]);
-            }
-        }
-        data[x.first] = theme_data;
-    }
-
-    cout << "See this freeze bullet " << data[Themes::MASTER][ThemeAssets::FREEZEBULLET_PNG] << endl;
-    cout << "See this cherry " << data[Themes::MASTER][ThemeAssets::CHERRY_PNG] << endl;
-
-    for(Themes th = Themes::MASTER; th <= Themes::T_Last; th = Themes(th+1)){
-        if(data.find(th)==data.end()){
-            data[th] = data[Themes::MASTER];
-            cout << "Initialising theme to master" << endl;
-        }
-    }
-
-    // All Set!!!
-}
-
-void AssetManager::set_theme(Themes theme){
-    this->selected_theme = theme;
-}
-
-Themes AssetManager::get_theme(){
-    return selected_theme;
-}
-
-string AssetManager::get_asset(ThemeAssets key){
-    cout << "See this asset " << data[selected_theme][key] << endl;
-    cout << "See this freeze bullet " << data[selected_theme][ThemeAssets::FREEZEBULLET_PNG] << endl;
-    cout << "See this cherry " << data[Themes::MASTER][ThemeAssets::CHERRY_PNG] << endl;
-
-    return data[selected_theme][key];
+string AssetManager::get_asset(Themes theme, ThemeAssets asset) {
+  return asset_folder + theme_folders[theme] + asset_files[asset];
 }

@@ -8,6 +8,7 @@
 #include "Collision/CollisionEngine.hpp"
 #include "Constants.hpp"
 #include "Textures/LTexture.hpp"
+#include "Utils/AudioAsset.hpp"
 #include "Utils/FrameGuider.hpp"
 #include "utils.hpp"
 

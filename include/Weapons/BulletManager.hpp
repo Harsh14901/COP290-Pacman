@@ -3,10 +3,10 @@
 #include "Constants.hpp"
 #include "Network/NetworkManager.hpp"
 #include "Network/Packet.hpp"
+#include "Utils/AudioAsset.hpp"
 #include "Weapons/Bullet.hpp"
 #include "Weapons/BulletVariants.hpp"
 #include "bits/stdc++.h"
-#include "Utils/AudioAsset.hpp"
 using namespace std;
 
 class BulletManager {
@@ -24,5 +24,5 @@ class BulletManager {
   static void broadcast_bullet(Bullet* bullet, BulletType type);
   static void recieve_bullets();
 
-  static AudioAsset emp_bullet_sound;
+  static unordered_map<BulletType, unique_ptr<AudioAsset>> sounds;
 };

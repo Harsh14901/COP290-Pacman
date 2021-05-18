@@ -7,18 +7,16 @@
 
 #include "Characters/GhostManager.hpp"
 #include "Characters/Robot.hpp"
+#include "Utils/AssetManager.hpp"
 #include "Utils/FrameGuider.hpp"
 #include "Utils/PreferenceManager.hpp"
-#include "Utils/AssetManager.hpp"
 
 int game_frame_int = 0;
 double game_frame = 0;
-AssetManager assetManager;
 
 PreferenceManager prefManager = PreferenceManager(true);
 GhostManager ghostManager;
 vector<Enemy*> enemies;
-Pacman pacman;
 
 extern bool is_server;
 
@@ -35,9 +33,12 @@ MainGame::MainGame() {
   _screenWidth = SCREEN_WIDTH;
   _screenHeight = SCREEN_HEIGHT;
 
+  initSystems();
+
   Enemy::make_enemies();
   enemies = Enemy::get_enemies();
 
+  pacman = Pacman::getInstance();
   coinGrid = CoinGrid::getInstance();
   cherryGrid = CherryGrid::getInstance();
   wallGrid = WallGrid::getInstance();
@@ -228,11 +229,8 @@ void MainGame::networkMenu() {
 }
 
 void MainGame::runGame() {
-
-
-
-  initSystems();
-
+  cout << "Initing Screen" << endl;
+  drawInitScreen();
   auto option = mainMenu();
 
   if (option == 1) {
@@ -274,7 +272,7 @@ void MainGame::initCharacters() {
     init_grids.pop();
   }
 
-  pacman.init(_gRenderer);
+  pacman->init(_gRenderer);
 
   for (auto& enemy : enemies) {
     enemy->init(_gRenderer);
@@ -283,7 +281,7 @@ void MainGame::initCharacters() {
   ghostManager.updateGhostZones();
 
   auto pacman_start = wallGrid->get_empty_indices();
-  pacman.place(wallGrid->get_canvas_point(pacman_start));
+  pacman->place(wallGrid->get_canvas_point(pacman_start));
 
   for (auto& enemy : enemies) {
     enemy->respawn();
@@ -322,9 +320,7 @@ void MainGame::initSystems() {
     fatalError("SDL_mixer could not initialize! SDL_mixer Error: \n" +
                string(Mix_GetError()));
   }
-
-  cout << "Initing Screen" << endl;
-  drawInitScreen();
+  AssetManager::init(Themes::AVENGERS);
 }
 
 SDL_Texture* MainGame::loadTexture(string path) {
@@ -407,7 +403,7 @@ void MainGame::preRender() {
 }
 
 void MainGame::processInput() {
-  if (!pacman.is_dead && coinGrid->active_objects != 0) {
+  if (!pacman->is_dead && coinGrid->active_objects != 0) {
     SDL_Event evnt;
     while (SDL_PollEvent(&evnt)) {
       switch (evnt.type) {
@@ -423,13 +419,13 @@ void MainGame::processInput() {
           }
       }
 
-      pacman.handleEvent(evnt);
+      pacman->handleEvent(evnt);
       for (auto& enemy : enemies) {
         enemy->handleEvent(evnt);
       }
     }
 
-    pacman.move();
+    pacman->move();
 
     for (auto& enemy : enemies) {
       enemy->move();
@@ -445,8 +441,8 @@ void MainGame::processInput() {
   }
   string weapon_text = (client != nullptr && is_two_player)
                            ? Enemy::get_active_enemy()->get_weapon_text()
-                           : pacman.get_weapon_text();
-  bottomBar.update(pacman.get_coins_collected(), pacman.get_active_points(),
+                           : pacman->get_weapon_text();
+  bottomBar.update(pacman->get_coins_collected(), pacman->get_active_points(),
                    weapon_text);
   BulletManager::update_bullets();
 
@@ -458,7 +454,7 @@ void MainGame::processInput() {
   ventGrid->render();
   cherryGrid->render();
 
-  pacman.render();
+  pacman->render();
   bottomBar.render();
 
   for (auto& enemy : enemies) {
@@ -466,7 +462,7 @@ void MainGame::processInput() {
   }
   wallGrid->render();
 
-  if (pacman.is_dead) {
+  if (pacman->is_dead) {
     if (!gameEndAnimator.isActive()) {
       initialiseGameEndTexture(false);
     }

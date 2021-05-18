@@ -1,7 +1,7 @@
 #include "Characters/Enemy.hpp"
+
 #include "Utils/AssetManager.hpp"
 
-extern AssetManager assetManager;
 extern GhostManager ghostManager;
 extern bool is_server;
 int counter = 0;
@@ -25,7 +25,8 @@ vector<Enemy*> Enemy::get_enemies() {
 }
 
 Enemy::Enemy(int type)
-    : Character(IDS::ENEMY_COLLIDER_ID + "_" + to_string(type + 1),assetManager.get_asset(ThemeAssets::ENEMY_SPRITE)) {
+    : Character(IDS::ENEMY_COLLIDER_ID + "_" + to_string(type + 1),
+                AssetManager::get_asset(ThemeAssets::ENEMY_SPRITE)) {
   this->type = type + 1;
   this->id = counter++;
 }

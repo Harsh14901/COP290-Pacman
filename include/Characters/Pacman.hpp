@@ -24,6 +24,9 @@
 class Pacman : public Character {
  public:
   Pacman();
+
+  static Pacman* getInstance();
+
   void move();
   void handleEvent(SDL_Event& e);
   int get_coins_collected();
@@ -48,6 +51,7 @@ class Pacman : public Character {
   void broadcast_coordinates();
 
  private:
+  static unique_ptr<Pacman> _instance;
   bool isMouthOpen();
   void incrementActivePoints(int inc);
   int getInvisibleAlphaValue();

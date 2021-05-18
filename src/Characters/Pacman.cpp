@@ -3,15 +3,21 @@
 #include "Grids/VentGrid.hpp"
 #include "Utils/AssetManager.hpp"
 
-extern AssetManager assetManager;
-
 extern bool is_server;
+unique_ptr<Pacman> Pacman::_instance;
+
+Pacman* Pacman::getInstance() {
+  if (_instance.get() == nullptr) {
+    _instance = make_unique<Pacman>();
+  }
+  return _instance.get();
+}
 
 Pacman::Pacman() : Character(IDS::PACMAN_COLLIDER_ID) {}
 
 void Pacman::init(SDL_Renderer* renderer) {
   Base::init(renderer);
-  chompSound.init(assetManager.get_asset(ThemeAssets::COIN_SOUND), false);
+  chompSound.init(AssetManager::get_asset(ThemeAssets::COIN_SOUND), false);
   weaponSet.primary_weapon.init(BulletType::EMP, this, 1);
   weaponSet.secondary_weapon.init(BulletType::GRENADE, this, 1);
 }
@@ -46,8 +52,7 @@ void Pacman::handleEvent(SDL_Event& e) {
 void Pacman::render() {
   // Show the dot
   int mouth_fac = isMouthOpen() ? 0 : 2;
-  SDL_Rect rect{0, 171 * ((1 - (int(_direction) % 2)) + mouth_fac), 162,
-                171};
+  SDL_Rect rect{0, 171 * ((1 - (int(_direction) % 2)) + mouth_fac), 162, 171};
 
   _gDotTexture.setAlpha(getInvisibleAlphaValue());
   _gDotTexture.render(mPosX, mPosY, &rect, 90 * (int(_direction) / 2));

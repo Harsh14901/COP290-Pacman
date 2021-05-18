@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Constants.hpp"
-#include "Weapons/Bullet.hpp"
 #include "Utils/AssetManager.hpp"
+#include "Weapons/Bullet.hpp"
 using namespace std;
 
 class FreezeBullet : public Bullet {
