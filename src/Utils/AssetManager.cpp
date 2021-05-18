@@ -13,11 +13,16 @@ AssetManager::AssetManager(){
     pacman_theme.insert({ThemeAssets::FREEZEBULLET_PNG,"freeze_bullet.png"});
     pacman_theme.insert({ThemeAssets::FREEZEBULLET_SOUND,"freezeBullet.wav"});
 
+    map<ThemeAssets,string> avengers_theme;
+    avengers_theme.insert({ThemeAssets::FOLDER_NAME,"assets/pngs/avengers"});
+    avengers_theme.insert({ThemeAssets::PACMAN_SPRITE,"iron_man.png"});
+
     data.insert({Themes::MASTER,pacman_theme});
     data.insert({Themes::PACMAN,pacman_theme});
+    data.insert({Themes::AVENGERS,avengers_theme});
 
     cout <<"YEP: " <<  data[selected_theme][PACMAN_SPRITE];
-    init(Themes::MASTER);
+    init(Themes::AVENGERS);
 }
 
 string AssetManager::getFolderNameAppended(string fol,string val){

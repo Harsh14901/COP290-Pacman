@@ -10,6 +10,7 @@ using namespace std;
 enum Themes {
     MASTER,
     PACMAN,
+    AVENGERS,
     T_Last  // Placeholder
 };
 
