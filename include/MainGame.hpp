@@ -20,10 +20,11 @@
 #include "UI/BottomBar.hpp"
 #include "UI/ImageButton.hpp"
 #include "Utils/AudioAsset.hpp"
+#include "Screens/SettingsScreen.hpp"
 
 using namespace std;
 
-enum class GameState { MAIN_MENU, NETWORKMENU, PLAY, EXIT };
+enum class GameState { MAIN_MENU, NETWORKMENU, PLAY, SETTINGSMENU, EXIT };
 
 class MainGame {
  public:
@@ -106,6 +107,10 @@ class MainGame {
   void networkMenu();
   void initNetworkMenu();
   void networkMenuRender();
+
+  void settingsMenu();
+  SettingsScreen settingsScreen;
+
 
   void renderGameEndAnimation();
   void initialiseGameEndTexture(int is_win);

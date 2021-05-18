@@ -203,6 +203,23 @@ void MainGame::initMainMenuSystems() {
       "Pacman", {210, 255, 30}, TTF_OpenFont("assets/fonts/crackman.ttf", 160));
 }
 
+void MainGame::settingsMenu(){
+  settingsScreen.init(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+  settingsScreen.setRenderer(_gRenderer);
+
+  SDL_Event evnt;
+
+
+  while (_gameState == GameState::SETTINGSMENU) {
+    while (SDL_PollEvent(&evnt) && _gameState != GameState::EXIT) {
+      settingsScreen.handleEvent(evnt);
+    }
+    SDL_RenderClear(_gRenderer);
+    settingsScreen.render();
+    SDL_RenderPresent(_gRenderer);
+  }
+}
+
 void MainGame::networkMenu() {
   networkTextTexture.setRenderer(_gRenderer);
   if (server != nullptr) {
@@ -240,7 +257,9 @@ void MainGame::runGame() {
 
   if (option == 1) {
     networkMenu();
-
+  } else if(option==2) {
+    _gameState = GameState::SETTINGSMENU;
+    settingsMenu();
   } else {
     server = nullptr;
     client = nullptr;
