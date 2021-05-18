@@ -65,6 +65,10 @@ class MainGame {
   ImageButton settingsButton;
   ImageButton quitButton;
 
+  const static int numMenuButtons = 4;
+  ImageButton mainMenuButtons[numMenuButtons];
+
+
   LTexture networkTextTexture;
 
   Animator gameEndAnimator = Animator(360);
