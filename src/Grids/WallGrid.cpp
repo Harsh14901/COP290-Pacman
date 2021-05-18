@@ -1,5 +1,6 @@
 #include <Grids/WallGrid.hpp>
 
+#include "Algorithms/MazeGenerator.hpp"
 #include "Constants.hpp"
 unique_ptr<WallGrid> WallGrid::_instance;
 WallGrid* WallGrid::getInstance() {
@@ -66,24 +67,15 @@ void WallGrid::generate() {
   if (system("node src/maze_generator.js > map.txt")) {
     fatalError("Error Generating map");
   }
+  auto mazeGen = MazeGenerator(GRID_ROW, GRID_COL);
+  auto maze = mazeGen.generate_maze(MazeGenerator::MazeMode::PACMAN);
 
-  string line;
-  ifstream myfile("map.txt");
-  int i = 0;
-  int j = 0;
-  if (myfile.is_open()) {
-    while (getline(myfile, line)) {
-      for (char& c : line) {
-        if (c == '|' || c == '_') {
-          set_object(i, j);
-        }
-        j++;
+  for (int i = 0; i < GRID_ROW; i++) {
+    for (int j = 0; j < GRID_COL; j++) {
+      if (maze[i][j]) {
+        set_object(i, j);
       }
-      cout << line << '\n';
-      i++;
-      j = 0;
     }
-    myfile.close();
   }
 }
 

@@ -27,7 +27,7 @@ void PotionGrid::generate() {
   if (active_objects > 0) {
     for (int i = 0; i < GRID_ROW; i++) {
       for (int j = 0; j < GRID_COL; j++) {
-        if (!is_set(i, j)) {
+        if (is_set(i, j)) {
           unset_object(i, j);
           broadcast(i, j);
         }
