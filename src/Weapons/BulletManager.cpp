@@ -1,9 +1,15 @@
 #include "Weapons/BulletManager.hpp"
-
+#include "Utils/AssetManager.hpp"
 vector<unique_ptr<Bullet>> BulletManager::active_bullets;
 SDL_Renderer* BulletManager::renderer;
+AudioAsset BulletManager::emp_bullet_sound;
 
-void BulletManager::init(SDL_Renderer* r) { renderer = r; }
+extern AssetManager assetManager;
+
+void BulletManager::init(SDL_Renderer* r) { 
+  renderer = r; 
+  emp_bullet_sound.init(assetManager.get_asset(ThemeAssets::FREEZEBULLET_SOUND),false);
+}
 
 void BulletManager::shoot_bullet(BulletType type, Direction d, int x, int y,
                                  bool broadcast) {
@@ -12,6 +18,7 @@ void BulletManager::shoot_bullet(BulletType type, Direction d, int x, int y,
       active_bullets.push_back(make_unique<FreezeBullet>());
       break;
     case BulletType::EMP:
+      emp_bullet_sound.play();
       active_bullets.push_back(make_unique<EMPBullet>());
       break;
     case BulletType::WALLBUSTER:

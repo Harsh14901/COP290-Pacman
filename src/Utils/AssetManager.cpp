@@ -7,9 +7,11 @@ AssetManager::AssetManager(){
     pacman_theme.insert({ThemeAssets::PACMAN_SPRITE,"pac_sprite.png"});
     pacman_theme.insert({ThemeAssets::ENEMY_SPRITE,"enemy_sprite.png"});
     pacman_theme.insert({ThemeAssets::VENT_PNG,"vent.png"});
-    pacman_theme.insert({ThemeAssets::CHERRY_PNG,"cherry.png"});
     pacman_theme.insert({ThemeAssets::COIN_PNG,"coin.png"});
+    pacman_theme.insert({ThemeAssets::COIN_SOUND,"coin_collect.mp3"});
+    pacman_theme.insert({ThemeAssets::CHERRY_PNG,"cherry.png"});
     pacman_theme.insert({ThemeAssets::FREEZEBULLET_PNG,"freeze_bullet.png"});
+    pacman_theme.insert({ThemeAssets::FREEZEBULLET_SOUND,"freezeBullet.wav"});
 
     data.insert({Themes::MASTER,pacman_theme});
     data.insert({Themes::PACMAN,pacman_theme});
@@ -49,6 +51,9 @@ void AssetManager::init(Themes startTheme){
         data[x.first] = theme_data;
     }
 
+    cout << "See this freeze bullet " << data[Themes::MASTER][ThemeAssets::FREEZEBULLET_PNG] << endl;
+    cout << "See this cherry " << data[Themes::MASTER][ThemeAssets::CHERRY_PNG] << endl;
+
     for(Themes th = Themes::MASTER; th <= Themes::T_Last; th = Themes(th+1)){
         if(data.find(th)==data.end()){
             data[th] = data[Themes::MASTER];
@@ -68,5 +73,9 @@ Themes AssetManager::get_theme(){
 }
 
 string AssetManager::get_asset(ThemeAssets key){
+    cout << "See this asset " << data[selected_theme][key] << endl;
+    cout << "See this freeze bullet " << data[selected_theme][ThemeAssets::FREEZEBULLET_PNG] << endl;
+    cout << "See this cherry " << data[Themes::MASTER][ThemeAssets::CHERRY_PNG] << endl;
+
     return data[selected_theme][key];
 }

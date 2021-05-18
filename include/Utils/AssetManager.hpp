@@ -19,10 +19,10 @@ enum ThemeAssets{
     ENEMY_SPRITE,
     VENT_PNG,  // Note corresponding vent open and close are calculated automatically
     COIN_PNG,
-    // COIN_SOUND,
+    COIN_SOUND,
     CHERRY_PNG,
     FREEZEBULLET_PNG,
-    // FREEZEBULLET_SOUND,
+    FREEZEBULLET_SOUND,
     E_Last
 };
 

@@ -178,9 +178,9 @@ void MainGame::initMainMenuSystems() {
   p1TextLarger.setRenderer(_gRenderer);
   p2TextLarger.setRenderer(_gRenderer);
 
-  _mainMenuTexture = loadTexture("assets/backgrounds/space_back.jfif");
+  _mainMenuTexture = loadTexture("assets/backgrounds/mainScreenBackground.png");
 
-  pacmanMainMenuMusic.init("assets/sounds/pacman_beginning.wav", true);
+  pacmanMainMenuMusic.init("assets/sounds/mainscreen_song.mp3", true);
   pacmanMainMenuMusic.play();
 
   pacmanHeadingText.loadFromRenderedText(

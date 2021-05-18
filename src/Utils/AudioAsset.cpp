@@ -20,9 +20,9 @@ void AudioAsset::init(string sound,bool isMusic){
 }
 
 void AudioAsset::applySettings(){
-    Mix_Volume(-1,0);
+    // Mix_Volume(-1,0);
     if(soundEffect != NULL){
-        cout << "Come On I set the volume to zero" << endl;
+        cout << "Come On I set the volume to zero: " << prefManager.getSettingValue("sfx") << endl;
         if(prefManager.getSettingValue("sfx")=="false") Mix_VolumeChunk(soundEffect,0);
     }if(music!=NULL){
         cout << "Come On I set the music volume to zero" << endl;
@@ -41,8 +41,8 @@ void AudioAsset::play(){
     is_playing = true;
     if(is_music)   
     {
-        // cout << "Music Should be playing" << endl;
-        // Mix_PlayMusic(music,-1);
+        cout << "Music Should be playing" << endl;
+        Mix_PlayMusic(music,-1);
     }
     else
     {

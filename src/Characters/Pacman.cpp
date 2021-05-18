@@ -1,6 +1,9 @@
 #include "Characters/Pacman.hpp"
 
 #include "Grids/VentGrid.hpp"
+#include "Utils/AssetManager.hpp"
+
+extern AssetManager assetManager;
 
 extern bool is_server;
 
@@ -8,7 +11,7 @@ Pacman::Pacman() : Character(IDS::PACMAN_COLLIDER_ID) {}
 
 void Pacman::init(SDL_Renderer* renderer) {
   Base::init(renderer);
-  chompSound.init("assets/sounds/pacman_chomp.wav", false);
+  chompSound.init(assetManager.get_asset(ThemeAssets::COIN_SOUND), false);
   weaponSet.primary_weapon.init(BulletType::EMP, this, 1);
   weaponSet.secondary_weapon.init(BulletType::GRENADE, this, 1);
 }

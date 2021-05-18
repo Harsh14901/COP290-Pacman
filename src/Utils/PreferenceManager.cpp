@@ -39,6 +39,6 @@ string PreferenceManager::setSettingValue(string key,string value){
 }
 
 void PreferenceManager::init_standard_settings(){
-    addSetting("music","false");
-    addSetting("sfx","false");
+    addSetting("music","true");
+    addSetting("sfx","true");
 }
