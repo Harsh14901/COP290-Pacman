@@ -52,12 +52,12 @@ void SettingsScreen::setRenderer(SDL_Renderer* _gRenderer){
 
     themeSectionText.setRenderer(_gRenderer);
     musicSelectionText.setRenderer(_gRenderer);
+    gamePlaySelectionText.setRenderer(_gRenderer);
 
     sfxText.setRenderer(_gRenderer);
     musicText.setRenderer(_gRenderer);
     sfxTextSelected.setRenderer(_gRenderer);
     musicTextSelected.setRenderer(_gRenderer);
-
 
     offX = (0.28 +0.06)*w;
     offY = h/7.0  + 0;
@@ -68,11 +68,23 @@ void SettingsScreen::setRenderer(SDL_Renderer* _gRenderer){
     themeSectionText.loadFromRenderedText(
       "THEMES", {255, 255, 255}, TTF_OpenFont("assets/fonts/win_font.ttf", 80));
 
+    gamePlaySelectionText.loadFromRenderedText(
+      "GAMEPLAY", {255, 255, 255}, TTF_OpenFont("assets/fonts/win_font.ttf", 80));
+
+
     sfxText.loadFromRenderedText(
       "SFX", {255, 255, 255}, TTF_OpenFont("assets/fonts/Rajdhani.ttf", 60));
     musicText.loadFromRenderedText(
       "MUSIC", {255, 255, 255}, TTF_OpenFont("assets/fonts/Rajdhani.ttf", 60));
+    for(int i=0;i<4;i++){
+        numEnemiesSelectedText[i].setRenderer(_gRenderer);
+        numEnemiesText[i].setRenderer(_gRenderer);
 
+        numEnemiesText[i].loadFromRenderedText(
+        "Enemies: "+to_string(i+1), {255, 255, 255}, TTF_OpenFont("assets/fonts/Rajdhani.ttf", 60));
+        numEnemiesSelectedText[i].loadFromRenderedText(
+        "Enemies: "+to_string(i+1), {210, 255, 30}, TTF_OpenFont("assets/fonts/Rajdhani.ttf", 60));
+    }
     sfxTextSelected.loadFromRenderedText(
       "SFX", {210, 255, 30}, TTF_OpenFont("assets/fonts/Rajdhani.ttf", 60));
     musicTextSelected.loadFromRenderedText(
@@ -117,15 +129,35 @@ void SettingsScreen::handleSoundEvent(int keycode){
         }
 }
 
+void SettingsScreen::handleGamePlayEvent(int keycode){
+        switch (keycode) {
+            case SDLK_DOWN:
+                gamePlayOption = (gamePlayOption+1)%2;
+                break;
+            case SDLK_UP:
+                gamePlayOption = (gamePlayOption-1+1*1000)%1;
+                break;
+            case SDLK_RIGHT:
+                num_enemies = min(num_enemies+1,4);
+                break;
+            case SDLK_LEFT:
+                num_enemies = max(num_enemies-1,1);
+                break;
+            default:
+                cout << "Invalid Key, Play Sound: " << keycode  << endl;
+        }
+}
+
 void SettingsScreen::handleEvent(SDL_Event &evnt){
     switch (evnt.type) {
         case SDL_KEYDOWN:
           auto key = evnt.key.keysym.sym;
           if(key==9) sectionCursor = (sectionCursor+1)%num_sections; // TAB KEY
           cout << "Selection Cursor " << sectionCursor << endl;
-          cout << "Key Pressssssed " << key << endl;
+          cout << "Key Presssed " << key << endl;
           if(sectionCursor==0) handleThemeEvent(key);
           if(sectionCursor==1) handleSoundEvent(key);
+          if(sectionCursor==2) handleGamePlayEvent(key);
     }
 }
 
@@ -144,19 +176,25 @@ void SettingsScreen::render() {
 
     if(sectionCursor==1){
         if(current_music_option_selected==0){
-            musicText.render(0.37*w,0.09*h+h/7.0);
-            sfxTextSelected.render(0.37*w,0.19*h+h/7.0);
+            musicTextSelected.render(0.37*w,0.19*h+h/7.0);
+            sfxText.render(0.37*w,0.09*h+h/7.0);
         }else{
-            musicTextSelected.render(0.37*w,0.09*h+h/7.0);
-            sfxText.render(0.37*w,0.19*h+h/7.0);
+            musicText.render(0.37*w,0.19*h+h/7.0);
+            sfxTextSelected.render(0.37*w,0.09*h+h/7.0);
         }
     }else{
-        musicText.render(0.37*w,0.09*h+h/7.0);
-        sfxText.render(0.37*w,0.19*h+h/7.0);
+        musicText.render(0.37*w,0.19*h+h/7.0);
+        sfxText.render(0.37*w,0.09*h+h/7.0);
+    }
+    if(sectionCursor==2){
+        numEnemiesSelectedText[num_enemies-1].render(0.738*w,0.09*h + h/7.0);
+    }else{
+        numEnemiesText[num_enemies-1].render(0.738*w,0.09*h + h/7.0);
     }
 
     themeSectionText.render(0.085*w,0.12*h);
     musicSelectionText.render(0.405*w,0.12*h);
+    gamePlaySelectionText.render(0.725*w,0.12*h);
 
 
     musicButton.set_clicked(musicToggle);

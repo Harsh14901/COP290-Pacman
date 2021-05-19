@@ -37,20 +37,27 @@ private:
     LTexture sfxText;
     LTexture musicTextSelected;
     LTexture sfxTextSelected;
+    LTexture numEnemiesText[4];
+    LTexture numEnemiesSelectedText[4];
 
     LTexture themeSectionText;
     LTexture musicSelectionText;
+    LTexture gamePlaySelectionText;
 
     int selectedTheme = 0;
     int sectionCursor = 0;
+    int gamePlayOption = 0;
     int num_sections = 3;
 
     int current_music_option_selected = 0;
     bool musicToggle = false;
     bool sfxToggle = false;
+    int num_enemies = 1;
 
     void handleThemeEvent(int keycode);
     void handleSoundEvent(int keycode);
+    void handleGamePlayEvent(int keycode);
+
     SDL_Texture* loadTexture(string path);
     SDL_Texture* _backgroundTexture = NULL;
 
