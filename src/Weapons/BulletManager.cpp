@@ -17,6 +17,11 @@ void BulletManager::init(SDL_Renderer* r) {
       make_unique<AudioAsset>(AssetManager::get_asset(WALLBUSTER_SOUND), false);
 }
 
+void BulletManager::clear_all() {
+  active_bullets.clear();
+  sounds.clear();
+}
+
 void BulletManager::shoot_bullet(BulletType type, Direction d, int x, int y,
                                  bool broadcast) {
   switch (type) {

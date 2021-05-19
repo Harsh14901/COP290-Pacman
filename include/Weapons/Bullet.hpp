@@ -28,6 +28,7 @@ class Bullet : public Base {
  protected:
   bool isActive = false;
   int angle = 0;
+  string target_id;
 
   void init_collider() override;
   void target_hit(string target_id, Collider* collider = nullptr) override;

@@ -16,6 +16,7 @@ class BulletManager {
   static void render_bullets();
   static void update_bullets();
   static void init(SDL_Renderer* renderer);
+  static void clear_all();
 
  private:
   static vector<unique_ptr<Bullet>> active_bullets;

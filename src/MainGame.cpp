@@ -33,10 +33,6 @@ MainGame::MainGame() {
 
   initSystems();
 
-  Enemy::make_enemies(PreferenceManager::NUM_ENEMIES);
-  enemies = Enemy::get_enemies();
-
-  pacman = Pacman::getInstance();
   coinGrid = CoinGrid::getInstance();
   cherryGrid = CherryGrid::getInstance();
   wallGrid = WallGrid::getInstance();
@@ -121,8 +117,8 @@ void MainGame::mainMenuRender(int option) {
   pacmanHeadingText.render(SCREEN_WIDTH / 2 - pacmanHeadingText.getWidth() / 2,
                            SCREEN_HEIGHT * 0.12);
 
-  for(int i=0;i<numMenuButtons;i++){
-    mainMenuButtons[i].set_clicked(option==i);
+  for (int i = 0; i < numMenuButtons; i++) {
+    mainMenuButtons[i].set_clicked(option == i);
     mainMenuButtons[i].render();
   }
 
@@ -153,7 +149,7 @@ int MainGame::mainMenu() {
               CommonAudios::buttonHover.play();
               break;
             case 13:
-              if (menuOption!=0) CommonAudios::buttonClick.play();
+              if (menuOption != 0) CommonAudios::buttonClick.play();
               _gameState = GameState::NETWORKMENU;
             default:
               cout << "Invalid Key, Play Sound" << endl;
@@ -169,27 +165,25 @@ int MainGame::mainMenu() {
 }
 
 void MainGame::initMainMenuSystems() {
-
   mainMenuButtons[0].init(0.35 * SCREEN_WIDTH, 0.40 * SCREEN_HEIGHT,
-                     0.3 * SCREEN_WIDTH, 0.1 * SCREEN_HEIGHT,
-                     "assets/buttons/main_menu/player1.jpeg",
-                     "assets/buttons/main_menu/player1_out.jpeg");
+                          0.3 * SCREEN_WIDTH, 0.1 * SCREEN_HEIGHT,
+                          "assets/buttons/main_menu/player1.jpeg",
+                          "assets/buttons/main_menu/player1_out.jpeg");
   mainMenuButtons[1].init(0.35 * SCREEN_WIDTH, 0.55 * SCREEN_HEIGHT,
-                     0.3 * SCREEN_WIDTH, 0.1 * SCREEN_HEIGHT,
-                     "assets/buttons/main_menu/player2.jpeg",
-                     "assets/buttons/main_menu/player2_out.jpeg");
+                          0.3 * SCREEN_WIDTH, 0.1 * SCREEN_HEIGHT,
+                          "assets/buttons/main_menu/player2.jpeg",
+                          "assets/buttons/main_menu/player2_out.jpeg");
   mainMenuButtons[2].init(0.35 * SCREEN_WIDTH, 0.70 * SCREEN_HEIGHT,
-                     0.3 * SCREEN_WIDTH, 0.1 * SCREEN_HEIGHT,
-                      "assets/buttons/main_menu/settings.jpeg",
-                      "assets/buttons/main_menu/settings_out.jpeg");
+                          0.3 * SCREEN_WIDTH, 0.1 * SCREEN_HEIGHT,
+                          "assets/buttons/main_menu/settings.jpeg",
+                          "assets/buttons/main_menu/settings_out.jpeg");
   mainMenuButtons[3].init(0.35 * SCREEN_WIDTH, 0.85 * SCREEN_HEIGHT,
-                     0.3 * SCREEN_WIDTH, 0.1 * SCREEN_HEIGHT,
-                     "assets/buttons/main_menu/quit.jpeg",
-                     "assets/buttons/main_menu/quit_out.jpeg");
-  for(int i=0;i<numMenuButtons;i++){
+                          0.3 * SCREEN_WIDTH, 0.1 * SCREEN_HEIGHT,
+                          "assets/buttons/main_menu/quit.jpeg",
+                          "assets/buttons/main_menu/quit_out.jpeg");
+  for (int i = 0; i < numMenuButtons; i++) {
     mainMenuButtons[i].setRenderer(_gRenderer);
   }
-
 
   pacmanHeadingText.setRenderer(_gRenderer);
 
@@ -202,16 +196,15 @@ void MainGame::initMainMenuSystems() {
       "Pacman", {210, 255, 30}, TTF_OpenFont("assets/fonts/crackman.ttf", 160));
 }
 
-void MainGame::settingsMenu(){
-  settingsScreen.init(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+void MainGame::settingsMenu() {
+  settingsScreen.init(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
   settingsScreen.setRenderer(_gRenderer);
 
   SDL_Event evnt;
 
-
   while (_gameState == GameState::SETTINGSMENU) {
     while (SDL_PollEvent(&evnt) && _gameState != GameState::EXIT) {
-      if(evnt.key.keysym.sym==27) return;
+      if (evnt.key.keysym.sym == 27) return;
       settingsScreen.handleEvent(evnt);
     }
     SDL_RenderClear(_gRenderer);
@@ -253,20 +246,20 @@ void MainGame::networkMenu() {
 void MainGame::runGame() {
   cout << "Initing Screen" << endl;
   drawInitScreen();
-  while(_gameState!=GameState::EXIT){
+  while (_gameState != GameState::EXIT) {
     auto option = mainMenu();
 
     if (option == 1) {
       networkMenu();
-    } else if(option==2) {
+    } else if (option == 2) {
       _gameState = GameState::SETTINGSMENU;
       settingsMenu();
       _gameState = GameState::MAIN_MENU;
       continue;
-    } else if(option==3){
+    } else if (option == 3) {
       _gameState = GameState::EXIT;
-      continue;  
-    }else {
+      continue;
+    } else {
       server = nullptr;
       client = nullptr;
       is_two_player = false;
@@ -283,6 +276,11 @@ void MainGame::runGame() {
 }
 
 void MainGame::initCharacters() {
+  pacman = Pacman::getInstance();
+
+  Enemy::make_enemies(PreferenceManager::NUM_ENEMIES);
+  enemies = Enemy::get_enemies();
+
   queue<ObjectGrid*> init_grids;
 
   init_grids.push(wallGrid);
@@ -330,13 +328,11 @@ void MainGame::initSystems() {
 
   // SDL_Init(SDL_INIT_EVERYTHING);
 
-
   // Initialize SDL
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
     fatalError("SDL could not initialize! SDL_Error: \n" +
                string(SDL_GetError()));
   }
-
 
   _window = SDL_CreateWindow("Pacman Infinity", SDL_WINDOWPOS_CENTERED,
                              SDL_WINDOWPOS_CENTERED, _screenWidth,
@@ -441,41 +437,28 @@ void MainGame::preRender() {
 }
 
 void MainGame::processInput() {
-  if (!pacman->is_dead && coinGrid->active_objects != 0) {
-    SDL_Event evnt;
-    while (SDL_PollEvent(&evnt)) {
-      switch (evnt.type) {
-        case SDL_QUIT:
-          _gameState = GameState::EXIT;
-          break;
-        case SDL_KEYDOWN:
-          // cout << evnt.key.keysym.sym << "," << SDLK_t << endl;
-          if (evnt.key.keysym.sym == SDLK_TAB) {
-            Enemy::switch_active_id();
-          } else if (evnt.key.keysym.sym == SDLK_t) {
-            // Enemy::get_active_enemy()->shootFreezeBullet();
-          }
-      }
-
-      pacman->handleEvent(evnt);
-      for (auto& enemy : enemies) {
-        enemy->handleEvent(evnt);
-      }
+  SDL_Event evnt;
+  while (SDL_PollEvent(&evnt)) {
+    switch (evnt.type) {
+      case SDL_QUIT:
+        _gameState = GameState::EXIT;
+        break;
+      case SDL_KEYDOWN:
+        if (evnt.key.keysym.sym == SDLK_TAB) {
+          Enemy::switch_active_id();
+        }
     }
 
-    pacman->move();
-
+    pacman->handleEvent(evnt);
     for (auto& enemy : enemies) {
-      enemy->move();
+      enemy->handleEvent(evnt);
     }
-  } else {
-    if (!gameEndAnimator.isActive()) {
-      if (coinGrid->active_objects == 0) {
-        initialiseGameEndTexture(false);
-      } else {
-        initialiseGameEndTexture(false);
-      }
-    }
+  }
+
+  pacman->move();
+
+  for (auto& enemy : enemies) {
+    enemy->move();
   }
   string weapon_text = (client != nullptr && is_two_player)
                            ? Enemy::get_active_enemy()->get_weapon_text()
@@ -485,7 +468,9 @@ void MainGame::processInput() {
   BulletManager::update_bullets();
   boostGrid->generate();
   invisibilityGrid->generate();
+}
 
+void MainGame::renderAll() {
   preRender();
 
   BulletManager::render_bullets();
@@ -504,34 +489,42 @@ void MainGame::processInput() {
   }
   wallGrid->render();
 
-  if (pacman->is_dead) {
-    if (!gameEndAnimator.isActive()) {
-      initialiseGameEndTexture(false);
-    }
-    renderGameEndAnimation();
-    _gameState = GameState::MAIN_MENU;
+  renderGameEndAnimation();
+  SDL_RenderPresent(_gRenderer);
+}
+
+bool MainGame::game_terminated() {
+  bool is_terminated = false, is_win = false;
+  if (gameEndAnimator.isActive()) {
+    // cout << "Game END animator active" << endl;
+
+    is_terminated = true;
   }
   if (coinGrid->active_objects == 0) {
-    if (!gameEndAnimator.isActive()) {
-      initialiseGameEndTexture(true);
-    }
-    renderGameEndAnimation();
+    // cout << "All coins collected" << endl;
+
+    is_terminated = true;
+    is_win = true;
+  } else if (pacman->is_dead) {
+    // cout << "Pacman dead" << endl;
+    is_terminated = true;
+    is_win = false;
+  }
+  if (is_terminated && !gameEndAnimator.isActive()) {
+    gameEndAnimator.start();
+    initialiseGameEndTexture(is_win);
+  }
+  if (is_terminated) {
     _gameState = GameState::MAIN_MENU;
   }
-  // gTextTexture.render( ( SCREEN_WIDTH - gTextTexture.getWidth() ) / 2, (
-  // 0.2f*SCREEN_HEIGHT - gTextTexture.getHeight() ) / 2 );
 
-  // Update screen
-  SDL_RenderPresent(_gRenderer);
-
-  // SDL_UpdateWindowSurface(_window);
+  return is_terminated;
 }
 
 void MainGame::gameLoop() {
   cout << "Starting GameLoop" << endl;
   FrameGuider::start();
-  while (_gameState == GameState::PLAY || 
-         (_gameState == GameState::MAIN_MENU && gameEndAnimator.isActive())) {
+  while (_gameState == GameState::PLAY || gameEndAnimator.isActive()) {
     if (client != nullptr || server != nullptr) {
       NetworkManager::send_packets();
       NetworkManager::recv_packets();
@@ -539,7 +532,10 @@ void MainGame::gameLoop() {
       NetworkManager::clear_all();
     }
 
-    processInput();
+    if (!game_terminated()) {
+      processInput();
+    }
+    renderAll();
 
     CollisionEngine::checkCollisions();
 
@@ -548,9 +544,28 @@ void MainGame::gameLoop() {
     game_frame = FrameGuider::current_frame_double;
     game_frame_int = FrameGuider::current_frame_int;
   }
+  clear_resources();
 }
 
-void MainGame::initialiseGameEndTexture(int is_win) {
+void MainGame::clear_resources() {
+  wallGrid->clear_all();
+  coinGrid->clear_all();
+  ventGrid->clear_all();
+  cherryGrid->clear_all();
+  boostGrid->clear_all();
+  invisibilityGrid->clear_all();
+
+  NetworkManager::clear_all();
+  BulletManager::clear_all();
+  CollisionEngine::clear_all();
+  Enemy::clear_all();
+  Pacman::clearInstance();
+  ghostManager.clear_all();
+
+  gameEndAnimator.reset();
+}
+
+void MainGame::initialiseGameEndTexture(bool is_win) {
   gameEndTextTexture.setRenderer(_gRenderer);
   if (is_win) {
     gameEndTextTexture.loadFromRenderedText(
@@ -566,14 +581,13 @@ void MainGame::initialiseGameEndTexture(int is_win) {
 
 void MainGame::renderGameEndAnimation() {
   if (!gameEndAnimator.isActive()) {
-    gameEndAnimator.start();
+    return;
   }
 
   // cout << "Animation is happening" << endl;
 
   double x = gameEndAnimator.animation_progress();
-
-  // cout << x << endl;
+  cout << x << endl;
   double val = x > 0.33 ? 0.5 : 1.5 * x;
   gameEndTextTexture.render(
       SCREEN_WIDTH / 2 - gameEndTextTexture.getWidth() / 2,

@@ -11,15 +11,25 @@ void CollisionEngine::register_collider(Collider* collider) {
 }
 
 void CollisionEngine::deregister_collider(Collider* collider) {
+  if (collider == nullptr) {
+    return;
+  }
   auto it = find(colliders.begin(), colliders.end(), collider);
   if (it != colliders.end()) {
     colliders.erase(it);
-    collisions[collider->id].clear();
+    if (!collisions[collider->id].empty()) {
+      collisions[collider->id].clear();
+    }
   }
 }
 
 vector<Collider*> CollisionEngine::getCollisions(string id) {
   return collisions[id];
+}
+
+void CollisionEngine::clear_all() {
+  collisions.clear();
+  colliders.clear();
 }
 
 void CollisionEngine::checkCollisions() {

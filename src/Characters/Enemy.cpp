@@ -24,6 +24,8 @@ vector<Enemy*> Enemy::get_enemies() {
   return enemy_ptrs;
 }
 
+void Enemy::clear_all() { enemies.clear(); }
+
 Enemy::Enemy(int type)
     : Character(IDS::ENEMY_COLLIDER_ID + "_" + to_string(type + 1),
                 AssetManager::get_asset(ThemeAssets::ENEMY_SPRITE)) {
