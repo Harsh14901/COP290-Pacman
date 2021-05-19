@@ -33,7 +33,7 @@ MainGame::MainGame() {
 
   initSystems();
 
-  Enemy::make_enemies();
+  Enemy::make_enemies(PreferenceManager::NUM_ENEMIES);
   enemies = Enemy::get_enemies();
 
   pacman = Pacman::getInstance();
@@ -124,7 +124,6 @@ void MainGame::mainMenuRender(int option) {
 
   for(int i=0;i<numMenuButtons;i++){
     mainMenuButtons[i].set_clicked(option==i);
-    cout << "Rendering " << i << endl;
     mainMenuButtons[i].render();
   }
 
@@ -210,6 +209,7 @@ void MainGame::settingsMenu(){
 
   while (_gameState == GameState::SETTINGSMENU) {
     while (SDL_PollEvent(&evnt) && _gameState != GameState::EXIT) {
+      if(evnt.key.keysym.sym==27) return;
       settingsScreen.handleEvent(evnt);
     }
     SDL_RenderClear(_gRenderer);
@@ -251,24 +251,31 @@ void MainGame::networkMenu() {
 void MainGame::runGame() {
   cout << "Initing Screen" << endl;
   drawInitScreen();
-  auto option = mainMenu();
+  while(_gameState!=GameState::EXIT){
+    auto option = mainMenu();
 
-  if (option == 1) {
-    networkMenu();
-  } else if(option==2) {
-    _gameState = GameState::SETTINGSMENU;
-    settingsMenu();
-  } else {
-    server = nullptr;
-    client = nullptr;
-    is_two_player = false;
+    if (option == 1) {
+      networkMenu();
+    } else if(option==2) {
+      _gameState = GameState::SETTINGSMENU;
+      settingsMenu();
+      _gameState = GameState::MAIN_MENU;
+      continue;
+    } else if(option==3){
+      _gameState = GameState::EXIT;
+      continue;  
+    }else {
+      server = nullptr;
+      client = nullptr;
+      is_two_player = false;
+    }
+
+    _gameState = GameState::PLAY;
+
+    initCharacters();
+
+    gameLoop();
   }
-
-  _gameState = GameState::PLAY;
-
-  initCharacters();
-
-  gameLoop();
 }
 
 void MainGame::initCharacters() {
@@ -495,14 +502,14 @@ void MainGame::processInput() {
       initialiseGameEndTexture(false);
     }
     renderGameEndAnimation();
-    _gameState = GameState::EXIT;
+    _gameState = GameState::MAIN_MENU;
   }
   if (coinGrid->active_objects == 0) {
     if (!gameEndAnimator.isActive()) {
       initialiseGameEndTexture(true);
     }
     renderGameEndAnimation();
-    _gameState = GameState::EXIT;
+    _gameState = GameState::MAIN_MENU;
   }
   // gTextTexture.render( ( SCREEN_WIDTH - gTextTexture.getWidth() ) / 2, (
   // 0.2f*SCREEN_HEIGHT - gTextTexture.getHeight() ) / 2 );
@@ -516,8 +523,8 @@ void MainGame::processInput() {
 void MainGame::gameLoop() {
   cout << "Starting GameLoop" << endl;
   FrameGuider::start();
-  while (_gameState == GameState::PLAY ||
-         (_gameState == GameState::EXIT && gameEndAnimator.isActive())) {
+  while (_gameState == GameState::PLAY || 
+         (_gameState == GameState::MAIN_MENU && gameEndAnimator.isActive())) {
     if (client != nullptr || server != nullptr) {
       NetworkManager::send_packets();
       NetworkManager::recv_packets();
