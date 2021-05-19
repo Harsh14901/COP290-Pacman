@@ -16,11 +16,11 @@
 #include "Grids/PotionGrid.hpp"
 #include "Grids/VentGrid.hpp"
 #include "Network/NetworkManager.hpp"
+#include "Screens/SettingsScreen.hpp"
 #include "Textures/LTexture.hpp"
 #include "UI/BottomBar.hpp"
 #include "UI/ImageButton.hpp"
 #include "Utils/AudioAsset.hpp"
-#include "Screens/SettingsScreen.hpp"
 #include "Utils/CommonAudios.hpp"
 
 using namespace std;
@@ -39,7 +39,7 @@ class MainGame {
  protected:
   void initSystems();
   void preRender();
-
+  void renderAll();
   SDL_Window* _window;
   SDL_Surface* _screenSurface;
   SDL_Surface* _gPacman;
@@ -70,7 +70,6 @@ class MainGame {
   const static int numMenuButtons = 4;
   ImageButton mainMenuButtons[numMenuButtons];
 
-
   LTexture networkTextTexture;
 
   Animator gameEndAnimator = Animator(360);
@@ -98,6 +97,9 @@ class MainGame {
   void initNetwork();
   void testNetwork();
 
+  bool game_terminated();
+  void clear_resources();
+
   SDL_Texture* loadTexture(string path);
 
   // Returns the option selected
@@ -112,7 +114,6 @@ class MainGame {
   void settingsMenu();
   SettingsScreen settingsScreen;
 
-
   void renderGameEndAnimation();
-  void initialiseGameEndTexture(int is_win);
+  void initialiseGameEndTexture(bool is_win);
 };

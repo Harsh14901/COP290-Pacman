@@ -14,6 +14,8 @@ Pacman* Pacman::getInstance() {
   return _instance.get();
 }
 
+void Pacman::clearInstance() { _instance = nullptr; }
+
 Pacman::Pacman() : Character(IDS::PACMAN_COLLIDER_ID) {}
 
 void Pacman::init(SDL_Renderer* renderer) {
@@ -24,9 +26,9 @@ void Pacman::init(SDL_Renderer* renderer) {
 
   boostAnimator.set_duration(200);
 
-  for( int i = 0; i < TOTAL_PARTICLES; i++ ){
-    particles[ i ] = new Particle( mPosX, mPosY );
-    particles[i]->init(renderer);
+  for (int i = 0; i < TOTAL_PARTICLES; i++) {
+    particles.push_back(make_unique<Particle>(mPosX, mPosY));
+    particles.back().get()->init(renderer);
   }
 
   _gRenderer = renderer;
@@ -271,26 +273,20 @@ void Pacman::broadcast_coordinates() {
   NetworkManager::queue_packet(p);
 }
 
-
-void Pacman::renderParticles()
-{
-	//Go through particles
-    for( int i = 0; i < TOTAL_PARTICLES; ++i )
-    {
-        //Delete and replace dead particles
-        if( particles[ i ]->isDead() )
-        {
-            delete particles[ i ];
-            particles[ i ] = new Particle( mPosX, mPosY );
-            particles[i]->init(_gRenderer);
-        }
+void Pacman::renderParticles() {
+  // Go through particles
+  for (int i = 0; i < TOTAL_PARTICLES; ++i) {
+    // Delete and replace dead particles
+    if (particles[i]->isDead()) {
+      particles[i] = make_unique<Particle>(mPosX, mPosY);
+      particles[i]->init(_gRenderer);
     }
+  }
 
-    //Show particles only if boost is active
-    if(!is_boosted) return;
-    for( int i = 0; i < TOTAL_PARTICLES; ++i )
-    {
-        particles[i]->update(mPosX,mPosY);
-        particles[ i ]->render();
-    }
+  // Show particles only if boost is active
+  if (!is_boosted) return;
+  for (int i = 0; i < TOTAL_PARTICLES; ++i) {
+    particles[i]->update(mPosX, mPosY);
+    particles[i]->render();
+  }
 }

@@ -16,18 +16,18 @@
 #include "Grids/CoinGrid.hpp"
 #include "Grids/WallGrid.hpp"
 #include "Textures/LTexture.hpp"
+#include "Textures/Particle.hpp"
 #include "Utils/Animator.hpp"
 #include "Utils/AudioAsset.hpp"
 #include "Weapons/Weapon.hpp"
 #include "utils.hpp"
-#include "Textures/Particle.hpp"
 
 class Pacman : public Character {
  public:
   Pacman();
 
   static Pacman* getInstance();
-
+  static void clearInstance();
   void move();
   void handleEvent(SDL_Event& e);
   int get_coins_collected();
@@ -62,9 +62,8 @@ class Pacman : public Character {
   void enemy_collision(int num);
   void freeze();
 
-  Particle* particles[ TOTAL_PARTICLES ];
+  vector<unique_ptr<Particle>> particles;
   void renderParticles();
-
 
   int BOOST_VEL = 8;
   bool is_boosted = false;

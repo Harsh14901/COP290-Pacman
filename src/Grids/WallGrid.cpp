@@ -77,6 +77,7 @@ void WallGrid::generate() {
       }
     }
   }
+  cout << "WAllgrid set" << endl;
 }
 
 bool WallGrid::fits_in_cell(int x, int y) {

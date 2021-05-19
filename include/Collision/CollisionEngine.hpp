@@ -25,4 +25,6 @@ class CollisionEngine {
 
   // Checks for collision among registered colliders
   static void checkCollisions();
+
+  static void clear_all();
 };

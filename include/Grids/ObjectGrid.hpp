@@ -52,6 +52,8 @@ class ObjectGrid {
 
   void handle_packets();
 
+  void clear_all();
+
   SDL_Point get_maze_point(SDL_Point canvas_point);
   SDL_Point get_canvas_point(SDL_Point maze_indices);
 

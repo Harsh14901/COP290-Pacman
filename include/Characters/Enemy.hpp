@@ -27,6 +27,7 @@ class Enemy : public Character {
 
   static void make_enemies(int num = ENEMY_COUNT);
   static vector<Enemy*> get_enemies();
+  static void clear_all();
 
   void render();
   void init(SDL_Renderer* renderer);
