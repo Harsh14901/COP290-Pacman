@@ -19,20 +19,17 @@ void Pacman::clearInstance() { _instance = nullptr; }
 Pacman::Pacman() : Character(IDS::PACMAN_COLLIDER_ID) {}
 
 void Pacman::init(SDL_Renderer* renderer) {
-  Base::init(renderer);
-  chompSound.init(AssetManager::get_asset(ThemeAssets::COIN_SOUND), false);
-  weaponSet.primary_weapon.init(PreferenceManager::playerBullets.first, this,
-                                1);
-  weaponSet.secondary_weapon.init(PreferenceManager::playerBullets.second, this,
-                                  1);
+  Character::init(renderer, PreferenceManager::playerBullets);
 
-  boostAnimator.set_duration(200);
+  chompSound.init(AssetManager::get_asset(ThemeAssets::COIN_SOUND), false);
 
   for (int i = 0; i < TOTAL_PARTICLES; i++) {
     particles.push_back(make_unique<Particle>(mPosX, mPosY));
     particles.back().get()->init(renderer);
   }
 
+  BOOST_VEL = MAX_VEL * 2;
+  boostAnimator.set_duration(200);
   _gRenderer = renderer;
 }
 
@@ -40,7 +37,6 @@ void Pacman::init_targets() {
   add_target(IDS::COIN_COLLIDER_ID);
   add_target(IDS::CHERRY_COLLIDER_ID);
   add_target(IDS::ENEMY_COLLIDER_ID);
-  add_target(IDS::FREEZEBULLET_ID);
   add_target(IDS::BOOST_ID);
   add_target(IDS::INVISIBILITY_ID);
   Character::init_targets();
@@ -55,7 +51,6 @@ void Pacman::handleEvent(SDL_Event& e) {
       VentGrid::getInstance()->handleOpening(mPosX / 32, mPosY / 32);
     }
   }
-  weaponSet.handleEvent(e);
   Character::handleEvent(e);
 }
 
@@ -109,6 +104,7 @@ void Pacman::target_hit(string target_id, Collider* collider) {
     if (target_id == IDS::ENEMY_COLLIDER_ID) {
       if (temp.size() == 1) {
         enemy_collision(temp[0] - 1);
+        // cout << "Collided with enemy" << endl;
       }
     }
     if (target_id == IDS::BOOST_ID) {
@@ -125,7 +121,10 @@ void Pacman::target_hit(string target_id, Collider* collider) {
     }
   }
   if (target_id == IDS::FREEZEBULLET_ID) {
-    freeze();
+    incrementActivePoints(-20);
+  }
+  if (target_id == IDS::GRENADE_ID) {
+    incrementActivePoints(-50);
   }
   Character::target_hit(target_id, collider);
 }
@@ -159,16 +158,12 @@ void Pacman::enemy_collision(int num) {
 
   if (enemies[num]->state != EnemyState::WEAK && !is_invisible) {
     is_dead = true;
+    // cout << "Dead" << endl;
   } else {
+    // cout << "ALive" << endl;
     incrementActivePoints(50);
     enemies[num]->respawn();
   }
-}
-
-void Pacman::freeze() {
-  cout << "Time to Freeze" << endl;
-  incrementActivePoints(-20);
-  freezeAnimation.start();
 }
 
 bool Pacman::isMouthOpen() {
@@ -181,14 +176,19 @@ bool Pacman::isMouthOpen() {
   return true;
 }
 
-void Pacman::boost() { boostAnimator.start(); }
-
 void Pacman::make_invisible() {
   if (!is_invisible && get_active_points() >= 50) {
     is_invisible = true;
     invisibleAnimator.start();
     incrementActivePoints(-50);
   }
+}
+
+void Pacman::boost() {
+  if (freezeAnimation.isActive() || is_empd) {
+    return;
+  }
+  boostAnimator.start();
 }
 
 void Pacman::check_boost() {
@@ -214,11 +214,8 @@ void Pacman::check_boost() {
     cout << "Restoring velocity: " << MAX_VEL << endl;
   }
 }
-void Pacman::move() {
-  if (freezeAnimation.isActive()) {
-    return;
-  }
 
+void Pacman::move() {
   if (!is_server) {
     handle_packets();
   }
@@ -239,40 +236,22 @@ void Pacman::move() {
 
 int Pacman::get_coins_collected() { return coins; }
 int Pacman::get_active_points() { return activePoints; }
-string Pacman::get_weapon_text() { return weaponSet.get_text(); }
-void Pacman::handle_packets() {
-  vector<Packet> packets;
-  NetworkManager::get_packets(ID, packets);
 
-  for (auto& p : packets) {
-    mPosX = p.posX;
-    mPosY = p.posY;
-    mVelX = p.velX;
-    mVelY = p.velY;
-    auto data = convert_string_to_map(p.data);
-    // cout << "See this "<< is_server<< " " << data["is_invisible"] << endl;
-    _direction = Direction(stoi(data["direction"]));
-    if (!is_server) is_invisible = data["is_invisible"] == "1";
-    if (data["is_boosted"] == "1") {
-      boost();
-    }
-  }
-}
-
-void Pacman::broadcast_coordinates() {
-  Packet p;
-  p.id = ID;
-  p.posX = mPosX;
-  p.posY = mPosY;
-  p.velX = mVelX;
-  p.velY = mVelY;
-  unordered_map<string, string> data;
-  data.insert({"direction", to_string(int(_direction))});
+Packet Pacman::make_packet(unordered_map<string, string>& data) {
+  auto p = Character::make_packet(data);
   data.insert({"is_invisible", to_string(is_invisible)});
   data.insert({"is_boosted", to_string(is_boosted)});
-  p.data = map_to_string(data);
-  // cout << "data is " << p.data << endl;
-  NetworkManager::queue_packet(p);
+  return p;
+}
+
+void Pacman::process_packet(Packet& packet) {
+  Character::process_packet(packet);
+  auto data = convert_string_to_map(packet.data);
+
+  if (!is_server) is_invisible = data["is_invisible"] == "1";
+  if (data["is_boosted"] == "1") {
+    boost();
+  }
 }
 
 void Pacman::renderParticles() {

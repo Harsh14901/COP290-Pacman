@@ -1,6 +1,7 @@
 #include "Characters/Enemy.hpp"
 
 #include "Utils/AssetManager.hpp"
+#include "Utils/PreferenceManager.hpp"
 
 extern GhostManager ghostManager;
 extern bool is_server;
@@ -61,38 +62,24 @@ void Enemy::handleEvent(SDL_Event& e) {
   if (id != get_active_id()) {
     return;
   }
-  weaponSet.handleEvent(e);
   Character::handleEvent(e);
 }
 
 void Enemy::init(SDL_Renderer* renderer) {
-  Character::init(renderer);
+  Character::init(renderer, PreferenceManager::enemyBullets);
   spawnAnimator.set_duration(100 + 100 * type);
   AIEngine.init(WIDTH, HEIGHT, type);
-  weaponSet.primary_weapon.init(PreferenceManager::enemyBullets.first, this, 1);
-  weaponSet.secondary_weapon.init(PreferenceManager::enemyBullets.second, this,
-                                  1);
 }
 
-void Enemy::init_targets() {
-  add_target(IDS::GRENADE_ID);
-  add_target(IDS::EMP_ID);
-  Character::init_targets();
-}
+// void Enemy::init_targets() { Character::init_targets(); }
 
 void Enemy::target_hit(string target_id, Collider* collider) {
   if (target_id == IDS::GRENADE_ID) {
     respawn();
   }
-  if (target_id == IDS::EMP_ID) {
-    emp();
-  }
   Character::target_hit(target_id, collider);
 }
 
-string Enemy::get_weapon_text() { return weaponSet.get_text(); }
-
-void Enemy::emp() { empAnimation.start(); }
 void Enemy::render() {
   // Show the dot
   int typeValue = getEnemyColor();
@@ -144,24 +131,7 @@ void Enemy::randomize_direction() {
     if (mPosX % 32 == 0 && mPosY % 32 == 0) change_direction(directionToErase);
   }
 }
-
-void Enemy::check_emp() {
-  auto swap_vels = [&]() {
-    auto temp = EMP_VEL;
-    EMP_VEL = MAX_VEL;
-    MAX_VEL = temp;
-  };
-  if (empAnimation.isActive() && !is_empd) {
-    swap_vels();
-    is_empd = true;
-  }
-  if (!empAnimation.isActive() && is_empd) {
-    swap_vels();
-    is_empd = false;
-  }
-}
 void Enemy::move() {
-  check_emp();
   if (state == EnemyState::WEAK && !weak_state_animator.isActive()) {
     state = EnemyState::NORMAL;
   }
@@ -195,6 +165,7 @@ void Enemy::move() {
     } else if (!is_two_player) {
       // randomize_direction();
       // AIEngine.updateDirection();
+
       change_direction(AIEngine.updateDirection());
     }
     Character::move();
@@ -220,37 +191,4 @@ void Enemy::respawn() {
       WallGrid::getInstance()->getRenderPointFromCoordi(pt.first, pt.second));
   state = EnemyState::NORMAL;
   spawnAnimator.start();
-}
-
-void Enemy::handle_packets() {
-  vector<Packet> packets;
-  NetworkManager::get_packets(ID, packets);
-
-  for (auto& p : packets) {
-    mPosX = p.posX;
-    mPosY = p.posY;
-    mVelX = p.velX;
-    mVelY = p.velY;
-    auto data = convert_string_to_map(p.data);
-    _direction = Direction(stoi(data["direction"]));
-    if (data["empd"] == "1") {
-      emp();
-    }
-  }
-}
-
-void Enemy::broadcast_coordinates() {
-  Packet p;
-  p.id = ID;
-  p.posX = mPosX;
-  p.posY = mPosY;
-  p.velX = mVelX;
-  p.velY = mVelY;
-
-  unordered_map<string, string> data;
-  data.insert({"direction", to_string(int(_direction))});
-  data.insert({"empd", to_string(empAnimation.isActive())});
-  p.data = map_to_string(data);
-
-  NetworkManager::queue_packet(p);
 }

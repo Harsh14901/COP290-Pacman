@@ -2,7 +2,7 @@
 
 Weapon::Weapon() {}
 
-void Weapon::init(BulletType type, Character* bearer, int burst_count) {
+void Weapon::init(BulletType type, Base* bearer, int burst_count) {
   this->bullet_type = type;
   this->bearer = bearer;
   this->burst_count = burst_count;

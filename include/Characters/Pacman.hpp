@@ -32,7 +32,6 @@ class Pacman : public Character {
   void handleEvent(SDL_Event& e);
   int get_coins_collected();
   int get_active_points();
-  string get_weapon_text();
   void render();
 
   void init(SDL_Renderer* renderer);
@@ -45,11 +44,18 @@ class Pacman : public Character {
   int cherries = 0;
   int activePoints = 0;
 
+  int BOOST_VEL;
+  bool is_boosted = false;
   void init_targets();
   void target_hit(string target_id, Collider* collider = nullptr);
 
-  void handle_packets();
-  void broadcast_coordinates();
+  // void handle_packets();
+  // void broadcast_coordinates();
+  Packet make_packet(unordered_map<string, string>& data) override;
+  void process_packet(Packet& packet) override;
+
+  void boost();
+  void check_boost();
 
  private:
   static unique_ptr<Pacman> _instance;
@@ -60,24 +66,16 @@ class Pacman : public Character {
   void collect_coins(int i, int j);
   void collect_cherries(int i, int j);
   void enemy_collision(int num);
-  void freeze();
 
   vector<unique_ptr<Particle>> particles;
   void renderParticles();
 
-  int BOOST_VEL = 8;
-  bool is_boosted = false;
-  void boost();
-  void check_boost();
-
   void make_invisible();
 
   AudioAsset chompSound;
-  WeaponSet weaponSet;
 
-  Animator gulp_animator = Animator(3);
-  Animator freezeAnimation = Animator(100);
-  Animator invisibleAnimator = Animator(300);
   Animator boostAnimator;
+  Animator gulp_animator = Animator(3);
+  Animator invisibleAnimator = Animator(300);
   SDL_Renderer* _gRenderer;
 };

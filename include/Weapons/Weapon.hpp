@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Base.hpp"
 #include "BulletManager.hpp"
-#include "Characters/Character.hpp"
 #include "Utils/Animator.hpp"
 
 using namespace std;
@@ -15,7 +15,7 @@ class Weapon {
   BulletType bullet_type;
   int bullet_count;
   Weapon();
-  void init(BulletType type, Character* bearer, int burst_count);
+  void init(BulletType type, Base* bearer, int burst_count);
   void reload();
   void fire(Direction d, int x, int y);
   bool out_of_ammo();
@@ -24,7 +24,7 @@ class Weapon {
 
  private:
   Animator reload_animator;
-  Character* bearer;
+  Base* bearer;
   string target;
 };
 

@@ -35,8 +35,6 @@ class Enemy : public Character {
   void move();
   void setState(EnemyState st);
   void respawn();
-  void emp();
-  string get_weapon_text();
 
   EnemyState state = EnemyState::NORMAL;
 
@@ -46,23 +44,17 @@ class Enemy : public Character {
   static int active_index;
   static vector<unique_ptr<Enemy>> enemies;
 
-  void init_targets();
+    // void init_targets();
   void target_hit(string target_id, Collider* collider = nullptr);
 
-  void handle_packets();
-  void broadcast_coordinates();
+  // void handle_packets();
+  // void broadcast_coordinates();
 
  private:
   void randomize_direction();
-  void check_emp();
   int getEnemyColor();
 
-  bool is_empd = false;
-  int EMP_VEL = MAX_VEL / 2;
   GhostAIEngine AIEngine;
   Animator weak_state_animator = Animator(400);
   Animator spawnAnimator = Animator(100);
-  Animator empAnimation = Animator(200);
-
-  WeaponSet weaponSet;
 };

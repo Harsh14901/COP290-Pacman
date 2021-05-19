@@ -14,6 +14,6 @@ void PreferenceManager::initSettings() {
   NUM_ENEMIES = 2;
   playerBullets = make_pair(BulletType::EMP, BulletType::GRENADE);
   enemyBullets = make_pair(BulletType::FREEZE, BulletType::WALLBUSTER);
-  //   playerBullets = make_pair(BulletType::FREEZE, BulletType::WALLBUSTER);
-  //   enemyBullets = make_pair(BulletType::EMP, BulletType::GRENADE);
+  // playerBullets = make_pair(BulletType::FREEZE, BulletType::WALLBUSTER);
+  // enemyBullets = make_pair(BulletType::EMP, BulletType::GRENADE);
 }

@@ -14,13 +14,21 @@
 #include "Grids/WallGrid.hpp"
 #include "Network/NetworkManager.hpp"
 #include "Textures/LTexture.hpp"
+#include "Utils/Animator.hpp"
 #include "Utils/FrameGuider.hpp"
+#include "Weapons/Weapon.hpp"
 
 class Character : public Base {
  public:
   // Initializes the variables
   Character(string id);
   Character(string id, string asset);
+
+  void init(SDL_Renderer* renderer) override;
+  void init(SDL_Renderer* renderer,
+            pair<BulletType, BulletType> equipped_bullets);
+
+  void init_targets() override;
 
   // Takes key presses and adjusts the dot's velocity
   void handleEvent(SDL_Event& e) override;
@@ -33,6 +41,8 @@ class Character : public Base {
 
   void change_direction(Direction d) override;
 
+  string get_weapon_text();
+
  protected:
   // The X and Y offsets of the dot
   void init_collider() override;
@@ -40,7 +50,27 @@ class Character : public Base {
   void handle_packets() override;
   void broadcast_coordinates() override;
 
+  void emp(bool broadcast = true);
+  void freeze(bool broadcast = true);
+  void check_emp();
+  void check_frozen();
+
+  virtual Packet make_packet(unordered_map<string, string>& data);
+  virtual void process_packet(Packet& packet);
+
   // The collider associated with pacman
   Direction _next = Direction::NONE;
   string COLLIDER_ID;
+
+  WeaponSet weaponSet;
+
+  Animator empAnimation;
+  Animator freezeAnimation;
+
+  pair<BulletType, BulletType> equipped_bullets;
+
+  int EMP_VEL;
+  int FROZEN_VEL;
+  bool is_empd = false;
+  bool is_frozen = false;
 };
