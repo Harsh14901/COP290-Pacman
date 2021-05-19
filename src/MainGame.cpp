@@ -9,12 +9,10 @@
 #include "Characters/Robot.hpp"
 #include "Utils/AssetManager.hpp"
 #include "Utils/FrameGuider.hpp"
-#include "Utils/PreferenceManager.hpp"
 
 int game_frame_int = 0;
 double game_frame = 0;
 
-PreferenceManager prefManager = PreferenceManager(true);
 GhostManager ghostManager;
 vector<Enemy*> enemies;
 

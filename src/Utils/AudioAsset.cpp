@@ -1,6 +1,5 @@
 #include "Utils/AudioAsset.hpp"
 
-extern PreferenceManager prefManager;
 
 AudioAsset::AudioAsset() {}
 
@@ -28,14 +27,11 @@ void AudioAsset::init(string sound, bool isMusic) {
 void AudioAsset::applySettings() {
   // Mix_Volume(-1,0);
   if (soundEffect != NULL) {
-    cout << "Come On I set the volume to zero: "
-         << prefManager.getSettingValue("sfx") << endl;
-    if (prefManager.getSettingValue("sfx") == "false")
+    if (!PreferenceManager::SFX_ON)
       Mix_VolumeChunk(soundEffect, 0);
   }
   if (music != NULL) {
-    cout << "Come On I set the music volume to zero" << endl;
-    if (prefManager.getSettingValue("music") == "false") Mix_VolumeMusic(0);
+    if (!PreferenceManager::MUSIC_ON) Mix_VolumeMusic(0);
   }
 }
 

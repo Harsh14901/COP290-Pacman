@@ -2,6 +2,7 @@
 #include <SimGame.hpp>
 #include <csignal>
 #include <iostream>
+#include "Utils/PreferenceManager.hpp"
 
 using namespace std;
 bool is_server = false;
@@ -15,6 +16,7 @@ void signal_handler(int signal_num) {
 
 int main(int argc, char* argv[]) {
 
+  PreferenceManager::initSettings();
 
   signal(SIGINT, signal_handler);
   string host = "";
