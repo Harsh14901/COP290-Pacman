@@ -275,6 +275,7 @@ void MainGame::runGame() {
     _gameState = GameState::PLAY;
     CommonAudios::buttonStart.play();
 
+
     initCharacters();
 
     gameLoop();

@@ -32,6 +32,8 @@ enum ThemeAssets {
 
   BOOST_PNG,
   INVISIBILITY_PNG,
+
+  WALL_PNG,
   E_Last
 };
 

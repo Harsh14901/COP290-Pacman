@@ -2,6 +2,7 @@
 
 #include "Algorithms/MazeGenerator.hpp"
 #include "Constants.hpp"
+#include "Utils/AssetManager.hpp"
 unique_ptr<WallGrid> WallGrid::_instance;
 WallGrid* WallGrid::getInstance() {
   if (_instance == nullptr) {
@@ -11,7 +12,7 @@ WallGrid* WallGrid::getInstance() {
 }
 
 WallGrid::WallGrid()
-    : ObjectGrid(IDS::WALL_COLLIDER_ID, "assets/pngs/stone_wall.png") {}
+    : ObjectGrid(IDS::WALL_COLLIDER_ID, AssetManager::get_asset(ThemeAssets::WALL_PNG)) {}
 
 SDL_Point WallGrid::get_empty_indices() {
   int x = 0, y = 0;

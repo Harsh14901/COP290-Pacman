@@ -8,6 +8,6 @@ int PreferenceManager::NUM_ENEMIES;
 void PreferenceManager::initSettings(){
     MUSIC_ON = true;
     SFX_ON = true;
-    THEME = Themes::AVENGERS;
+    THEME = Themes::MINECRAFT;
     NUM_ENEMIES = 2;
 }

@@ -1,15 +1,15 @@
 #include "Utils/AssetManager.hpp"
-
+#include "Utils/PreferenceManager.hpp"
 string AssetManager::asset_folder;
 Themes AssetManager::selected_theme = Themes::MASTER;
 unordered_map<Themes, string> AssetManager::theme_folders;
 unordered_map<ThemeAssets, string> AssetManager::asset_files;
 
 void AssetManager::init(Themes startTheme) {
-  selected_theme = startTheme;
+  selected_theme = PreferenceManager::THEME;
   asset_folder = "assets/themes/";
   theme_folders = unordered_map<Themes, string>(
-      {{MASTER, "master/"}, {PACMAN, "pacman/"}, {AVENGERS, "avengers/"}});
+      {{MASTER, "master/"}, {PACMAN, "pacman/"}, {AVENGERS, "avengers/"}, {MINECRAFT, "minecraft/"}});
   asset_files = unordered_map<ThemeAssets, string>({
       {PACMAN_SPRITE, "player.png"},
       {ENEMY_SPRITE, "enemy.png"},
@@ -28,6 +28,8 @@ void AssetManager::init(Themes startTheme) {
       {FREEZEBULLET_SOUND, "freeze_bullet.wav"},
       {BOOST_PNG, "boost_potion.png"},
       {INVISIBILITY_PNG, "invisibility_potion.png"},
+
+      {WALL_PNG, "wall.png"}
   });
 }
 void AssetManager::set_theme(Themes theme) { selected_theme = theme; }
@@ -35,10 +37,12 @@ void AssetManager::set_theme(Themes theme) { selected_theme = theme; }
 Themes AssetManager::get_theme() { return selected_theme; }
 
 string AssetManager::get_asset(ThemeAssets key) {
+  selected_theme = PreferenceManager::THEME;
+  cout << "Theme in pref manager is " << int(PreferenceManager::THEME) << endl;
   if (theme_folders.empty() && asset_files.empty()) {
     init(MASTER);
   }
-  auto asset = get_asset(selected_theme, key);
+  auto asset = get_asset(PreferenceManager::THEME, key);
   if (!fileExists(asset)) {
     asset = get_asset(MASTER, key);
   }
