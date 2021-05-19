@@ -43,10 +43,14 @@ class ObjectGrid {
   // TODO: Remove this assumption
   void broadcast();
 
+  void broadcast(int i, int j);
+
   // Recieve object packets and form a maze
   // Assumption: Call in init stage, not in game loop
   // TODO: Remove this assumption
   void packets2objects();
+
+  void handle_packets();
 
   SDL_Point get_maze_point(SDL_Point canvas_point);
   SDL_Point get_canvas_point(SDL_Point maze_indices);

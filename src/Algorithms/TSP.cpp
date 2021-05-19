@@ -1,4 +1,4 @@
-#include "Utils/Algorithms.hpp"
+#include "Algorithms/TSP.hpp"
 
 Graph::Graph() {
   graph.resize(size);
