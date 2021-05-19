@@ -1,4 +1,6 @@
 # Pacman
+[![C++ version][c++-image]][c++-wiki]
+[![C++ style guide][gts-image]][gts-url]
 
 A pacman game loaded with weapons and fully customizable with lots of themes :)
 
@@ -22,3 +24,9 @@ To run in single player mode, choose **1 player**. For 2 player mode choose **2 
 2. Every player has two sets of weapons which can be switched by pressing `1` or `2`.
 3. The weapons can be fired by pressing `F` and reloaded by pressing `R`.
 4. The second player controls the enemies and can switch between enemies by pressing `Tab`.
+
+
+[gts-image]: https://img.shields.io/badge/code%20style-google-blueviolet.svg
+[gts-url]: https://google.github.io/styleguide/cppguide.html
+[c++-image]: https://img.shields.io/badge/c%2B%2B-17-blue
+[c++-wiki]: https://en.wikipedia.org/wiki/C%2B%2B17
