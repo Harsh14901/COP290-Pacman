@@ -120,7 +120,6 @@ void MainGame::mainMenuRender(int option) {
 
   pacmanHeadingText.render(SCREEN_WIDTH / 2 - pacmanHeadingText.getWidth() / 2,
                            SCREEN_HEIGHT * 0.12);
-  int i = 0;
 
   for(int i=0;i<numMenuButtons;i++){
     mainMenuButtons[i].set_clicked(option==i);
@@ -147,11 +146,14 @@ int MainGame::mainMenu() {
           switch (evnt.key.keysym.sym) {
             case SDLK_UP:
               menuOption -= 1;
+              CommonAudios::buttonHover.play();
               break;
             case SDLK_DOWN:
               menuOption += 1;
+              CommonAudios::buttonHover.play();
               break;
             case 13:
+              if (menuOption!=0) CommonAudios::buttonClick.play();
               _gameState = GameState::NETWORKMENU;
             default:
               cout << "Invalid Key, Play Sound" << endl;
@@ -271,6 +273,7 @@ void MainGame::runGame() {
     }
 
     _gameState = GameState::PLAY;
+    CommonAudios::buttonStart.play();
 
     initCharacters();
 
@@ -326,13 +329,13 @@ void MainGame::initSystems() {
 
   // SDL_Init(SDL_INIT_EVERYTHING);
 
-  SDL_Surface* screenSurface = NULL;
 
   // Initialize SDL
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
     fatalError("SDL could not initialize! SDL_Error: \n" +
                string(SDL_GetError()));
   }
+
 
   _window = SDL_CreateWindow("Pacman Infinity", SDL_WINDOWPOS_CENTERED,
                              SDL_WINDOWPOS_CENTERED, _screenWidth,
@@ -351,7 +354,10 @@ void MainGame::initSystems() {
     fatalError("SDL_mixer could not initialize! SDL_mixer Error: \n" +
                string(Mix_GetError()));
   }
-  AssetManager::init(Themes::AVENGERS);
+
+  CommonAudios::initialize_sound();
+
+  AssetManager::init(PreferenceManager::THEME);
 }
 
 SDL_Texture* MainGame::loadTexture(string path) {

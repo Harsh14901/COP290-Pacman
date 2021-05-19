@@ -115,8 +115,10 @@ void SettingsScreen::handleThemeEvent(int keycode){
         switch (keycode) {
             case SDLK_DOWN:
                 selectedTheme = (selectedTheme+1)%themeOptions;
+                CommonAudios::buttonHover.play();
                 break;
             case SDLK_UP:
+                CommonAudios::buttonHover.play();
                 selectedTheme = (selectedTheme-1+themeOptions*1000)%themeOptions;
                 break;
             default:
@@ -128,14 +130,17 @@ void SettingsScreen::handleThemeEvent(int keycode){
 void SettingsScreen::handleSoundEvent(int keycode){
         switch (keycode) {
             case SDLK_DOWN:
+                CommonAudios::buttonHover.play();
                 current_music_option_selected = (current_music_option_selected+1)%2;
                 break;
             case SDLK_UP:
+                CommonAudios::buttonHover.play();
                 current_music_option_selected = (current_music_option_selected-1+2*1000)%2;
                 break;
             case 13: // Enter
                 if(current_music_option_selected==0) PreferenceManager::MUSIC_ON = !PreferenceManager::MUSIC_ON;
                 if(current_music_option_selected==1) PreferenceManager::SFX_ON = !PreferenceManager::SFX_ON;
+                CommonAudios::buttonClick.play();
                 break;
             default:
                 cout << "Invalid Key, Play Sound: " << keycode  << endl;
@@ -146,15 +151,19 @@ void SettingsScreen::handleGamePlayEvent(int keycode){
         switch (keycode) {
             case SDLK_DOWN:
                 gamePlayOption = (gamePlayOption+1)%2;
+                CommonAudios::buttonHover.play();
                 break;
             case SDLK_UP:
                 gamePlayOption = (gamePlayOption-1+1*1000)%1;
+                CommonAudios::buttonHover.play();
                 break;
             case SDLK_RIGHT:
                 PreferenceManager::NUM_ENEMIES = min(PreferenceManager::NUM_ENEMIES+1,4);
+                CommonAudios::buttonClick.play();
                 break;
             case SDLK_LEFT:
                 PreferenceManager::NUM_ENEMIES = max(PreferenceManager::NUM_ENEMIES-1,1);
+                CommonAudios::buttonClick.play();
                 break;
             default:
                 cout << "Invalid Key, Play Sound: " << keycode  << endl;
@@ -166,6 +175,7 @@ void SettingsScreen::handleEvent(SDL_Event &evnt){
         case SDL_KEYDOWN:
           auto key = evnt.key.keysym.sym;
           if(key==9) sectionCursor = (sectionCursor+1)%num_sections; // TAB KEY
+          CommonAudios::buttonHover.play();
           cout << "Selection Cursor " << sectionCursor << endl;
           cout << "Key Presssed " << key << endl;
           if(sectionCursor==0) handleThemeEvent(key);

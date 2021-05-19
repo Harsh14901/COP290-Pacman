@@ -16,6 +16,7 @@ void AudioAsset::init(string sound, bool isMusic) {
     is_loop = true;
   } else {
     soundEffect = Mix_LoadWAV(sound.c_str());
+    cout << "loading sound asset " << sound.c_str() << endl;
     if (soundEffect == nullptr) {
       cerr << "Invalid Filename: " << sound << endl;
     }
@@ -27,11 +28,12 @@ void AudioAsset::init(string sound, bool isMusic) {
 void AudioAsset::applySettings() {
   // Mix_Volume(-1,0);
   if (soundEffect != NULL) {
-    if (!PreferenceManager::SFX_ON)
-      Mix_VolumeChunk(soundEffect, 0);
+    if (!PreferenceManager::SFX_ON) Mix_VolumeChunk(soundEffect, 0);
+    else Mix_VolumeChunk(soundEffect,MIX_MAX_VOLUME);
   }
   if (music != NULL) {
     if (!PreferenceManager::MUSIC_ON) Mix_VolumeMusic(0);
+    else Mix_VolumeMusic(MIX_MAX_VOLUME);
   }
 }
 
@@ -43,7 +45,8 @@ void AudioAsset::play() {
   //     // play();
   //     return;
   // }
-  int loops = is_loop ? -1 : 0;
+  cout << "Should be playing chunk "  << sound_name << endl;
+  // int loops = is_loop ? -1 : 0;
   is_playing = true;
   if (is_music) {
     cout << "Music Should be playing" << endl;
