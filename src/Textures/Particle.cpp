@@ -22,25 +22,29 @@ void Particle::init(SDL_Renderer* _gRenderer){
     gRedTexture.setRenderer(this->_gRenderer);
     gGreenTexture.setRenderer(this->_gRenderer);
     gBlueTexture.setRenderer(this->_gRenderer);
-    gShimmerTexture.setRenderer(this->_gRenderer);
+    // gShimmerTexture.setRenderer(this->_gRenderer);
 
-    gRedTexture.loadFromFile( "assets/particles/red.bmp");
-	gGreenTexture.loadFromFile( "assets/particles/green.bmp");
-	gBlueTexture.loadFromFile( "assets/particles/blue.bmp" );
-	gShimmerTexture.loadFromFile( "assets/particles/shimmer.bmp");
+    gRedTexture.loadFromFile( "assets/particles/minecraft_bubble_small.png");
+    gRedTexture.setColor(255,0,0);
+	gGreenTexture.loadFromFile( "assets/particles/minecraft_bubble_small.png");
+    gGreenTexture.setColor(0,255,0);
+	gBlueTexture.loadFromFile( "assets/particles/minecraft_bubble_small.png" );
+    gBlueTexture.setColor(0,0,255);
+	// gShimmerTexture.loadFromFile( "assets/particles/shimmer.bmp");
+	// gShimmerTexture.loadFromFile( "assets/particles/minecraft_bubble_small.png");
+}
+
+void Particle::update(int x,int y){
+    int ratio = 19;
+    mPosX = (ratio*mPosX +x )/(ratio+1);
+    mPosY = (ratio*mPosY +y)/(ratio+1);
 }
 
 void Particle::render(){
-	mTexture->render( mPosX, mPosY );
-
-    if( mFrame % 2 == 0 )
-    {
-		gShimmerTexture.render( mPosX, mPosY );
-    }
-
+    mTexture->render( mPosX, mPosY );
     mFrame++;
 }
 
 bool Particle::isDead(){
-    return mFrame > 10;
+    return mFrame > (20+rand()%8);
 }

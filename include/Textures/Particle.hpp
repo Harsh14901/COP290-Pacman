@@ -5,7 +5,7 @@
 using namespace std;
 
 //Particle count
-const int TOTAL_PARTICLES = 20;
+const int TOTAL_PARTICLES = 60;
 
 class Particle
 {
@@ -15,6 +15,7 @@ class Particle
         bool isDead();
         void init(SDL_Renderer* _gRenderer);
         SDL_Renderer* _gRenderer;
+        void update(int x,int y);
 
     private:
 

@@ -290,6 +290,7 @@ void Pacman::renderParticles()
     if(!is_boosted) return;
     for( int i = 0; i < TOTAL_PARTICLES; ++i )
     {
+        particles[i]->update(mPosX,mPosY);
         particles[ i ]->render();
     }
 }
