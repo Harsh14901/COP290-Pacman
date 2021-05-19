@@ -29,7 +29,7 @@ private:
     int h;
     SDL_Renderer *_gRenderer;
 
-    const static int themeOptions = 4;
+    const static int themeOptions = 11;
     ImageButton themeButtons[themeOptions];
     ImageButton musicButton;
     ImageButton sfxButton;
@@ -60,6 +60,7 @@ private:
 
     void selectInitialTheme();
     void updateTheme();
+    void initThemeButtons(SDL_Renderer* _gRenderer);
 
 
 };

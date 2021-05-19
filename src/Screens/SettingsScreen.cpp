@@ -30,6 +30,26 @@ void SettingsScreen::updateTheme(){
     PreferenceManager::THEME = Themes(selectedTheme+1);
 }
 
+void SettingsScreen::initThemeButtons(SDL_Renderer* _gRenderer){
+    int offX = 0.06*w + 0;
+    int offY = h/7.0  + 0;
+
+    string assets[] = {
+        "pacman","avengers","minecraft","ball","covid","jungle","aliens","masters_of_universe",
+        "star_wars","transformers","mario"
+    };
+
+    for(int i=0;i<themeOptions;i++){
+        themeButtons[i].init(offX + 0.03 * w,offY + (i*0.07+0.1) * h,
+                    0.16 * w, 0.06 * h,
+                    "assets/buttons/settings/"+assets[i]+".png",
+                    "assets/buttons/settings/"+assets[i]+"_out.png");
+        themeButtons[i].setRenderer(_gRenderer);
+        cout << "YO " << i << endl;
+    }
+
+}
+
 void SettingsScreen::setRenderer(SDL_Renderer* _gRenderer){
     this->_gRenderer = _gRenderer;
 
@@ -42,25 +62,25 @@ void SettingsScreen::setRenderer(SDL_Renderer* _gRenderer){
     // First Section: Width/3, Height Full
     int offX = 0.06*w + 0;
     int offY = h/7.0  + 0;
-    themeButtons[0].init(offX + 0.03 * w,offY + 0.10 * h,
-                     0.16 * w, 0.07 * h,
-                     "assets/buttons/settings/pacman.png",
-                     "assets/buttons/settings/pacman_out.png");
-    themeButtons[1].init(offX + 0.03 * w,offY + 0.20 * h,
-                     0.16 * w, 0.07 * h,
-                     "assets/buttons/settings/avengers.png",
-                     "assets/buttons/settings/avengers_out.png");
-    themeButtons[2].init(offX + 0.03 * w,offY + 0.30 * h,
-                     0.16 * w, 0.07 * h,
-                     "assets/buttons/settings/minecraft.png",
-                     "assets/buttons/settings/minecraft_out.png");
-    themeButtons[3].init(offX + 0.03 * w,offY + 0.40 * h,
-                     0.16 * w, 0.07 * h,
-                     "assets/buttons/settings/covid.png",
-                     "assets/buttons/settings/covid_out.png");
-    for(int i=0;i<themeOptions;i++){
-        themeButtons[i].setRenderer(_gRenderer);
-    }
+    // themeButtons[0].init(offX + 0.03 * w,offY + 0.10 * h,
+    //                  0.16 * w, 0.07 * h,
+    //                  "assets/buttons/settings/pacman.png",
+    //                  "assets/buttons/settings/pacman_out.png");
+    // themeButtons[1].init(offX + 0.03 * w,offY + 0.20 * h,
+    //                  0.16 * w, 0.07 * h,
+    //                  "assets/buttons/settings/avengers.png",
+    //                  "assets/buttons/settings/avengers_out.png");
+    // themeButtons[2].init(offX + 0.03 * w,offY + 0.30 * h,
+    //                  0.16 * w, 0.07 * h,
+    //                  "assets/buttons/settings/minecraft.png",
+    //                  "assets/buttons/settings/minecraft_out.png");
+    // themeButtons[3].init(offX + 0.03 * w,offY + 0.40 * h,
+    //                  0.16 * w, 0.07 * h,
+    //                  "assets/buttons/settings/covid.png",
+    //                  "assets/buttons/settings/covid_out.png");
+    initThemeButtons(_gRenderer);
+
+
 
     themeSectionText.setRenderer(_gRenderer);
     musicSelectionText.setRenderer(_gRenderer);
@@ -70,6 +90,8 @@ void SettingsScreen::setRenderer(SDL_Renderer* _gRenderer){
     musicText.setRenderer(_gRenderer);
     sfxTextSelected.setRenderer(_gRenderer);
     musicTextSelected.setRenderer(_gRenderer);
+
+    cout << "Line 94" << endl;
 
     offX = (0.28 +0.06)*w;
     offY = h/7.0  + 0;
@@ -108,6 +130,8 @@ void SettingsScreen::setRenderer(SDL_Renderer* _gRenderer){
 
     sfxButton.setRenderer(_gRenderer);
     musicButton.setRenderer(_gRenderer);
+
+    cout << "Alright Init Done" << endl;
 
 }
 
