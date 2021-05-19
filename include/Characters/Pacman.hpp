@@ -20,6 +20,7 @@
 #include "Utils/AudioAsset.hpp"
 #include "Weapons/Weapon.hpp"
 #include "utils.hpp"
+#include "Textures/Particle.hpp"
 
 class Pacman : public Character {
  public:
@@ -61,6 +62,10 @@ class Pacman : public Character {
   void enemy_collision(int num);
   void freeze();
 
+  Particle* particles[ TOTAL_PARTICLES ];
+  void renderParticles();
+
+
   int BOOST_VEL = 8;
   bool is_boosted = false;
   void boost();
@@ -75,4 +80,5 @@ class Pacman : public Character {
   Animator freezeAnimation = Animator(100);
   Animator invisibleAnimator = Animator(300);
   Animator boostAnimator;
+  SDL_Renderer* _gRenderer;
 };

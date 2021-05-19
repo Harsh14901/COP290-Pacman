@@ -23,6 +23,13 @@ void Pacman::init(SDL_Renderer* renderer) {
   weaponSet.secondary_weapon.init(BulletType::GRENADE, this, 1);
 
   boostAnimator.set_duration(200);
+
+  for( int i = 0; i < TOTAL_PARTICLES; i++ ){
+    particles[ i ] = new Particle( mPosX, mPosY );
+    particles[i]->init(renderer);
+  }
+
+  _gRenderer = renderer;
 }
 
 void Pacman::init_targets() {
@@ -55,6 +62,7 @@ void Pacman::render() {
 
   _gDotTexture.setAlpha(getInvisibleAlphaValue());
   _gDotTexture.render(mPosX, mPosY, &rect, 90 * (int(_direction) / 2));
+  renderParticles();
 }
 
 // Note: this is an impure function
@@ -261,4 +269,27 @@ void Pacman::broadcast_coordinates() {
   p.data = map_to_string(data);
   // cout << "data is " << p.data << endl;
   NetworkManager::queue_packet(p);
+}
+
+
+void Pacman::renderParticles()
+{
+	//Go through particles
+    for( int i = 0; i < TOTAL_PARTICLES; ++i )
+    {
+        //Delete and replace dead particles
+        if( particles[ i ]->isDead() )
+        {
+            delete particles[ i ];
+            particles[ i ] = new Particle( mPosX, mPosY );
+            particles[i]->init(_gRenderer);
+        }
+    }
+
+    //Show particles only if boost is active
+    if(!is_boosted) return;
+    for( int i = 0; i < TOTAL_PARTICLES; ++i )
+    {
+        particles[ i ]->render();
+    }
 }
