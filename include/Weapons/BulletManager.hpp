@@ -12,7 +12,7 @@ using namespace std;
 class BulletManager {
  public:
   static void shoot_bullet(BulletType type, Direction d, int x, int y,
-                           bool broadcast = true);
+                           string target, bool broadcast = true);
   static void render_bullets();
   static void update_bullets();
   static void init(SDL_Renderer* renderer);

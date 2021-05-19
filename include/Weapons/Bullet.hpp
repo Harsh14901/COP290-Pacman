@@ -16,8 +16,8 @@ using namespace std;
 
 class Bullet : public Base {
  public:
-  Bullet(string asset, string id);
-  Bullet(string asset, int velocity, string id);
+  Bullet(string asset, string id, string target);
+  Bullet(string asset, int velocity, string id, string target);
 
   void shoot(Direction dir, int x, int y);
 
@@ -25,11 +25,13 @@ class Bullet : public Base {
   void render() override;
   bool is_active();
 
+  string target;
+
  protected:
   bool isActive = false;
   int angle = 0;
-  string target_id;
 
   void init_collider() override;
+  void init_targets() override;
   void target_hit(string target_id, Collider* collider = nullptr) override;
 };

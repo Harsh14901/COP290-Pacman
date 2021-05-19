@@ -2,10 +2,12 @@
 
 #include "Network/NetworkManager.hpp"
 
-Bullet::Bullet(string asset, string id)
-    : Bullet(asset, WeaponStats::MUZZLE_VEL, id) {}
-Bullet::Bullet(string asset, int velocity, string id)
-    : Base(32, 32, velocity, id, asset) {}
+Bullet::Bullet(string asset, string id, string target)
+    : Bullet(asset, WeaponStats::MUZZLE_VEL, id, target) {}
+Bullet::Bullet(string asset, int velocity, string id, string target)
+    : Base(32, 32, velocity, id, asset) {
+  this->target = target;
+}
 
 void Bullet::init_collider() {
   auto rect = SDL_Rect{-1, -1, 5, 5};
@@ -64,6 +66,10 @@ void Bullet::render() {
   _gDotTexture.render(mPosX, mPosY, NULL, angle);
 }
 
+void Bullet::init_targets() {
+  add_target(target);
+  Base::init_targets();
+}
 void Bullet::target_hit(string target_id, Collider* collider) {
   if (target_id == IDS::WALL_COLLIDER_ID) {
     if (collider == nullptr) return;
@@ -71,5 +77,9 @@ void Bullet::target_hit(string target_id, Collider* collider) {
     if (temp.size() == 2) {
       isActive = false;
     }
+  }
+
+  if (target_id == this->target) {
+    isActive = false;
   }
 }

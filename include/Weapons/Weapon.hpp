@@ -25,6 +25,7 @@ class Weapon {
  private:
   Animator reload_animator;
   Character* bearer;
+  string target;
 };
 
 struct WeaponSet {

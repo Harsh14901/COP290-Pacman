@@ -23,19 +23,19 @@ void BulletManager::clear_all() {
 }
 
 void BulletManager::shoot_bullet(BulletType type, Direction d, int x, int y,
-                                 bool broadcast) {
+                                 string target, bool broadcast) {
   switch (type) {
     case BulletType::FREEZE:
-      active_bullets.push_back(make_unique<FreezeBullet>());
+      active_bullets.push_back(make_unique<FreezeBullet>(target));
       break;
     case BulletType::EMP:
-      active_bullets.push_back(make_unique<EMPBullet>());
+      active_bullets.push_back(make_unique<EMPBullet>(target));
       break;
     case BulletType::WALLBUSTER:
       active_bullets.push_back(make_unique<WallBusterBullet>());
       break;
     case BulletType::GRENADE:
-      active_bullets.push_back(make_unique<Grenade>());
+      active_bullets.push_back(make_unique<Grenade>(target));
       break;
     default:
       return;
@@ -76,6 +76,7 @@ void BulletManager::broadcast_bullet(Bullet* bullet, BulletType type) {
   p.posY = bullet->mPosY;
   p.velX = int(bullet->_direction);
   p.velY = int(type);
+  p.data = bullet->target;
 
   NetworkManager::queue_packet(p);
 }
@@ -89,6 +90,7 @@ void BulletManager::recieve_bullets() {
     int y = p.posY;
     auto d = Direction(p.velX);
     auto t = BulletType(p.velY);
-    shoot_bullet(t, d, x, y, false);
+    auto target = p.data;
+    shoot_bullet(t, d, x, y, target, false);
   }
 }

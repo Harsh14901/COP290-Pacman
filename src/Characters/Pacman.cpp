@@ -21,8 +21,10 @@ Pacman::Pacman() : Character(IDS::PACMAN_COLLIDER_ID) {}
 void Pacman::init(SDL_Renderer* renderer) {
   Base::init(renderer);
   chompSound.init(AssetManager::get_asset(ThemeAssets::COIN_SOUND), false);
-  weaponSet.primary_weapon.init(BulletType::EMP, this, 1);
-  weaponSet.secondary_weapon.init(BulletType::GRENADE, this, 1);
+  weaponSet.primary_weapon.init(PreferenceManager::playerBullets.first, this,
+                                1);
+  weaponSet.secondary_weapon.init(PreferenceManager::playerBullets.second, this,
+                                  1);
 
   boostAnimator.set_duration(200);
 

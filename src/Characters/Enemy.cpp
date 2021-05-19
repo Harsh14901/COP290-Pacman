@@ -69,8 +69,9 @@ void Enemy::init(SDL_Renderer* renderer) {
   Character::init(renderer);
   spawnAnimator.set_duration(100 + 100 * type);
   AIEngine.init(WIDTH, HEIGHT, type);
-  weaponSet.primary_weapon.init(BulletType::WALLBUSTER, this, 1);
-  weaponSet.secondary_weapon.init(BulletType::FREEZE, this, 1);
+  weaponSet.primary_weapon.init(PreferenceManager::enemyBullets.first, this, 1);
+  weaponSet.secondary_weapon.init(PreferenceManager::enemyBullets.second, this,
+                                  1);
 }
 
 void Enemy::init_targets() {

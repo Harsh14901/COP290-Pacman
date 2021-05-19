@@ -7,29 +7,17 @@ using namespace std;
 
 class FreezeBullet : public Bullet {
  public:
-  FreezeBullet();
-
- protected:
-  void init_targets() override;
-  void target_hit(string target_id, Collider* collider) override;
+  FreezeBullet(string target);
 };
 
 class Grenade : public Bullet {
  public:
-  Grenade();
-
- protected:
-  void init_targets() override;
-  void target_hit(string target_id, Collider* collider) override;
+  Grenade(string target);
 };
 
 class EMPBullet : public Bullet {
  public:
-  EMPBullet();
-
- protected:
-  void init_targets() override;
-  void target_hit(string target_id, Collider* collider) override;
+  EMPBullet(string target);
 };
 
 class WallBusterBullet : public Bullet {

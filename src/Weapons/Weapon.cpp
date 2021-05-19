@@ -36,6 +36,14 @@ void Weapon::init(BulletType type, Character* bearer, int burst_count) {
   }
   bullet_count = magazine_cap;
   reload_animator.set_duration(reload_time);
+
+  if (bearer->ID.find(IDS::PACMAN_COLLIDER_ID) != string::npos) {
+    target = IDS::ENEMY_COLLIDER_ID;
+  } else if (bearer->ID.find(IDS::ENEMY_COLLIDER_ID) != string::npos) {
+    target = IDS::PACMAN_COLLIDER_ID;
+  } else {
+    target = IDS::WALL_COLLIDER_ID;
+  }
 }
 
 void Weapon::fire(Direction d, int x, int y) {
@@ -44,7 +52,7 @@ void Weapon::fire(Direction d, int x, int y) {
   }
   int i = burst_count;
   while (i > 0 && bullet_count > 0) {
-    BulletManager::shoot_bullet(bullet_type, d, x, y);
+    BulletManager::shoot_bullet(bullet_type, d, x, y, target);
     bullet_count--;
     i--;
   }

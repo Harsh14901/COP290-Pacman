@@ -33,13 +33,6 @@ MainGame::MainGame() {
 
   initSystems();
 
-  coinGrid = CoinGrid::getInstance();
-  cherryGrid = CherryGrid::getInstance();
-  wallGrid = WallGrid::getInstance();
-  ventGrid = VentGrid::getInstance();
-  boostGrid = BoostGrid::getInstance();
-  invisibilityGrid = InvisibilityGrid::getInstance();
-
   _gameState = GameState::MAIN_MENU;
 }
 
@@ -268,7 +261,6 @@ void MainGame::runGame() {
     _gameState = GameState::PLAY;
     CommonAudios::buttonStart.play();
 
-
     initCharacters();
 
     gameLoop();
@@ -276,10 +268,19 @@ void MainGame::runGame() {
 }
 
 void MainGame::initCharacters() {
+  AssetManager::init(PreferenceManager::THEME);
+
   pacman = Pacman::getInstance();
 
   Enemy::make_enemies(PreferenceManager::NUM_ENEMIES);
   enemies = Enemy::get_enemies();
+
+  wallGrid = WallGrid::getInstance();
+  coinGrid = CoinGrid::getInstance();
+  ventGrid = VentGrid::getInstance();
+  cherryGrid = CherryGrid::getInstance();
+  boostGrid = BoostGrid::getInstance();
+  invisibilityGrid = InvisibilityGrid::getInstance();
 
   queue<ObjectGrid*> init_grids;
 
@@ -353,8 +354,6 @@ void MainGame::initSystems() {
   }
 
   CommonAudios::initialize_sound();
-
-  AssetManager::init(PreferenceManager::THEME);
 }
 
 SDL_Texture* MainGame::loadTexture(string path) {
@@ -587,7 +586,7 @@ void MainGame::renderGameEndAnimation() {
   // cout << "Animation is happening" << endl;
 
   double x = gameEndAnimator.animation_progress();
-  cout << x << endl;
+  // cout << x << endl;
   double val = x > 0.33 ? 0.5 : 1.5 * x;
   gameEndTextTexture.render(
       SCREEN_WIDTH / 2 - gameEndTextTexture.getWidth() / 2,
