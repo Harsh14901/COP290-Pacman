@@ -6,7 +6,7 @@
 #include "utils.hpp"
 using namespace std;
 
-enum Themes { MASTER, PACMAN, AVENGERS, T_Last };
+enum Themes { MASTER, PACMAN, AVENGERS, MINECRAFT, COVID, T_Last };
 
 enum ThemeAssets {
 

@@ -2,12 +2,12 @@
 
 bool PreferenceManager::MUSIC_ON;
 bool PreferenceManager::SFX_ON;
-string PreferenceManager::THEME;
+Themes PreferenceManager::THEME;
 int PreferenceManager::NUM_ENEMIES;
 
 void PreferenceManager::initSettings(){
     MUSIC_ON = true;
     SFX_ON = true;
-    THEME = "PACMAN";
+    THEME = Themes::AVENGERS;
     NUM_ENEMIES = 2;
 }

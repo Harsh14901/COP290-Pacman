@@ -20,8 +20,20 @@ SDL_Texture* SettingsScreen::loadTexture(string path){
     return newTexture;
 }
 
+
+void SettingsScreen::selectInitialTheme(){
+    auto theme = PreferenceManager::THEME;
+    selectedTheme = int(theme)-1;
+}
+
+void SettingsScreen::updateTheme(){
+    PreferenceManager::THEME = Themes(selectedTheme+1);
+}
+
 void SettingsScreen::setRenderer(SDL_Renderer* _gRenderer){
     this->_gRenderer = _gRenderer;
+
+    selectInitialTheme();
 
     _backgroundTexture = loadTexture("assets/backgrounds/settings_background2.png");
     SDL_SetTextureAlphaMod(_backgroundTexture, 100);
@@ -110,6 +122,7 @@ void SettingsScreen::handleThemeEvent(int keycode){
             default:
                 cout << "Invalid Key, Play Sound" << endl;
         }
+        updateTheme();
 }
 
 void SettingsScreen::handleSoundEvent(int keycode){
@@ -121,8 +134,8 @@ void SettingsScreen::handleSoundEvent(int keycode){
                 current_music_option_selected = (current_music_option_selected-1+2*1000)%2;
                 break;
             case 13: // Enter
-                if(current_music_option_selected==0) musicToggle = !musicToggle;
-                if(current_music_option_selected==1) sfxToggle = !sfxToggle;
+                if(current_music_option_selected==0) PreferenceManager::MUSIC_ON = !PreferenceManager::MUSIC_ON;
+                if(current_music_option_selected==1) PreferenceManager::SFX_ON = !PreferenceManager::SFX_ON;
                 break;
             default:
                 cout << "Invalid Key, Play Sound: " << keycode  << endl;
@@ -138,10 +151,10 @@ void SettingsScreen::handleGamePlayEvent(int keycode){
                 gamePlayOption = (gamePlayOption-1+1*1000)%1;
                 break;
             case SDLK_RIGHT:
-                num_enemies = min(num_enemies+1,4);
+                PreferenceManager::NUM_ENEMIES = min(PreferenceManager::NUM_ENEMIES+1,4);
                 break;
             case SDLK_LEFT:
-                num_enemies = max(num_enemies-1,1);
+                PreferenceManager::NUM_ENEMIES = max(PreferenceManager::NUM_ENEMIES-1,1);
                 break;
             default:
                 cout << "Invalid Key, Play Sound: " << keycode  << endl;
@@ -187,9 +200,9 @@ void SettingsScreen::render() {
         sfxText.render(0.37*w,0.09*h+h/7.0);
     }
     if(sectionCursor==2){
-        numEnemiesSelectedText[num_enemies-1].render(0.738*w,0.09*h + h/7.0);
+        numEnemiesSelectedText[PreferenceManager::NUM_ENEMIES-1].render(0.738*w,0.09*h + h/7.0);
     }else{
-        numEnemiesText[num_enemies-1].render(0.738*w,0.09*h + h/7.0);
+        numEnemiesText[PreferenceManager::NUM_ENEMIES-1].render(0.738*w,0.09*h + h/7.0);
     }
 
     themeSectionText.render(0.085*w,0.12*h);
@@ -197,8 +210,8 @@ void SettingsScreen::render() {
     gamePlaySelectionText.render(0.725*w,0.12*h);
 
 
-    musicButton.set_clicked(musicToggle);
-    sfxButton.set_clicked(sfxToggle);
+    musicButton.set_clicked(PreferenceManager::MUSIC_ON);
+    sfxButton.set_clicked(PreferenceManager::SFX_ON);
     musicButton.render();
     sfxButton.render();
 

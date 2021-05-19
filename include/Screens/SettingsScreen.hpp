@@ -50,9 +50,6 @@ private:
     int num_sections = 3;
 
     int current_music_option_selected = 0;
-    bool musicToggle = false;
-    bool sfxToggle = false;
-    int num_enemies = 1;
 
     void handleThemeEvent(int keycode);
     void handleSoundEvent(int keycode);
@@ -60,5 +57,9 @@ private:
 
     SDL_Texture* loadTexture(string path);
     SDL_Texture* _backgroundTexture = NULL;
+
+    void selectInitialTheme();
+    void updateTheme();
+
 
 };

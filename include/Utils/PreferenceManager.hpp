@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <map>
+#include "Utils/AssetManager.hpp"
+
 using namespace std;
 
 
@@ -12,6 +14,6 @@ public:
     static void initSettings();
     static bool MUSIC_ON;
     static bool SFX_ON;
-    static string THEME;
+    static Themes THEME;
     static int NUM_ENEMIES;
 };
