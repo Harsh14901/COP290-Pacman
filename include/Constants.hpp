@@ -41,6 +41,7 @@ class IDS {
   inline const static string CHERRY_COLLIDER_ID = "cherry";
   inline const static string NETWORK_ID = "networkmanager";
   inline const static string BULLET_MANAGER_ID = "bulletmanager";
+  inline const static string PREF_MANAGER_ID = "prefmanager";
   inline const static string BULLET_ID = "bullet";
   inline const static string FREEZEBULLET_ID = "freeze";
   inline const static string WALLBUSTER_ID = "wallbuster";
@@ -92,7 +93,8 @@ enum KeyPressSurfaces {
 };
 
 extern bool is_two_player;
+extern bool network_error;
 extern double game_frame;
 extern int game_frame_int;
 
-void fatalError(string error_message);
+void fatalError(string error_message, bool block = true);

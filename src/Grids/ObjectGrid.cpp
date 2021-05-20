@@ -29,7 +29,7 @@ void ObjectGrid::set_object(int i, int j) {
 }
 
 void ObjectGrid::unset_object(int i, int j) {
-  if (i >= GRID_ROW || i < 0 || j >= GRID_COL || j < 0) {
+  if (i >= GRID_ROW || i < 0 || j >= GRID_COL || j < 0 || !objects[i][j]) {
     return;
   }
   objects[i][j] = false;

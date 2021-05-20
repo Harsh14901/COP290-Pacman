@@ -1,6 +1,5 @@
 #include "Utils/AudioAsset.hpp"
 
-
 AudioAsset::AudioAsset() {}
 
 AudioAsset::AudioAsset(string sound, bool isMusic) : AudioAsset() {
@@ -28,12 +27,16 @@ void AudioAsset::init(string sound, bool isMusic) {
 void AudioAsset::applySettings() {
   // Mix_Volume(-1,0);
   if (soundEffect != NULL) {
-    if (!PreferenceManager::SFX_ON) Mix_VolumeChunk(soundEffect, 0);
-    else Mix_VolumeChunk(soundEffect,MIX_MAX_VOLUME);
+    if (!PreferenceManager::SFX_ON)
+      Mix_VolumeChunk(soundEffect, 0);
+    else
+      Mix_VolumeChunk(soundEffect, MIX_MAX_VOLUME);
   }
   if (music != NULL) {
-    if (!PreferenceManager::MUSIC_ON) Mix_VolumeMusic(0);
-    else Mix_VolumeMusic(MIX_MAX_VOLUME);
+    if (!PreferenceManager::MUSIC_ON)
+      Mix_VolumeMusic(0);
+    else
+      Mix_VolumeMusic(MIX_MAX_VOLUME);
   }
 }
 
@@ -45,11 +48,11 @@ void AudioAsset::play() {
   //     // play();
   //     return;
   // }
-  cout << "Should be playing chunk "  << sound_name << endl;
+  // cout << "Should be playing chunk "  << sound_name << endl;
   // int loops = is_loop ? -1 : 0;
   is_playing = true;
   if (is_music) {
-    cout << "Music Should be playing" << endl;
+    // cout << "Music Should be playing" << endl;
     Mix_PlayMusic(music, -1);
   } else {
     // cout << "Should Play Now" << endl;

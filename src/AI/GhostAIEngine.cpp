@@ -59,7 +59,7 @@ Direction GhostAIEngine::updateDirection() {
   if (available_directions.size() != 0) {
     int selection = rand() % available_directions.size();
     int i = 0;
-    if(!pacman->is_invisible){
+    if (!pacman->is_invisible) {
       if (type == 0) {
         // Blinky: Target Position: Pacman
         int targetX = pacman->mPosX / 32;
@@ -71,11 +71,11 @@ Direction GhostAIEngine::updateDirection() {
         // direction
 
         int offX = pacman->_direction == Direction::LEFT    ? -4
-                  : pacman->_direction == Direction::RIGHT ? 4
+                   : pacman->_direction == Direction::RIGHT ? 4
                                                             : 0;
         int offY = pacman->_direction == Direction::UP     ? -4
-                  : pacman->_direction == Direction::DOWN ? 4
-                                                          : 0;
+                   : pacman->_direction == Direction::DOWN ? 4
+                                                           : 0;
         int targetX = pacman->mPosX / 32 + offX;
         int targetY = pacman->mPosY / 32 + offY;
 
@@ -86,11 +86,11 @@ Direction GhostAIEngine::updateDirection() {
         // Inky: Target Position: Vector extending Blinky Tiles Ahead of Pacman
         // TODO: Fix this
         int offX = pacman->_direction == Direction::LEFT    ? -6
-                  : pacman->_direction == Direction::RIGHT ? 6
+                   : pacman->_direction == Direction::RIGHT ? 6
                                                             : 0;
         int offY = pacman->_direction == Direction::UP     ? -6
-                  : pacman->_direction == Direction::DOWN ? 6
-                                                          : 0;
+                   : pacman->_direction == Direction::DOWN ? 6
+                                                           : 0;
         int int_targetX = pacman->mPosX / 32 + offX;
         int int_targetY = pacman->mPosY / 32 + offY;
 
