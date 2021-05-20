@@ -10,9 +10,9 @@ void AssetManager::init(Themes startTheme) {
   asset_folder = "assets/themes/";
   theme_folders = unordered_map<Themes, string>(
       {{MASTER, "master/"}, {PACMAN, "pacman/"}, {AVENGERS, "Avengers/"}, {MINECRAFT, "minecraft/"},
-       {BALL, "Ball/"},     {COVID, "Covid/"}  , {JUNGLE, "Jungle/"}, {ALIENS, "Aliens"},
-       {MASTERS_OF_UNIVERSE, "Masters of the universe"}, {STAR_WARS, "Star Wars"}, {TRANSFORMERS, "Transformers"},
-       {MARIO, "Mario"}});
+       {BALL, "Ball/"},     {COVID, "Covid/"}  , {JUNGLE, "Jungle/"}, {ALIENS, "Aliens/"},
+       {MASTERS_OF_UNIVERSE, "Masters of the universe/"}, {STAR_WARS, "Star Wars/"}, {TRANSFORMERS, "Transformers/"},
+       {MARIO, "Mario/"}});
   asset_files = unordered_map<ThemeAssets, string>({
       {PACMAN_SPRITE, "player.png"},
       {ENEMY_SPRITE, "enemy.png"},
@@ -47,6 +47,7 @@ string AssetManager::get_asset(ThemeAssets key) {
   }
   auto asset = get_asset(PreferenceManager::THEME, key);
   if (!fileExists(asset)) {
+    cout << "Asst not found: " << asset << endl;
     asset = get_asset(MASTER, key);
   }
 
