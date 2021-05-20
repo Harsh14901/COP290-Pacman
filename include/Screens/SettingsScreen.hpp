@@ -33,10 +33,12 @@ private:
     ImageButton themeButtons[themeOptions];
     ImageButton musicButton;
     ImageButton sfxButton;
+    ImageButton weaponsButton[4];
     LTexture musicText;
     LTexture sfxText;
     LTexture musicTextSelected;
     LTexture sfxTextSelected;
+    LTexture chooseWeaponsText;
     LTexture numEnemiesText[4];
     LTexture numEnemiesSelectedText[4];
 
@@ -61,6 +63,14 @@ private:
     void selectInitialTheme();
     void updateTheme();
     void initThemeButtons(SDL_Renderer* _gRenderer);
+    void initWeaponsButtons(SDL_Renderer* _gRenderer);
+
+    int weapon_selected_prev = 0;
+    int weapon_selected_now  = 1;
+
+    bool weapon_entered_press = false;
+
+    void handleGamePlayOption(bool inc);
 
 
 };

@@ -50,6 +50,24 @@ void SettingsScreen::initThemeButtons(SDL_Renderer* _gRenderer){
 
 }
 
+void SettingsScreen::initWeaponsButtons(SDL_Renderer* _gRenderer){
+    int offX = 0.7*w + 0;
+    int offY = h/7.0  + 0.18*h;
+
+    string assets[] = {
+        "freeze_gun","emp","wall_buster","bomb"
+    };
+
+    for(int i=0;i<4;i++){
+        weaponsButton[i].init(offX,offY + (i*0.12+0.10) * h,
+                    0.24 * w, 0.09 * h,
+                    "assets/buttons/settings/"+assets[i]+".png",
+                    "assets/buttons/settings/"+assets[i]+"_out.png");
+        weaponsButton[i].setRenderer(_gRenderer);
+    }
+
+}
+
 void SettingsScreen::setRenderer(SDL_Renderer* _gRenderer){
     this->_gRenderer = _gRenderer;
 
@@ -79,7 +97,11 @@ void SettingsScreen::setRenderer(SDL_Renderer* _gRenderer){
     //                  "assets/buttons/settings/covid.png",
     //                  "assets/buttons/settings/covid_out.png");
     initThemeButtons(_gRenderer);
+    initWeaponsButtons(_gRenderer);
 
+    auto xx = PreferenceManager::playerBullets;
+    weapon_selected_prev =  int(xx.first);
+    weapon_selected_now  =  int(xx.second);
 
 
     themeSectionText.setRenderer(_gRenderer);
@@ -119,6 +141,11 @@ void SettingsScreen::setRenderer(SDL_Renderer* _gRenderer){
         numEnemiesSelectedText[i].loadFromRenderedText(
         "Enemies: "+to_string(i+1), {210, 255, 30}, TTF_OpenFont("assets/fonts/Rajdhani.ttf", 60));
     }
+
+    chooseWeaponsText.setRenderer(_gRenderer);
+    chooseWeaponsText.loadFromRenderedText(
+        "PLAYER WEAPONS", {255, 255, 255}, TTF_OpenFont("assets/fonts/Rajdhani.ttf", 50));
+
     sfxTextSelected.loadFromRenderedText(
       "SFX", {210, 255, 30}, TTF_OpenFont("assets/fonts/Rajdhani.ttf", 60));
     musicTextSelected.loadFromRenderedText(
@@ -171,14 +198,35 @@ void SettingsScreen::handleSoundEvent(int keycode){
         }
 }
 
+void SettingsScreen::handleGamePlayOption(bool inc){
+    if(gamePlayOption>0){
+        if(weapon_entered_press){
+            // handle prev_weapon
+            if(gamePlayOption-1==weapon_selected_now) {
+                gamePlayOption= 1+((gamePlayOption-1)+inc+4)%4;
+            }
+            weapon_selected_prev = gamePlayOption-1;
+        }else{
+            if(gamePlayOption-1==weapon_selected_prev) {
+                gamePlayOption= 1+((gamePlayOption-1)+inc+4)%4;
+            }
+            weapon_selected_now = gamePlayOption-1;
+        }
+    }
+    PreferenceManager::playerBullets = make_pair(BulletType(weapon_selected_prev),BulletType(weapon_selected_now));
+}
+
 void SettingsScreen::handleGamePlayEvent(int keycode){
         switch (keycode) {
             case SDLK_DOWN:
-                gamePlayOption = (gamePlayOption+1)%2;
+                gamePlayOption = (gamePlayOption+1)%5;
+                cout << "Game Play Option is: " << gamePlayOption << endl; 
+                handleGamePlayOption(true);
                 CommonAudios::buttonHover.play();
                 break;
             case SDLK_UP:
-                gamePlayOption = (gamePlayOption-1+1*1000)%1;
+                gamePlayOption = (gamePlayOption-1+1*1000)%5;
+                handleGamePlayOption(false);
                 CommonAudios::buttonHover.play();
                 break;
             case SDLK_RIGHT:
@@ -189,6 +237,8 @@ void SettingsScreen::handleGamePlayEvent(int keycode){
                 PreferenceManager::NUM_ENEMIES = max(PreferenceManager::NUM_ENEMIES-1,1);
                 CommonAudios::buttonClick.play();
                 break;
+            case 13:
+                weapon_entered_press = !weapon_entered_press;
             default:
                 cout << "Invalid Key, Play Sound: " << keycode  << endl;
         }
@@ -221,6 +271,11 @@ void SettingsScreen::render() {
         themeButtons[i].render();
     }
 
+    for(int i=0;i<4;i++){
+        weaponsButton[i].set_clicked(weapon_selected_prev==i || weapon_selected_now==i);
+        weaponsButton[i].render();
+    }
+
     if(sectionCursor==1){
         if(current_music_option_selected==0){
             musicTextSelected.render(0.37*w,0.19*h+h/7.0);
@@ -233,15 +288,16 @@ void SettingsScreen::render() {
         musicText.render(0.37*w,0.19*h+h/7.0);
         sfxText.render(0.37*w,0.09*h+h/7.0);
     }
-    if(sectionCursor==2){
-        numEnemiesSelectedText[PreferenceManager::NUM_ENEMIES-1].render(0.738*w,0.09*h + h/7.0);
+    if(sectionCursor==2 && gamePlayOption==0){
+        numEnemiesSelectedText[PreferenceManager::NUM_ENEMIES-1].render(0.718*w,0.09*h + h/7.0);
     }else{
-        numEnemiesText[PreferenceManager::NUM_ENEMIES-1].render(0.738*w,0.09*h + h/7.0);
+        numEnemiesText[PreferenceManager::NUM_ENEMIES-1].render(0.718*w,0.09*h + h/7.0);
     }
+    chooseWeaponsText.render(0.678*w,0.19*h + h/7.0);
 
     themeSectionText.render(0.085*w,0.12*h);
     musicSelectionText.render(0.405*w,0.12*h);
-    gamePlaySelectionText.render(0.725*w,0.12*h);
+    gamePlaySelectionText.render(0.705*w,0.12*h);
 
 
     musicButton.set_clicked(PreferenceManager::MUSIC_ON);
