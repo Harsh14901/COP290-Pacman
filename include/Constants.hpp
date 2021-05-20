@@ -93,7 +93,8 @@ enum KeyPressSurfaces {
 };
 
 extern bool is_two_player;
+extern bool network_error;
 extern double game_frame;
 extern int game_frame_int;
 
-void fatalError(string error_message);
+void fatalError(string error_message, bool block = true);

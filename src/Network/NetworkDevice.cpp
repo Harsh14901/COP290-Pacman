@@ -38,7 +38,9 @@ int NetworkDevice::send(PacketStore& ps) {
   int size = strlen(buffer) + 1;
   // printf("Sending buffer: %s\n", buffer);
   if (SDLNet_TCP_Send(*send_socket, buffer, size) < size) {
-    fatalError("Error sending packet store: " + string(SDLNet_GetError()));
+    fatalError("Error sending packet store: " + string(SDLNet_GetError()),
+               false);
+    network_error = true;
   } else {
     // cout << "packet store sent" << endl;
   }
@@ -50,11 +52,13 @@ Server::Server() : Server(PORT) {}
 
 void Server::init() {
   if (SDLNet_ResolveHost(&ip, NULL, port) < 0) {
-    fatalError("SDLNet_ResolveHost: " + string(SDLNet_GetError()));
+    fatalError("SDLNet_ResolveHost: " + string(SDLNet_GetError()), false);
+    network_error = true;
   }
 
   if (!(sd = SDLNet_TCP_Open(&ip))) {
-    fatalError("SDLNet_TCP_Open: " + string(SDLNet_GetError()));
+    fatalError("SDLNet_TCP_Open: " + string(SDLNet_GetError()), false);
+    network_error = true;
   }
 }
 
@@ -67,7 +71,9 @@ void Server::wait_for_connection() {
              SDLNet_Read16(&(remote_ip.port)));
       connected = true;
     } else {
-      fatalError("SDLNet_TCP_GetPeerAddress: " + string(SDLNet_GetError()));
+      fatalError("SDLNet_TCP_GetPeerAddress: " + string(SDLNet_GetError()),
+                 false);
+      network_error = true;
     }
   }
 }
@@ -80,10 +86,12 @@ Client::Client() : Client("", PORT) {}
 
 void Client::init() {
   if (SDLNet_ResolveHost(&server_ip, server_host.c_str(), port) < 0) {
-    fatalError("SDLNet_ResolveHost:" + string(SDLNet_GetError()));
+    fatalError("SDLNet_ResolveHost:" + string(SDLNet_GetError()), false);
+    network_error = true;
   }
 }
 
 void Client::connect() {
-  while (!(sd = SDLNet_TCP_Open(&server_ip))) ;
+  while (!(sd = SDLNet_TCP_Open(&server_ip)))
+    ;
 }

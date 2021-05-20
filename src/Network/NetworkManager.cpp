@@ -15,7 +15,9 @@ void NetworkManager::load_device(NetworkDevice* device) {
 
 int NetworkManager::recv_packets(bool to_clear) {
   if (device == nullptr) {
-    fatalError("Cannot recieve packets from a NULL device");
+    fatalError("Cannot recieve packets from a NULL device", false);
+    network_error = true;
+
     return 0;
   }
   if (to_clear) {
@@ -48,7 +50,9 @@ void NetworkManager::clear_all() {
 
 int NetworkManager::send_packets() {
   if (device == nullptr) {
-    fatalError("Cannot send packets from a NULL device");
+    fatalError("Cannot send packets from a NULL device", false);
+    network_error = true;
+
     return -1;
   }
   int num = device->send(tosend_packets);

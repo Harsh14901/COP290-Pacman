@@ -18,12 +18,14 @@ vector<Enemy*> enemies;
 
 extern bool is_server;
 
-void fatalError(string error_message) {
+void fatalError(string error_message, bool block) {
   cout << error_message << endl;
-  char a;
-  cout << "Enter any key to quit" << endl;
-  cin >> a;
-  exit(EXIT_FAILURE);
+  if (block) {
+    char a;
+    cout << "Enter any key to quit" << endl;
+    cin >> a;
+    exit(EXIT_FAILURE);
+  }
 }
 
 MainGame::MainGame() {
@@ -505,7 +507,7 @@ void MainGame::renderAll() {
 
 bool MainGame::game_terminated() {
   bool is_terminated = false, is_win = false;
-  if (gameEndAnimator.isActive()) {
+  if (gameEndAnimator.isActive() || network_error) {
     // cout << "Game END animator active" << endl;
 
     is_terminated = true;
@@ -577,15 +579,20 @@ void MainGame::clear_resources() {
 
 void MainGame::initialiseGameEndTexture(bool is_win) {
   gameEndTextTexture.setRenderer(_gRenderer);
-  if (is_win) {
+  if (is_win && !network_error) {
     gameEndTextTexture.loadFromRenderedText(
         "YOU WIN!", {210, 255, 220},
         TTF_OpenFont("assets/fonts/win_font.ttf", 240));
-  } else {
+  } else if (!network_error) {
     pacmanDeathSound.play();
     gameEndTextTexture.loadFromRenderedText(
         "YOU LOSE!", {255, 45, 30},
         TTF_OpenFont("assets/fonts/game_over.ttf", 480));
+  } else {
+    // pacmanDeathSound.play();
+    gameEndTextTexture.loadFromRenderedText(
+        "A network error occured!", {255, 45, 30},
+        TTF_OpenFont("assets/fonts/game_over.ttf", 200));
   }
 }
 
@@ -595,9 +602,9 @@ void MainGame::renderGameEndAnimation() {
   }
 
   // cout << "Animation is happening" << endl;
-
   double x = gameEndAnimator.animation_progress();
   // cout << x << endl;
+  x = (!network_error) ? x : 1;
   double val = x > 0.33 ? 0.5 : 1.5 * x;
   gameEndTextTexture.render(
       SCREEN_WIDTH / 2 - gameEndTextTexture.getWidth() / 2,
