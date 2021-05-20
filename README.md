@@ -30,6 +30,7 @@ To run in single player mode, choose **1 player**. For 2 player mode choose **2 
 1. Thanks to [LazyFoo's](https://lazyfoo.net/tutorials/SDL/) excellent guid to SDL, developement became hassle free.
 2. The large number of themes with cool sound effects wouldn't have been possible without the [Unity Asset Store](https://assetstore.unity.com/)
 3. Thanks to [Shaun Lebron's](https://shaunlebron.github.io/) months of research, we were able to create random pacman like mazes in our game!!! [Note this is Different from the DFS algorithm for maze generation also used in this game]
+4. Thanks for the `SDL_net` networking tutorial by [Stephen Meier](https://stephenmeier.net/2015/12/23/sdl-2-0-tutorial-04-networking/).
 
 
 [gts-image]: https://img.shields.io/badge/code%20style-google-blueviolet.svg
