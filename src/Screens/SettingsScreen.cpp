@@ -35,7 +35,7 @@ void SettingsScreen::initThemeButtons(SDL_Renderer* _gRenderer){
     int offY = h/7.0  + 0;
 
     string assets[] = {
-        "pacman","avengers","minecraft","ball","covid","jungle","aliens","masters_of_universe",
+        "pacman","avengers","minecraft","covid","jungle","aliens",
         "star_wars","transformers","mario"
     };
 

@@ -10,8 +10,8 @@ void AssetManager::init(Themes startTheme) {
   asset_folder = "assets/themes/";
   theme_folders = unordered_map<Themes, string>(
       {{MASTER, "master/"}, {PACMAN, "pacman/"}, {AVENGERS, "Avengers/"}, {MINECRAFT, "minecraft/"},
-       {BALL, "Ball/"},     {COVID, "Covid/"}  , {JUNGLE, "Jungle/"}, {ALIENS, "Aliens/"},
-       {MASTERS_OF_UNIVERSE, "Masters of the universe/"}, {STAR_WARS, "Star Wars/"}, {TRANSFORMERS, "Transformers/"},
+       {COVID, "Covid/"}  , {JUNGLE, "Jungle/"}, {ALIENS, "Aliens/"},
+       {STAR_WARS, "Star Wars/"}, {TRANSFORMERS, "Transformers/"},
        {MARIO, "Mario/"}});
   asset_files = unordered_map<ThemeAssets, string>({
       {PACMAN_SPRITE, "player.png"},
@@ -32,7 +32,8 @@ void AssetManager::init(Themes startTheme) {
       {BOOST_PNG, "boost_potion.png"},
       {INVISIBILITY_PNG, "invisibility_potion.png"},
 
-      {WALL_PNG, "wall.png"}
+      {WALL_PNG, "wall.png"},
+      {BACK, "back.png"}
   });
 }
 void AssetManager::set_theme(Themes theme) { selected_theme = theme; }

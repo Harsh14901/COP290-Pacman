@@ -6,7 +6,7 @@
 #include "utils.hpp"
 using namespace std;
 
-enum Themes { MASTER, PACMAN, AVENGERS, MINECRAFT, BALL, COVID, JUNGLE,ALIENS,  MASTERS_OF_UNIVERSE, STAR_WARS, TRANSFORMERS, MARIO, T_Last };
+enum Themes { MASTER, PACMAN, AVENGERS, MINECRAFT, COVID, JUNGLE,ALIENS,  STAR_WARS, TRANSFORMERS, MARIO, T_Last };
 
 enum ThemeAssets {
 
@@ -34,6 +34,7 @@ enum ThemeAssets {
   INVISIBILITY_PNG,
 
   WALL_PNG,
+  BACK,
   E_Last
 };
 

@@ -260,6 +260,7 @@ void MainGame::runGame() {
 
     _gameState = GameState::PLAY;
     CommonAudios::buttonStart.play();
+    _gTexture = loadTexture(AssetManager::get_asset(BACK));
 
     initCharacters();
 
