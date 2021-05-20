@@ -15,6 +15,11 @@ class PreferenceManager {
   static Themes THEME;
   static int NUM_ENEMIES;
 
+  // blocks
+  static void broadcast();
+  // blocks
+  static void recv_settings();
+
   //   First element -> primary weapon, second element -> secondary weapon.
   static pair<BulletType, BulletType> playerBullets;
   static pair<BulletType, BulletType> enemyBullets;

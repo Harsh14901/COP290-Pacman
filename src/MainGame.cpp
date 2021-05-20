@@ -269,6 +269,15 @@ void MainGame::runGame() {
 }
 
 void MainGame::initCharacters() {
+  // Block until settings are synced!
+  if (is_two_player) {
+    if (is_server) {
+      PreferenceManager::broadcast();
+    } else if (!is_server) {
+      PreferenceManager::recv_settings();
+    }
+  }
+
   AssetManager::init(PreferenceManager::THEME);
 
   pacman = Pacman::getInstance();
@@ -513,7 +522,7 @@ bool MainGame::game_terminated() {
   }
   if (is_terminated && !gameEndAnimator.isActive()) {
     gameEndAnimator.start();
-    initialiseGameEndTexture(is_win);
+    initialiseGameEndTexture((is_server) ? is_win : !is_win);
   }
   if (is_terminated) {
     _gameState = GameState::MAIN_MENU;
