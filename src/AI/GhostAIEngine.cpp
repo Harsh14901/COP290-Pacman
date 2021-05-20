@@ -50,11 +50,11 @@ Direction GhostAIEngine::updateDirection() {
                                                            : Direction::UP;
   available_directions.erase(directionToErase);
 
-  if(pacman->get_coins_collected()>240 && !dec1){
-    pacman->MAX_VEL = pacman->MAX_VEL*0.98;
-    cout << "Reducing MAX_VEL: " << pacman->MAX_VEL << endl;
-    dec1 = true;
-  }
+  // if(pacman->get_coins_collected()>240 && !dec1){
+  //   pacman->MAX_VEL = pacman->MAX_VEL*0.98;
+  //   cout << "Reducing MAX_VEL: " << pacman->MAX_VEL << endl;
+  //   dec1 = true;
+  // }
 
   if (available_directions.size() != 0) {
     int selection = rand() % available_directions.size();
