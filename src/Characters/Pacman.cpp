@@ -86,6 +86,7 @@ int Pacman::getInvisibleAlphaValue() {
 
 void Pacman::incrementActivePoints(int inc) {
   activePoints = max(0, min(activePoints + inc, 100));
+  if(inc>=0) totalPoints += inc;
 }
 
 void Pacman::target_hit(string target_id, Collider* collider) {
@@ -121,10 +122,10 @@ void Pacman::target_hit(string target_id, Collider* collider) {
     }
   }
   if (target_id == IDS::FREEZEBULLET_ID) {
-    incrementActivePoints(-20);
+    incrementActivePoints(-40);
   }
   if (target_id == IDS::GRENADE_ID) {
-    incrementActivePoints(-50);
+    incrementActivePoints(-80);
   }
   Character::target_hit(target_id, collider);
 }
@@ -180,7 +181,7 @@ void Pacman::make_invisible() {
   if (!is_invisible && get_active_points() >= 50) {
     is_invisible = true;
     invisibleAnimator.start();
-    incrementActivePoints(-50);
+    incrementActivePoints(-80);
   }
 }
 
@@ -236,6 +237,7 @@ void Pacman::move() {
 
 int Pacman::get_coins_collected() { return coins; }
 int Pacman::get_active_points() { return activePoints; }
+int Pacman::get_total_points() { return totalPoints; }
 
 Packet Pacman::make_packet(unordered_map<string, string>& data) {
   auto p = Character::make_packet(data);

@@ -463,7 +463,7 @@ void MainGame::processInput() {
   string weapon_text = (client != nullptr && is_two_player)
                            ? Enemy::get_active_enemy()->get_weapon_text()
                            : pacman->get_weapon_text();
-  bottomBar.update(pacman->get_coins_collected(), pacman->get_active_points(),
+  bottomBar.update(pacman->get_total_points(), pacman->get_active_points(),
                    weapon_text);
   BulletManager::update_bullets();
   boostGrid->generate();

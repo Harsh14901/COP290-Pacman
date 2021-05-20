@@ -32,6 +32,7 @@ class Pacman : public Character {
   void handleEvent(SDL_Event& e);
   int get_coins_collected();
   int get_active_points();
+  int get_total_points();
   void render();
 
   void init(SDL_Renderer* renderer);
@@ -43,6 +44,7 @@ class Pacman : public Character {
   int coins = 0;
   int cherries = 0;
   int activePoints = 0;
+  int totalPoints = 0;
 
   int BOOST_VEL;
   bool is_boosted = false;
