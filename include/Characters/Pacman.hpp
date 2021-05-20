@@ -21,6 +21,7 @@
 #include "Utils/AudioAsset.hpp"
 #include "Weapons/Weapon.hpp"
 #include "utils.hpp"
+#include "UI/FloatingText.hpp"
 
 class Pacman : public Character {
  public:
@@ -39,6 +40,7 @@ class Pacman : public Character {
 
   bool is_dead = false;
   bool is_invisible = false;
+  FloatingText floatingText = FloatingText("+50",0,0);
 
  protected:
   int coins = 0;
@@ -80,4 +82,5 @@ class Pacman : public Character {
   Animator gulp_animator = Animator(3);
   Animator invisibleAnimator = Animator(300);
   SDL_Renderer* _gRenderer;
+
 };

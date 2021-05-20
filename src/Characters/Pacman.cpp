@@ -31,6 +31,8 @@ void Pacman::init(SDL_Renderer* renderer) {
   BOOST_VEL = MAX_VEL * 2;
   boostAnimator.set_duration(200);
   _gRenderer = renderer;
+
+  floatingText.init(_gRenderer);
 }
 
 void Pacman::init_targets() {
@@ -61,6 +63,7 @@ void Pacman::render() {
 
   _gDotTexture.setAlpha(getInvisibleAlphaValue());
   _gDotTexture.render(mPosX, mPosY, &rect, 90 * (int(_direction) / 2));
+  floatingText.render();
   renderParticles();
 }
 
@@ -87,6 +90,11 @@ int Pacman::getInvisibleAlphaValue() {
 void Pacman::incrementActivePoints(int inc) {
   activePoints = max(0, min(activePoints + inc, 100));
   if(inc>=0) totalPoints += inc;
+  if(inc>=20){
+    floatingText.setPos("+"+to_string(inc),mPosX,mPosY,true);
+  }else if(inc <= -20){
+    floatingText.setPos(to_string(inc),mPosX,mPosY,true);
+  }
 }
 
 void Pacman::target_hit(string target_id, Collider* collider) {

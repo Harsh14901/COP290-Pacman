@@ -488,6 +488,7 @@ void MainGame::renderAll() {
     enemy->render();
   }
   wallGrid->render();
+  pacman->floatingText.render();
 
   renderGameEndAnimation();
   SDL_RenderPresent(_gRenderer);
