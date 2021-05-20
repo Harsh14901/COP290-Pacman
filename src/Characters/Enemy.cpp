@@ -96,7 +96,7 @@ int Enemy::getEnemyColor() {
     }
     return 5;
   }
-  return type;
+  return type-1;
 }
 
 void Enemy::randomize_direction() {

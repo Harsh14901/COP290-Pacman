@@ -50,57 +50,70 @@ Direction GhostAIEngine::updateDirection() {
                                                            : Direction::UP;
   available_directions.erase(directionToErase);
 
+  if(pacman->get_coins_collected()==150 && !dec1){
+    cout << "Reducing MAX_VEL " << endl;
+    pacman->MAX_VEL = pacman->MAX_VEL*0.98; 
+
+    dec1 = true;
+  }
+  if(pacman->get_coins_collected()==200 && !dec2){
+    cout << "Reducing MAX_VEL2" << endl;
+    pacman->MAX_VEL = pacman->MAX_VEL*0.9; 
+    dec2 = true;
+  }
+
   if (available_directions.size() != 0) {
     int selection = rand() % available_directions.size();
     int i = 0;
+    if(!pacman->is_invisible){
+      if (type == 0) {
+        // Blinky: Target Position: Pacman
+        int targetX = pacman->mPosX / 32;
+        int targetY = pacman->mPosY / 32;
+        return reverseDirectionIfNecessary(
+            findBestDirection(targetX, targetY, available_directions));
+      } else if (type == 1 && rand() % 6 != 0) {
+        // Pinky: Target Position: 4 Tiles Ahead of Pacman 16% times take random
+        // direction
 
-    if (type == 0) {
-      // Blinky: Target Position: Pacman
-      int targetX = pacman->mPosX / 32;
-      int targetY = pacman->mPosY / 32;
-      return reverseDirectionIfNecessary(
-          findBestDirection(targetX, targetY, available_directions));
-    } else if (type == 1 && rand() % 4 != 0) {
-      // Pinky: Target Position: 4 Tiles Ahead of Pacman 25% times take random
-      // direction
-
-      int offX = pacman->_direction == Direction::LEFT    ? -4
-                 : pacman->_direction == Direction::RIGHT ? 4
+        int offX = pacman->_direction == Direction::LEFT    ? -4
+                  : pacman->_direction == Direction::RIGHT ? 4
+                                                            : 0;
+        int offY = pacman->_direction == Direction::UP     ? -4
+                  : pacman->_direction == Direction::DOWN ? 4
                                                           : 0;
-      int offY = pacman->_direction == Direction::UP     ? -4
-                 : pacman->_direction == Direction::DOWN ? 4
-                                                         : 0;
-      int targetX = pacman->mPosX / 32 + offX;
-      int targetY = pacman->mPosY / 32 + offY;
+        int targetX = pacman->mPosX / 32 + offX;
+        int targetY = pacman->mPosY / 32 + offY;
 
-      return reverseDirectionIfNecessary(
-          findBestDirection(targetX, targetY, available_directions));
+        return reverseDirectionIfNecessary(
+            findBestDirection(targetX, targetY, available_directions));
 
-    } else if (type == 2) {
-      // Inky: Target Position: Vector extending Blinky Tiles Ahead of Pacman
-      // TODO: Fix this
-      int offX = pacman->_direction == Direction::LEFT    ? -2
-                 : pacman->_direction == Direction::RIGHT ? 2
+      } else if (type == 2) {
+        // Inky: Target Position: Vector extending Blinky Tiles Ahead of Pacman
+        // TODO: Fix this
+        int offX = pacman->_direction == Direction::LEFT    ? -6
+                  : pacman->_direction == Direction::RIGHT ? 6
+                                                            : 0;
+        int offY = pacman->_direction == Direction::UP     ? -6
+                  : pacman->_direction == Direction::DOWN ? 6
                                                           : 0;
-      int offY = pacman->_direction == Direction::UP     ? -2
-                 : pacman->_direction == Direction::DOWN ? 2
-                                                         : 0;
-      int int_targetX = pacman->mPosX / 32 + offX;
-      int int_targetY = pacman->mPosY / 32 + offY;
+        int int_targetX = pacman->mPosX / 32 + offX;
+        int int_targetY = pacman->mPosY / 32 + offY;
 
-    } else if (type == 3) {
-      // Clyde: Target Position: If close, similar to Blinky, else in bottom
-      // left half
-      int targetX = 2;
-      int targetY = 32;
-      if (abs(pacman->mPosX / 32 - mPosX / 32) +
-              (abs(pacman->mPosY / 32 - mPosY / 32)) >
-          8) {
-        targetX = pacman->mPosX / 32;
-        targetY = pacman->mPosY / 32;
+      } else if (type == 3) {
+        // Clyde: Target Position: If close, similar to Blinky, else in bottom
+        // left half
+        int targetX = 2;
+        int targetY = 32;
+        if (abs(pacman->mPosX / 32 - mPosX / 32) +
+                (abs(pacman->mPosY / 32 - mPosY / 32)) >
+            8) {
+          targetX = pacman->mPosX / 32;
+          targetY = pacman->mPosY / 32;
+        }
+        return reverseDirectionIfNecessary(
+            findBestDirection(targetX, targetY, available_directions));
       }
-      return reverseDirectionIfNecessary(
-          findBestDirection(targetX, targetY, available_directions));
     }
 
     for (auto& it : available_directions) {

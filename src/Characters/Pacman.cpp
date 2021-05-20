@@ -93,7 +93,7 @@ void Pacman::incrementActivePoints(int inc) {
   if(inc>=20){
     floatingText.setPos("+"+to_string(inc),mPosX,mPosY,true);
   }else if(inc <= -20){
-    floatingText.setPos(to_string(inc),mPosX,mPosY,true);
+    floatingText.setPos(to_string(inc),mPosX,mPosY,false);
   }
 }
 

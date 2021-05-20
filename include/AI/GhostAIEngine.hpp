@@ -26,6 +26,8 @@ public:
     int type;
     Direction _direction;
     EnemyState enemyState;
+    bool dec1 = false;
+    bool dec2 = false;
 
 
 };
