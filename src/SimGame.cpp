@@ -3,7 +3,7 @@
 SimGame::SimGame() : MainGame() {}
 
 void SimGame::runSimulation() {
-  initSystems();
+  drawInitScreen();
 
   initSimulation();
 
@@ -11,12 +11,16 @@ void SimGame::runSimulation() {
 }
 
 void SimGame::initSimulation() {
+  AssetManager::init(PreferenceManager::THEME);
+
+  wallGrid = WallGrid::getInstance();
+  coinGrid = CoinGrid::getInstance();
+
   robot.init(_gRenderer);
   wallGrid->init(_gRenderer);
+  coinGrid->init(_gRenderer);
 
   wallGrid->generate();
-
-  coinGrid->init(_gRenderer);
 
   vector<SDL_Point> tsp_points;
   auto robot_start = wallGrid->get_empty_indices();
@@ -36,14 +40,16 @@ void SimGame::initSimulation() {
 
 void SimGame::startSimulation() {
   while (!robot.is_terminated()) {
+    CollisionEngine::checkCollisions();
     robot.move();
-
+    bottomBar.update(robot.coins_collected, robot.path_length,
+                     to_string(robot.path_length), robot.total_length);
     preRender();
 
     robot.render();
     wallGrid->render();
     coinGrid->render();
-
+    bottomBar.render();
     SDL_RenderPresent(_gRenderer);
   }
 }

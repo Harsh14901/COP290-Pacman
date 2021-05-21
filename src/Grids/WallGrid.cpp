@@ -12,7 +12,8 @@ WallGrid* WallGrid::getInstance() {
 }
 
 WallGrid::WallGrid()
-    : ObjectGrid(IDS::WALL_COLLIDER_ID, AssetManager::get_asset(ThemeAssets::WALL_PNG)) {}
+    : ObjectGrid(IDS::WALL_COLLIDER_ID,
+                 AssetManager::get_asset(ThemeAssets::WALL_PNG)) {}
 
 SDL_Point WallGrid::get_empty_indices() {
   int x = 0, y = 0;
