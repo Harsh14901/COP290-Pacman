@@ -21,6 +21,7 @@
 \usepackage{siunitx}
 \usepackage[ruled,vlined]{algorithm2e}
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage{algorithmicx}
 
 
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
@@ -83,8 +84,8 @@ We use them and build upon a new heuristic based approach.
 Suppose we have an indoor building with n rooms, which need to be cleaned. Each room may have different sizes
 and floorplans, and different amount of dust in them. The task of the robot is to clean all the rooms in the building in a limited amount of time.
 
-% This point  can be further elaborated
-[This can be due to both limited battery capacity of robot or urgency to complete the tasl ]
+    % This point  can be further elaborated
+    [This can be due to both limited battery capacity of robot or urgency to complete the tasl ]
 
 At the same the robot has to maximise the amount of cumulative amount of dust cleaned in all rooms, while providing a minimum in each of the room.
 The problem can be modelled as a two stage problem:
@@ -127,6 +128,87 @@ This has been shown to an NP-Hard Problem \cite{ref1}.
 
 % TODO: Complete This
 
+\section{Steiner TSP solution}
+
+The problem of starting from a point on the graph and returning to the same point after visiting a pre-determined fixed
+set of points is called steiner TSP. A steiner TSP is just the extension of the TSP problem and can be converted to the
+regular TSP problem very easily.
+
+\subsection{Approach}
+
+Consider a fully connected graph $G$ with vertex set $V$ and edge set $E$ such that $E \subseteq V \times V$. 
+Given a set of vertices $U \subseteq V$ such that the starting vertex $v \in U$ and all vertices in $U$ must be visited
+exactly once with the final vertex being $v$.
+
+We can construct a subgraph $H \subseteq G$ such that $V_H = U$ and $E_H = V_H \times V_H$ i.e. a complete subgraph
+comprising the vertex set $U$. We can define the edge length for an edge $e = (x,y) \in E_H,\ x,y \in V_H $ as the shortest
+path length from $x$ to $y$ in $G$. i.e. $e(x,y) = d(x,y)$ where $e(x,y)$ is the length of edge from $x$ to $y$.
+
+Executing TSP on the above subgraph $H$ will yield the corresponding solution to the steiner TSP problem on $G$. The TSP is 
+solved using a Dynamic Programming approach. Let $dp(src, visited)$ indicate the shortest path length starting from $src$ to 
+$v$, given that the set of already visited vertices is represented by the bit mask 
+\footnote{
+    If the number of vertices involved is $N$ the $visited$ argument is an integer in the range $[1, 2^N]$. The $i^{th}$ bit of
+    the number $visited$ indicates whether the $i^{th}$ vertex is visited or not. To mark a vertex as visited we simply set the $i^{th}$
+    bit of the number. It is a very efficient approach for encoding information in small constrainted problems and is popularly known as \textit{bit masking}.
+}
+$visited$.
+
+To solve the DP we follow the steps below.
+\begin{enumerate}
+    \item Mark $src$ as visited by setting its bit in the $visited$ argument.
+    \item For all the unvisited neighbors of $src$ calculate the sum of the edge length and the answer returned by the recursive call to $dp(neighbor, visited)$ which is the length of the shortest path from the neighbor to $v$ with the updated $visited$ bit mask.
+    \item Calculate the minimum of all path lengths and store it as the optimal solution for this problem.
+\end{enumerate}
+Additionally we can memoize the results of the DP in an array of size $N \times 2^N$ so that each subproblem is solved exactly once.
+
+\begin{algorithm}[H]
+    \SetAlgoLined
+    visited $\gets$ visit(visited, src)\;
+    optimalLength $\gets$ \verb|INT_MAX|\;
+    \ForAll(){neighbor of src}{
+        \If{!isVisited(visited, neighbor)}{
+            pathLength $\gets$ edgeLength(src, neighbor) + dp(neighbor, visited)\;
+            optimalLength $\gets$ min(optimalLength, pathLength)\;
+        }
+    }
+    \Return{optimalLength};
+    \caption{dp(src, visited)}
+\end{algorithm}
+
+
+\subsection{Proof of correctness}
+The recursive $dp$ procedure can be proved easily using the principle of mathematical induction by inducting on $N$ (the number of vertices).
+
+\textit{Base:}  The base case is for $n = 0$. The shortest path length is zero which matches with the algorithm output.\\
+
+\textit{Induction Hypothesis: } For a given $n = n_0$, the procedure $dp(src, visited)$ returns the shortest path length from $src$ to $v$ after visiting all the vertices
+exactly once and the initial visited vertices represented by the bitmask $visited$.\\
+
+\textit{Induction step:} For a given $n = n_0 + 1$ the algorithm marks the $src$ vertex as visited and then recursively calls the $dp$ procedure
+with the updated bitmask. Observe that setting a vertex as visited implies that no solution to the subproblems are allowes to visit the vertex.
+But this is equivalent to just removing the vertex from the graph for the subproblems. This leads to a graph with $n - 1$ nodes for which the recursive calls 
+are made. Now for $n - 1 = n_0$ vertices the Induction Hypothesis can be invoked to state that the shortest distance from a neighbor of $src$ to $v$ is specified
+by the recursive call $dp(neighbor, updated\_visited)$ where $updated\_visited$ is the updated bitmask after visiting $src$. If the cost of the edge is added
+then the total path length is determined and taking a minimum of all path lengths from the unvisited neighbors yields the shortes path from $src$ to $v$.
+Thus for $n = n_0 + 1$ the Induction Hypothesis holds true.\\
+
+
+Hence by \textbf{principle of mathematical induction} we have shown that the algorithm $dp(src, visited)$ returns the shortest path length from $src$ to $v$ with the current visited
+state represented by the bitmask $visited$.
+
+\subsection{Analysis}
+
+The total number of subproblems is $(N*2^N)$. This is also the size of the memo that will be used during memoization for the DP solution.
+Hence the \textbf{space complexity} of solution is $\Theta(N*2^N)$. Now each subproblem requires a linear amount of time since it involves a 
+search through all the neighbors of the source vertex. Since there are at most $\Theta(N*2^N)$ subproblems the \textbf{time complexity} of the 
+algorithm is $\Theta(N^2*2^N)$
+
+
+
+% \section{Computation and Results}
+
+
 \section{Solution}
 
 In this section we will discuss two possible heuristic solutions to our problem. 
@@ -149,18 +231,18 @@ At the start of stage we assume that we have a path $\{P(i) : 0<i \leq k\}$, whe
 Since we have to start and end at the same position,
 $P(1),P(2) = 1$.
 We define two sets $\Psi$ and $\Omega$
- , which contains the vertices in current path and and vertices not in current path respectively.
+, which contains the vertices in current path and and vertices not in current path respectively.
 Now we first decide, a vertex to insert, lets call it $j$. Now we need to find a point in the path where we can insert the given vertex, and which gives maximum increase in profit while minimising the cost.
 Then point of insertion can be found by solving the following Optimisation:
 
 \begin{equation} \label{eq2}
-   \Theta_{j} min_{i = 1,\dots,k} ( C_{V(i),j} + C_{j,V(i+1)} - C_{V(i),V(i-1)} )
+    \Theta_{j} min_{i = 1,\dots,k} ( C_{V(i),j} + C_{j,V(i+1)} - C_{V(i),V(i-1)} )
 \end{equation}
 Where $\Theta_{j}$ is the calculated cost of given vertex for insertion.
 Also note that in \refeq{eq2} we only need to iterate over only neigbours of vertex j, which in our case can be a maximum of 8, and therefore step 1 can be done in O(1) time.
 
 Now we iterate over all the sutiable vertices for insertions, i.e and calculate the corresponding
-$\Theta_{j}$. Now the best vertex is the one which give the maximum profit while with minimum cost. 
+$\Theta_{j}$. Now the best vertex is the one which give the maximum profit while with minimum cost.
 Therefore we have to solve the following equation:
 \begin{equation} \label{eq3}
     max_{j \in \Omega} \frac{P(j)}{C(j)} )
@@ -170,7 +252,7 @@ However this would give high weightage to high density vertices therefore we add
 and modify it as:
 
 \begin{equation} \label{eq4}
-    max_{j \in \Omega}  \frac{P(j)^{\lambda_{1}}}{C(j)} 
+    max_{j \in \Omega}  \frac{P(j)^{\lambda_{1}}}{C(j)}
 \end{equation}
 
 We hypothesize that $\lambda_{1} < 1$. This is due the fact that a minimum time is always required for robot to cross a cell, and thus by adding this additional hyperparameter,
@@ -190,12 +272,12 @@ If addition of any vertex increases the cost beyound alloted capacity, we omit i
 
 \begin{algorithm}[H]
     \SetAlgoLined
-     \While{not converged}{
-      1. Stage 1 \;
-      2. Stage 2 \;
-      3. Stage 3 \;
-     }
-\caption{Optimisation Algorithm}
+    \While{not converged}{
+        1. Stage 1 \;
+        2. Stage 2 \;
+        3. Stage 3 \;
+    }
+    \caption{Optimisation Algorithm}
 \end{algorithm}
 
 \section{Computation and Results}
