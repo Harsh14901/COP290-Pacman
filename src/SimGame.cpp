@@ -11,7 +11,7 @@ void SimGame::runSimulation() {
 }
 
 void SimGame::initSimulation() {
-  AssetManager::init(PreferenceManager::THEME);
+  AssetManager::init(Themes::ROBOT);
 
   wallGrid = WallGrid::getInstance();
   coinGrid = CoinGrid::getInstance();

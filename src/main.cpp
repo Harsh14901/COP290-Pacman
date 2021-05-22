@@ -29,6 +29,7 @@ int main(int argc, char* argv[]) {
   Server server;
   Client client(host, PORT);
   if (host == "simulate") {
+    PreferenceManager::THEME = Themes::ROBOT;
     SimGame().runSimulation();
   } else {
     MainGame mainGame;

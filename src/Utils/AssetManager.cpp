@@ -12,7 +12,7 @@ void AssetManager::init(Themes startTheme) {
       {{MASTER, "master/"}, {PACMAN, "pacman/"}, {AVENGERS, "Avengers/"}, {MINECRAFT, "minecraft/"},
        {COVID, "Covid/"}  , {JUNGLE, "Jungle/"}, {ALIENS, "Aliens/"},
        {STAR_WARS, "Star Wars/"}, {TRANSFORMERS, "Transformers/"},
-       {MARIO, "Mario/"}});
+       {MARIO, "Mario/"}, {ROBOT, "robot/"}});
   asset_files = unordered_map<ThemeAssets, string>({
       {PACMAN_SPRITE, "player.png"},
       {ENEMY_SPRITE, "enemy.png"},
