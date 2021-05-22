@@ -1,7 +1,7 @@
-PWD d:\Pranjal\Desktop2\cop\derivation
+PWD d:\Pranjal\Desktop2\cop\simulation
 INPUT C:\Users\Pranjal\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.tex
-OUTPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.log
+INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.tex
+OUTPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.log
 INPUT D:\Program Files\MiKTeX\tex\latex\base\article.cls
 INPUT D:\Program Files\MiKTeX\tex\latex\base\article.cls
 INPUT D:\Program Files\MiKTeX\tex\latex\base\size10.clo
@@ -135,9 +135,9 @@ INPUT D:\Program Files\MiKTeX\tex\latex\rerunfilecheck\rerunfilecheck.sty
 INPUT D:\Program Files\MiKTeX\tex\latex\rerunfilecheck\rerunfilecheck.sty
 INPUT D:\Program Files\MiKTeX\tex\generic\uniquecounter\uniquecounter.sty
 INPUT D:\Program Files\MiKTeX\tex\generic\uniquecounter\uniquecounter.sty
-INPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.aux
-INPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.aux
-OUTPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.aux
+INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.aux
+INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.aux
+OUTPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.aux
 INPUT D:\Program Files\MiKTeX\tex\context\base\mkii\supp-pdf.mkii
 INPUT D:\Program Files\MiKTeX\tex\context\base\mkii\supp-pdf.mkii
 INPUT D:\Program Files\MiKTeX\tex\latex\epstopdf-pkg\epstopdf-base.sty
@@ -156,14 +156,14 @@ INPUT D:\Program Files\MiKTeX\tex\latex\refcount\refcount.sty
 INPUT D:\Program Files\MiKTeX\tex\latex\refcount\refcount.sty
 INPUT D:\Program Files\MiKTeX\tex\generic\gettitlestring\gettitlestring.sty
 INPUT D:\Program Files\MiKTeX\tex\generic\gettitlestring\gettitlestring.sty
-INPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.out
-INPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.out
-INPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.out
-INPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.out
-OUTPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.pdf
-INPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.out
-INPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.out
-OUTPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.out
+INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
+INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
+INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
+INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
+OUTPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.pdf
+INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
+INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
+OUTPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
 INPUT D:\Program Files\MiKTeX\fonts\tfm\public\amsfonts\cmextra\cmex7.tfm
 INPUT D:\Program Files\MiKTeX\fonts\tfm\public\amsfonts\cmextra\cmex7.tfm
 INPUT D:\Program Files\MiKTeX\tex\latex\amsfonts\umsa.fd
@@ -214,11 +214,11 @@ INPUT C:\Users\Pranjal\AppData\Local\MiKTeX\pdftex\config\pdftex.map
 INPUT D:\Program Files\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
 INPUT D:\Program Files\MiKTeX\fonts\tfm\public\cm\cmbx10.tfm
 INPUT D:\Program Files\MiKTeX\fonts\tfm\public\cm\cmti10.tfm
-INPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.bbl
-INPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.bbl
-INPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.aux
-INPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.out
-INPUT d:\Pranjal\Desktop2\cop\derivation\derivaton.out
+INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.bbl
+INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.bbl
+INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.aux
+INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
+INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
 INPUT C:\Users\Pranjal\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrm1000.pk
 INPUT C:\Users\Pranjal\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrm1000.pk
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx10.pfb

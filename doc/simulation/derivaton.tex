@@ -25,44 +25,6 @@
 
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 
-\newcommand{\Ait}{\ensuremath{A_{i \rightarrow t}}}
-\newcommand{\Ati}{\ensuremath{A_{t \rightarrow i}}}
-\newcommand{\Adti}{\ensuremath{\Ati'}}
-\newcommand{\Adit}{\ensuremath{\Ait'}}
-
-\newcommand{\Eti}{\ensuremath{E_{t \rightarrow i}}}
-\newcommand{\Dti}{\ensuremath{D_{t \rightarrow i}}}
-\newcommand{\Dit}{\ensuremath{D_{i \rightarrow t}}}
-
-\newcommand{\Dtr}{\ensuremath{D^{(tr)}}}
-\newcommand{\Dval}{\ensuremath{D^{(val)}}}
-
-\newcommand{\ToA}{\ensuremath{T(\Ati, \Ait)}}
-\newcommand{\TsoA}{\ensuremath{T^*(\Ati, \Ait)}}
-\newcommand{\TdoA}{\ensuremath{T'(\Ati, \Ait)}}
-\newcommand{\TPlus}{\ensuremath{T^+}}
-\newcommand{\TMinus}{\ensuremath{T^-}}
-
-\newcommand{\Ov}{\ensuremath{O_{i \rightarrow t}}}
-\newcommand{\OoA}{\ensuremath{\Ov(\Ait)}}
-\newcommand{\OsoA}{\ensuremath{\Ov^*(\Ait)}}
-\newcommand{\OdoA}{\ensuremath{\Ov'(\Ait)}}
-\newcommand{\OPlus}{\ensuremath{\Ov^+}}
-\newcommand{\OMinus}{\ensuremath{\Ov^-}}
-
-\newcommand{\Pv}{\ensuremath{P_{i \rightarrow t}}}
-\newcommand{\PoA}{\ensuremath{\Pv(\Ait)}}
-\newcommand{\PsoA}{\ensuremath{\Pv^*(\Ait)}}
-\newcommand{\PdoA}{\ensuremath{\Pv'(\Ait)}}
-\newcommand{\PPlus}{\ensuremath{\Pv^+}}
-\newcommand{\PMinus}{\ensuremath{\Pv^-}}
-
-\newcommand{\Gv}{\ensuremath{G_{t \rightarrow i}}}
-\newcommand{\GoA}{\ensuremath{\Gv(\Ati)}}
-\newcommand{\GsoA}{\ensuremath{\Gv^*(\Ati)}}
-\newcommand{\GdoA}{\ensuremath{\Gv'(\Ati)}}
-\newcommand{\GPlus}{\ensuremath{\Gv^+}}
-\newcommand{\GMinus}{\ensuremath{\Gv^-}}
 
 \begin{document}
 
@@ -121,7 +83,7 @@ Where k is a constant value dependent on the speed of robot, and f is an arbitar
 
 \section{Related Work}
 
-The problem at hand can be modelled as a variant of TSP known as Profit-TSP. In this problem,
+The problem at hand can be modelled as a variant of TSP  asknown Profit-TSP. In this problem,
 the Salesman has to maximise its profits however in a fixed finite amount of time. 
 This has been shown to an NP-Hard Problem \cite{ref1}. 
 
@@ -145,9 +107,9 @@ We use 4 different hyperparameters:- % Describe them
 
 \subsubsection{Stage I: Insertion Stage}
 
-At the start of stage we assume that we have a path $\{P(i) : 0<i \leq k\}$, where k is the path length, and P(i) denotes the $i^{th}$ vertex in the path.
+At the start of stage we assume that we have a path $\{L(i) : 0<i \leq k\}$, where k is the path length, and L(i) denotes the $i^{th}$ vertex in the path.
 Since we have to start and end at the same position,
-$P(1),P(2) = 1$.
+$L(1),L(2) = 1$.
 We define two sets $\Psi$ and $\Omega$
  , which contains the vertices in current path and and vertices not in current path respectively.
 Now we first decide, a vertex to insert, lets call it $j$. Now we need to find a point in the path where we can insert the given vertex, and which gives maximum increase in profit while minimising the cost.
@@ -160,8 +122,9 @@ Where $\Theta_{j}$ is the calculated cost of given vertex for insertion.
 Also note that in \refeq{eq2} we only need to iterate over only neigbours of vertex j, which in our case can be a maximum of 8, and therefore step 1 can be done in O(1) time.
 
 Now we iterate over all the sutiable vertices for insertions, i.e and calculate the corresponding
-$\Theta_{j}$. Now the best vertex is the one which give the maximum profit while with minimum cost. 
+$\Theta_{j}$. Now the best vertex is the one which give the maximum profit while with minimum cost i.e we try to take that vertex which has the highest profit to cost ratio.
 Therefore we have to solve the following equation:
+
 \begin{equation} \label{eq3}
     max_{j \in \Omega} \frac{P(j)}{C(j)} )
 \end{equation}
@@ -176,31 +139,52 @@ and modify it as:
 We hypothesize that $\lambda_{1} < 1$. This is due the fact that a minimum time is always required for robot to cross a cell, and thus by adding this additional hyperparameter,
 we ensure that portions of small dust are not leftover.
 
-We continue this process of insertion till the cost doesnt exceed $\lambda_{2,1} \beta$, where $\lambda_{2,k}$ is another hyperparameter whose value varies in different rounds, and always increasing in subsequent rounds. 
+We continue this process of insertion till the cost doesnt exceed $\lambda_{2,1} * \beta$, where $\lambda_{2,k}$ is another hyperparameter whose value varies in different rounds, and always increasing in subsequent rounds. 
 If addition of any vertex increases the cost beyound alloted capacity, we omit it and move on to the next stage.
 
+As we see that runtime complexity of this step is $O(n^2)$ in this case, wehere n is the final path length achieved after performin this stage. Note that its not $O(n^3)$ due to limited number of neighbours a vertex can have in the maze like structure we have used.
+% Complete the double insertion part
 
 
+\subsubsection{Stage 2: k-Opt}
 
+In this stage we apply the famous k-Opt Startegy \cite{c1} increase the total profit while being in the budget. 
+We start with applying 2-opt Optimisation, and if the final profit is more than $\{ \lambda_{3} , \lambda_{3} > 1 \}$ times the previous score, we move on to higher order k-opts. 
+However if increase in budget is observed without satisfying the previous equation, we go back to stage-1 since further insertions may have scope for improvement. 
+However if no increase in profit is improved, we move onto the next stage. The worst case complexity of this strategy on a complete graph is $O(n^2)$, however as in previous stage, since we have a maximum of 8 connexting edges from a vertex, the time complexity is just $O(n)$ for a single pass of this stage.
 
+\subsubsection{Stage 3: Deletion}
 
+In this stage we try and delete vertices, that may not be useful for inclusion in path.
+Let $S_{final}$ be the new profit after deleting a vertex $v$ from path $P$. Then we define a metric: 
+\begin{equation}  \label{eq5}
+    \xi (j)= \frac{S_{initial} - S_{final}}{P(j)}   
+\end{equation}
+where j is the vertex removed from the path
 
+Then we find the vertex $j \in P$ such that value of $\xi$ is minimised. What this means is that deletion of j gives the lowest per unit price loss.
+After this step we check for the convergence criteria which terminates when the new overall profit $P_{ov}$ is atleast $\lambda_4$ times the overall profit in last round $P_{ov,last}$.
+If the convergence criteria is not met we move back to stage 1 for further insertions and repeat the steps. 
+Again the time complexity of this stage is $O(n)$ since we can delete only n points in the path, and deleteion of each point takes only $O(1)$ time
+
+\subsubsection{Conclusion}
+
+As we have shown the overall complexity of each stage is not more than $O(n^2)$ and therefore each round of algorithm is fast enough.
+Also results in literature show that similar algorithms are able to achieve fast enough convergence, that they can be used in real time embedded systems, with minimum energy costs. \cite{c2}
+Simulation data suggests that the robot was able to find a very good path in very less time, thus showing the effectiveness of this algorithm.
 
 \subsubsection{Final Algorithm}
 
 \begin{algorithm}[H]
     \SetAlgoLined
      \While{not converged}{
-      1. Stage 1 \;
-      2. Stage 2 \;
-      3. Stage 3 \;
+      1. Stage 1: Given a graph $G = (V,E)$ perform insertions based on \ref{eq4} till the cost doesnt exceed the specified value\;
+      2. Stage 2: Apply k-opt strategy, and if improvements are good enough go back to stage 1. Else go to Stage 3  \;
+      3. Stage 3: Perform Deletions of vertex in path in accordance with \ref{eq5}\;
      }
 \caption{Optimisation Algorithm}
 \end{algorithm}
 
-\section{Computation and Results}
-
-% Write down about the simulation here
 
 
 \section{Conclusion}

@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex derivaton"] 1621586155 "derivaton.aux" "derivaton.bbl" "derivaton" 1621586501
+["bibtex derivaton"] 1621652726 "derivaton.aux" "derivaton.bbl" "derivaton" 1621652817
   "D:/Program Files/MiKTeX/bibtex/bst/bibtex/plain.bst" 1291868336 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "derivaton.aux" 1621586501 2373 1f668d85fa69c2b1a195b7e4c43495b5 "pdflatex"
-  "sample.bib" 1621583774 202 7bf0a79381971c92853881de18b57b20 ""
+  "derivaton.aux" 1621652816 2759 ce097279e67c2b56a25a2899666528cc "pdflatex"
+  "sample.bib" 1621611953 406 3cd7f0bfb54a63071f3dccea8ec7ec62 ""
   (generated)
   "derivaton.bbl"
   "derivaton.blg"
-["pdflatex"] 1621586499 "d:/Pranjal/Desktop2/cop/derivation/derivaton.tex" "d:/Pranjal/Desktop2/cop/derivation/derivaton.pdf" "derivaton" 1621586501
+["pdflatex"] 1621652815 "d:/Pranjal/Desktop2/cop/simulation/derivaton.tex" "d:/Pranjal/Desktop2/cop/simulation/derivaton.pdf" "derivaton" 1621652817
   "C:/Users/Pranjal/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1608304389 11548 15b79423b2b1c2cbe2b5f239f892bbde ""
   "C:/Users/Pranjal/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1602265321 10010376 061584805870746d5fe61eba9ae43743 ""
   "C:/Users/Pranjal/AppData/Local/MiKTeX/pdftex/config/pdftex.map" 1610916829 1378246 e4c27aaed2842497b963e0dcaf003c33 ""
@@ -128,16 +128,16 @@
   "D:/Program Files/MiKTeX/tex/latex/translator/translator-basic-dictionary-English.dict" 1596563592 3535 7dc96051305a7e943219126c49c44cd6 ""
   "D:/Program Files/MiKTeX/tex/latex/translator/translator.sty" 1596563646 8765 3368c4a5a4b5466261cafb836195e916 ""
   "D:/Program Files/MiKTeX/tex/latex/url/url.sty" 1388494052 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
-  "d:/Pranjal/Desktop2/cop/derivation/derivaton.aux" 1621586501 2373 1f668d85fa69c2b1a195b7e4c43495b5 ""
-  "d:/Pranjal/Desktop2/cop/derivation/derivaton.tex" 1621586498 9075 5bef8b4ef1ae79b43cb5e2461e63f045 ""
-  "derivaton.aux" 1621586501 2373 1f668d85fa69c2b1a195b7e4c43495b5 "pdflatex"
-  "derivaton.bbl" 1621586156 122 df79e306430289cf5945579a8a435917 "bibtex derivaton"
-  "derivaton.out" 1621586501 602 6ad984ba39c04895189533e306828eb4 "pdflatex"
-  "derivaton.tex" 1621586498 9075 5bef8b4ef1ae79b43cb5e2461e63f045 ""
+  "d:/Pranjal/Desktop2/cop/simulation/derivaton.aux" 1621652816 2759 ce097279e67c2b56a25a2899666528cc ""
+  "d:/Pranjal/Desktop2/cop/simulation/derivaton.tex" 1621652814 10456 01a559e68772697c1876a78e97ce6706 ""
+  "derivaton.aux" 1621652816 2759 ce097279e67c2b56a25a2899666528cc "pdflatex"
+  "derivaton.bbl" 1621652726 189 5a2a51a6acc0f3fb7974288f330a2127 "bibtex derivaton"
+  "derivaton.out" 1621652816 764 94ea1d41a02351f323c8059a11641218 "pdflatex"
+  "derivaton.tex" 1621652814 10456 01a559e68772697c1876a78e97ce6706 ""
   (generated)
-  "derivaton.aux"
+  "d:/Pranjal/Desktop2/cop/simulation/derivaton.log"
+  "d:/Pranjal/Desktop2/cop/simulation/derivaton.pdf"
   "derivaton.pdf"
-  "d:/Pranjal/Desktop2/cop/derivation/derivaton.pdf"
   "derivaton.log"
-  "d:/Pranjal/Desktop2/cop/derivation/derivaton.log"
   "derivaton.out"
+  "derivaton.aux"
