@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.3.31)  22 MAY 2021 14:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.3.31)  22 MAY 2021 16:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -664,41 +664,35 @@ Overfull \hbox (6.4553pt too wide) in paragraph at lines 146--148
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 157--160
-
- []
-
-<../sim.png, id=121, 763.653pt x 554.67226pt>
+<../sim.png, id=129, 763.653pt x 554.67226pt>
 File: ../sim.png Graphic file (type png)
 <use ../sim.png>
-Package pdftex.def Info: ../sim.png  used on input line 166.
+Package pdftex.def Info: ../sim.png  used on input line 175.
 (pdftex.def)             Requested size: 440.84746pt x 320.21207pt.
-[4 <../sim.png>] [5] [6] [7] (/home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 330.
- [8
-
-]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 330.
+ [4 <../sim.png>] [5] [6] [7] (/home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 354.
+ [8]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 354.
  (/home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 330.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 330.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 354.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 354.
 Package rerunfilecheck Info: File `derivaton.out' has not changed.
-(rerunfilecheck)             Checksum: 2597CA46C78566A947E76865C81DC971;1099.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 330.
+(rerunfilecheck)             Checksum: 722F3F2FEA81D6796B1239727DC69D15;1227.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 354.
  ) 
 Here is how much of TeX's memory you used:
- 13670 strings out of 483107
- 244024 string characters out of 5964630
- 507942 words of memory out of 5000000
- 28424 multiletter control sequences out of 15000+600000
+ 13674 strings out of 483107
+ 244084 string characters out of 5964630
+ 506942 words of memory out of 5000000
+ 28426 multiletter control sequences out of 15000+600000
  544055 words of font info for 70 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
- 41i,13n,42p,401b,712s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,13n,42p,401b,776s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/harsh/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on /home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.pdf (8 pages, 730906 bytes).
+Output written on /home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.pdf (8 pages, 734673 bytes).
 PDF statistics:
- 253 PDF objects out of 1000 (max. 8388607)
- 219 compressed objects within 3 object streams
- 53 named destinations out of 1000 (max. 500000)
- 150 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 262 PDF objects out of 1000 (max. 8388607)
+ 228 compressed objects within 3 object streams
+ 55 named destinations out of 1000 (max. 500000)
+ 166 words of extra memory for PDF output out of 10000 (max. 10000000)
 

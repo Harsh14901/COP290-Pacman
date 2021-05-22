@@ -1,17 +1,17 @@
 # Fdb version 3
-["bibtex derivaton"] 1621673545 "derivaton.aux" "derivaton.bbl" "derivaton" 1621673588
+["bibtex derivaton"] 1621680275 "derivaton.aux" "derivaton.bbl" "derivaton" 1621680276
   "/usr/share/texlive/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "derivaton.aux" 1621673588 4326 3971811b86294f0d8ac2c3f77d4a05f8 "pdflatex"
+  "derivaton.aux" 1621680275 4568 0c210c570fc41c9484b74fd56ad73321 "pdflatex"
   "sample.bib" 1621669388 2058 e2cf79fb19c40be2717f269093fa52c6 ""
   (generated)
-  "derivaton.blg"
   "derivaton.bbl"
-["pdflatex"] 1621673588 "/home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.tex" "/home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.pdf" "derivaton" 1621673588
+  "derivaton.blg"
+["pdflatex"] 1621680275 "/home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.tex" "/home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.pdf" "derivaton" 1621680276
   "../sim.png" 1621669388 536458 0cd82010348bd40e2e629b9f037c3c90 ""
   "/etc/texmf/web2c/texmf.cnf" 1614826758 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/harsh/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk" 1621605045 11524 4bc2d1a1fec653c7b435289d18630691 ""
-  "/home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.aux" 1621673588 4326 3971811b86294f0d8ac2c3f77d4a05f8 ""
-  "/home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.tex" 1621673587 20353 ee8fbd65357dc51840fcdf96e7eb22dd ""
+  "/home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.aux" 1621680275 4568 0c210c570fc41c9484b74fd56ad73321 ""
+  "/home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.tex" 1621680274 22816 4f9d302f4c7b9d023ee03297e8fc50ec ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -143,14 +143,14 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1581979058 38841 ce3692aa899bb693b90b87eaa5d4d84e ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1617206199 165012 f177baa1c39a3ebd62c3096a43521a0d ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1617206217 4877422 f129898f44926ecff95f0f5719c499a8 ""
-  "derivaton.aux" 1621673588 4326 3971811b86294f0d8ac2c3f77d4a05f8 "pdflatex"
-  "derivaton.bbl" 1621673545 993 8b1ccd8382f9aac70a35f8111d4a2585 "bibtex derivaton"
-  "derivaton.out" 1621673588 1099 2597ca46c78566a947e76865c81dc971 "pdflatex"
-  "derivaton.tex" 1621673587 20353 ee8fbd65357dc51840fcdf96e7eb22dd ""
+  "derivaton.aux" 1621680275 4568 0c210c570fc41c9484b74fd56ad73321 "pdflatex"
+  "derivaton.bbl" 1621680275 993 8b1ccd8382f9aac70a35f8111d4a2585 "bibtex derivaton"
+  "derivaton.out" 1621680275 1227 722f3f2fea81d6796b1239727dc69d15 "pdflatex"
+  "derivaton.tex" 1621680274 22816 4f9d302f4c7b9d023ee03297e8fc50ec ""
   (generated)
+  "derivaton.pdf"
   "derivaton.log"
+  "derivaton.out"
+  "/home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.log"
   "/home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.pdf"
   "derivaton.aux"
-  "derivaton.pdf"
-  "/home/harsh/Desktop/IITD/SEM4/COP290/pacman/doc/simulation/derivaton.log"
-  "derivaton.out"

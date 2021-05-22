@@ -152,15 +152,24 @@ The total number of subproblems is $(N*2^N)$. This is also the size of the memo 
 Hence the \textbf{space complexity} of solution is $\Theta(N*2^N)$. Now each subproblem requires a linear amount of time since it involves a 
 search through all the neighbors of the source vertex. Since there are at most $\Theta(N*2^N)$ subproblems the \textbf{time complexity} of the 
 algorithm is $\Theta(N^2*2^N)$
-\newpage
-\subsection{Simulation}
-The TSP algorithm was implemented and its simulation screenshot is shown below. The robot starts from a certain point and is given 
-a set of 8 points (or doors) to visit in any order. The objective of the simulation is to show that the robot takes the path that minimizes the
-total path length and hence is the most energy efficient path.\\
 
-The number of doors reached so far are displayed on the bottom left of the simulation and the progress of simulation is indicated by the progress bar.
-The path length covered so far is indicated to the right of the progress bar. The simulation helps visualize all features of a real world scenario and
-can be used efficiently for analysis of various scenarios.
+\subsection{Implementation}
+We have implemented the above solution in \verb|C++| the results of which are in the next section. We have used the following data structures to 
+implement the algorithm
+\begin{itemize}
+    \item \textbf{Adjacency List:} We have converted the matrix into a graph with each cell being a vertex of the graph and edges connected to vertices represented by the adjacent cells of the matrix.
+          The graph is stored in a adjacency list and can be constructed in $\Theta(n)$ time where $n$ is the total number of cells in the graph.
+    \item \textbf{Memo: }We have maintained a 2-D array that memoizes all the solutions of the DP. This prevents recomputation of the solution of a subproblem.
+    \item \textbf{Queue: }To calculate the shotest path distances from one node to the other we have used BFS (since all edges are equally weighted). The resulting path is stored in a queue indicating the direction sequence of the robot.
+\end{itemize}
+% \newpage
+\subsection{Simulation}
+% The TSP algorithm was implemented and its simulation screenshot is shown below. 
+The robot starts from a certain point and is given  a set of 8 points (or doors) to visit in any order. The objective of the simulation is to show that the robot takes the path that minimizes the
+total path length and hence is the most energy efficient path. The number of doors reached so far are displayed on the bottom left of the simulation and the progress of simulation is indicated by the progress bar.
+The path length covered so far is indicated to the right of the progress bar. 
+% The simulation helps visualize all features of a real world scenario and
+% can be used efficiently for analysis of various scenarios.
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{../sim.png}
@@ -280,6 +289,17 @@ This stage calculates the centre of gravity and the updated ratios at each itera
 time complexity of this stage is $\Theta(n^2)$. However we also repeat this stage $q$ times which would account for a higher complexity of $\Theta(qn^2)$. Typically,
 $q$ is kept to be a static constant and is taken such that $q \le 10$. This ensures that the asymptotic analysis would yield a runninng time
 given by $\Theta(n^2)$.
+\subsection{Implementation}
+
+We have not implemented the heuristic algorithm and plan to do it in the future. However, the relevant data structures that are to be used for the implementation are outlined below.
+
+\begin{itemize}
+    \item \textbf{Path List: }A doubly linked list of the path nodes in the current path. This can be used to insert a vertex between two vertices in constant time.
+    \item \textbf{Hash table: }An unordered set of the vertices already included in the path to allow for constant order existence determination of a node in the current path.
+    \item \textbf{Priority Queue: }Since insertion occurs only for the neighbors the priorities of insertion of each neighbor can be stored in a priority queue.
+          At the time of insertion we wil extract the maximum element from the priority queue and add the priorities of the extracted node's neighbors to the queue. This will ensure logarithmic order insertion to the path.
+\end{itemize}
+
 \subsection{Conclusion}
 
 As we have shown the overall complexity of each stage is not more than $O(n^2)$ and therefore each round of algorithm is fast enough.
@@ -311,6 +331,10 @@ Simulation data suggests that the robot was able to find a very good path in ver
 The algorithms discussed in this report were mostly tested on random mazes. While the results on them look promising, in future we would like to simulate the problem in real floorplans, and data.
 Also this problem can be further extended by considering some more realistic settings, such as different speeds of robot in different terrain, getting more information about the dust, such as their weight, density etc, to create an more accurate timing model.
 
+Most importantly we would like to implement the heuristic algorithm and test it using our simulation. We aim to extensively test the heuristics on several
+maze formats and carefully placed door locations. Moreover, it would be interesting to extend the problem to an overall time constraint where the robot has 
+a total time constraint rather than a time constraint for the room. This would mean we would have to further analyze the modifications to be done in the steiner TSP solution.
+
 \section{Conclusion}
 
 
@@ -322,7 +346,7 @@ the appropriate heuristics can get us very close to the optimal solution as give
 %TODO: Add additional things if needed
 
 
-\clearpage
+% \clearpage
 \bibliographystyle{plain}
 \bibliography{sample}
 
