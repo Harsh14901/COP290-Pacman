@@ -4,7 +4,7 @@
 \usepackage{multirow}
 
 
-\title{Smart Cleaning}
+\title{Smart Vacuum Robot}
 \author{Harsh Aggarwal, Pranjal Aggarwal}
 % \date{cs5190443@iitd.ac.in}
 \date{}
@@ -87,11 +87,11 @@ regular TSP problem very easily.
 
 Consider a fully connected graph $G$ with vertex set $V$ and edge set $E$ such that $E \subseteq V \times V$. 
 Given a set of vertices $U \subseteq V$ such that the starting vertex $v \in U$ and all vertices in $U$ must be visited
-exactly once with the final vertex being $v$.
+exactly once with the final vertex being $v$. \\
 
 We can construct a subgraph $H \subseteq G$ such that $V_H = U$ and $E_H = V_H \times V_H$ i.e. a complete subgraph
 comprising the vertex set $U$. We can define the edge length for an edge $e = (x,y) \in E_H,\ x,y \in V_H $ as the shortest
-path length from $x$ to $y$ in $G$. i.e. $e(x,y) = d(x,y)$ where $e(x,y)$ is the length of edge from $x$ to $y$.
+path length from $x$ to $y$ in $G$. i.e. $e(x,y) = d(x,y)$ where $e(x,y)$ is the length of edge from $x$ to $y$. \\
 
 Executing TSP on the above subgraph $H$ will yield the corresponding solution to the steiner TSP problem on $G$. The TSP is 
 solved using a Dynamic Programming approach. Let $dp(src, visited)$ indicate the shortest path length starting from $src$ to 
@@ -101,7 +101,7 @@ $v$, given that the set of already visited vertices is represented by the bit ma
     the number $visited$ indicates whether the $i^{th}$ vertex is visited or not. To mark a vertex as visited we simply set the $i^{th}$
     bit of the number. It is a very efficient approach for encoding information in small constrainted problems and is popularly known as \textit{bit masking}.
 }
-$visited$.
+$visited$. \\
 
 To solve the DP we follow the steps below.
 \begin{enumerate}
@@ -109,7 +109,7 @@ To solve the DP we follow the steps below.
     \item For all the unvisited neighbors of $src$ calculate the sum of the edge length and the answer returned by the recursive call to $dp(neighbor, visited)$ which is the length of the shortest path from the neighbor to $v$ with the updated $visited$ bit mask.
     \item Calculate the minimum of all path lengths and store it as the optimal solution for this problem.
 \end{enumerate}
-Additionally we can memoize the results of the DP in an array of size $N \times 2^N$ so that each subproblem is solved exactly once.
+Memoization of the results in an array of size $N \times 2^N$ ensures each subproblem is solved exactly once.
 
 \begin{algorithm}[H]
     \SetAlgoLined
@@ -152,29 +152,42 @@ The total number of subproblems is $(N*2^N)$. This is also the size of the memo 
 Hence the \textbf{space complexity} of solution is $\Theta(N*2^N)$. Now each subproblem requires a linear amount of time since it involves a 
 search through all the neighbors of the source vertex. Since there are at most $\Theta(N*2^N)$ subproblems the \textbf{time complexity} of the 
 algorithm is $\Theta(N^2*2^N)$
+\newpage
+\subsection{Simulation}
+The TSP algorithm was implemented and its simulation screenshot is shown below. The robot starts from a certain point and is given 
+a set of 8 points (or doors) to visit in any order. The objective of the simulation is to show that the robot takes the path that minimizes the
+total path length and hence is the most energy efficient path.\\
 
-
+The number of doors reached so far are displayed on the bottom left of the simulation and the progress of simulation is indicated by the progress bar.
+The path length covered so far is indicated to the right of the progress bar. The simulation helps visualize all features of a real world scenario and
+can be used efficiently for analysis of various scenarios.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../sim.png}
+    \caption{The robot is finding its path through the maze to reach the doors. It does so in such a manner that the total path length is minimized hence minimizing the energy consumption.}
+\end{figure}
 
 % \section{Computation and Results}
 
- 
-\section{Solution: SubPart 2}
-  
-In this section we will discuss two possible heuristic solutions to our problem. 
+\newpage
+\section{Solution: Time constrainted maximal coverage}
 
-\subsection{Centre of Gravity Based Algorithm}
-\cite{DEWILDE20131700} 
+In this section we will discuss two possible heuristic solutions to our problem. The initial two stages 
+are the same for both the approaches but they differ in the last step.
+
+% \subsection{Centre of Gravity Based Algorithm}
+% \cite{DEWILDE20131700} 
 % Cite the Paper and write the content
 
-\subsection{Multi-Stage Algorithm}
+% \subsection{Multi-Stage Algorithm}
 
 % Check This
-While the previous algorithm requires an Euclidean cost function, in this algorithm we will model a genric enough cost function and solve the problem.
+% While the previous algorithm requires an Euclidean cost function, in this algorithm we will model a genric enough cost function and solve the problem.
 
 We divide the solution to the problem in multiple stages each performing a different operation. All these stages are iterated over for multiple rounds, till convergence criteria is not met.
 We use 4 different hyperparameters whose values are determined empherically under some constraints.
 
-\subsubsection{Stage I: Insertion Stage}
+\subsection{Stage I: Insertion Stage}
 
 At the start of stage we assume that we have a path $\{L(i) : 0<i \leq k\}$, where k is the path length, and L(i) denotes the $i^{th}$ vertex in the path.
 Since we have to start and end at the same position,
@@ -183,10 +196,10 @@ We define two sets $\Psi$ and $\Omega$
 , which contains the vertices in current path and and vertices not in current path respectively.
 Now we first decide, a vertex to insert, lets call it $j$. Now we need to find a point in the path where we can insert the given vertex, and which gives maximum increase in profit while minimising the cost.
 Then point of insertion can be found by solving the following Optimisation:
-            
+
 \begin{equation} \label{eq2}
     \Theta_{j} min_{i = 1,\dots,k} ( C_{V(i),j} + C_{j,V(i+1)} - C_{V(i),V(i-1)} )
-\end{equation}  
+\end{equation}
 Where $\Theta_{j}$ is the calculated cost of given vertex for insertion.
 Also note that in \refeq{eq2} we only need to iterate over only neigbours of vertex j, which in our case can be a maximum of 8, and therefore step 1 can be done in O(1) time.
 
@@ -214,19 +227,23 @@ If addition of any vertex increases the cost beyound alloted capacity, we omit i
 As we see that runtime complexity of this step is $O(n^2)$ in this case, wehere n is the final path length achieved after performin this stage. Note that its not $O(n^3)$ due to limited number of neighbours a vertex can have in the maze like structure we have used.
 
 
-\subsubsection{Stage 2: k-Opt}
-
+\subsection{Stage 2: k-Opt}
+\label{kopt}
 In this stage we apply the famous k-Opt Startegy \cite{opt1} \cite{opt2} increase the total profit while being in the budget. 
 We start with applying 2-opt Optimisation, and if the final profit is more than $\{ \lambda_{3} , \lambda_{3} > 1 \}$ times the previous score, we move on to higher order k-opts. 
 However if increase in budget is observed without satisfying the previous equation, we go back to stage-1 since further insertions may have scope for improvement. 
 However if no increase in profit is improved, we move onto the next stage. The worst case complexity of this strategy on a complete graph is $O(n^2)$, however as in previous stage, since we have a maximum of 8 connexting edges from a vertex, the time complexity is just $O(n)$ for a single pass of this stage.
 
-\subsubsection{Stage 3: Deletion}
+\subsection{Stage 3: Final stage}
+
+There are two approaches discussed below for the last stage. The first approach deals with deleting vertices in the current path, whereas the second
+approach uses a centre of gravity approach \cite{apps1} to modify the existing route.
+\subsubsection{Deletion}
 
 In this stage we try and delete vertices, that may not be useful for inclusion in path.
 Let $S_{final}$ be the new profit after deleting a vertex $v$ from path $P$. Then we define a metric: 
 \begin{equation}  \label{eq5}
-    \xi (j)= \frac{S_{initial} - S_{final}}{P(j)}   
+    \xi (j)= \frac{S_{initial} - S_{final}}{P(j)}
 \end{equation}
 where j is the vertex removed from the path
 
@@ -235,31 +252,59 @@ After this step we check for the convergence criteria which terminates when the 
 If the convergence criteria is not met we move back to stage 1 for further insertions and repeat the steps. 
 Again the time complexity of this stage is $O(n)$ since we can delete only n points in the path, and deleteion of each point takes only $O(1)$ time
 
-\subsubsection{Conclusion}
+\subsubsection{Centre of Gravity}
+Suppose now that node $i$ has coordinates $(x(i),y(i))$. In this step, we calculate
+the center of gravity of $L$ as $g = (\bar{x} ,\bar{y})$, where
+\begin{equation}  \label{eq6}
+    \bar{x} =  \frac{\sum_{i \in L} P(i) x(i)}{\sum_{i \in L} P(i)}
+\end{equation}
+\begin{equation}  \label{eq6.2}
+    \bar{y} =  \frac{\sum_{i \in L} P(i) y(i)}{\sum_{i \in L} P(i)}
+\end{equation}
+
+Let $a(i) = t(i,g)$ for $i = 1, 2, \ldots ,n$ i.e. the time taken to reach from $i$ to the centre of gravity $g$. Next a route including nodes $1$ and $n$ is formed as follows:
+\begin{enumerate}
+    \item Calculate the ratio $P(i)/a(i)\ \forall i$
+    \item Add nodes to the route in decreasing order of this ratio using cheapest insertion, until no additional nodes can be added without exceeding the time constraint $T_{max}$.
+    \item Use the \hyperref[kopt]{route improvement} step to make adjustments to the resulting
+          route.
+\end{enumerate}
+
+We now have a route $L_1$. This route’s center of gravity gives rise to a repetition
+of (1)-(3). The resulting route is denoted by $L_2$. This process is repeated until
+a cycle develops, that is, route $L_p$ and $L_q$ are identical for some $q > p$. Finally,
+we select the route that has the highest score among the routes
+${L, L_1, L_2 , \ldots , L_q}$. 
+
+This stage calculates the centre of gravity and the updated ratios at each iteration. This requires $\Theta(n)$ time in each iteration. Since there are $\Theta(n)$ iterations, the overall
+time complexity of this stage is $\Theta(n^2)$. However we also repeat this stage $q$ times which would account for a higher complexity of $\Theta(qn^2)$. Typically,
+$q$ is kept to be a static constant and is taken such that $q \le 10$. This ensures that the asymptotic analysis would yield a runninng time
+given by $\Theta(n^2)$.
+\subsection{Conclusion}
 
 As we have shown the overall complexity of each stage is not more than $O(n^2)$ and therefore each round of algorithm is fast enough.
 Also results in literature show that similar algorithms are able to achieve fast enough convergence, that they can be used in real time embedded systems, with minimum energy costs. \cite{RAMESH1991151}
 Simulation data suggests that the robot was able to find a very good path in very less time, thus showing the effectiveness of this algorithm.
 
-\subsubsection{Final Algorithm}
+\subsection{Final Algorithm}
 
 \begin{algorithm}[H]
     \SetAlgoLined
-     \While{not converged}{
-      1. Stage 1: Given a graph $G = (V,E)$ perform insertions based on \ref{eq4} till the cost doesnt exceed the specified value\;
-      2. Stage 2: Apply k-opt strategy.
+    \While{not converged}{
+        1. Stage 1: Given a graph $G = (V,E)$ perform insertions based on \ref{eq4} till the cost doesnt exceed the specified value\;
+        2. Stage 2: Apply k-opt strategy.
         \uIf{improvements are good enough}{
-        Go to Stage 1 if \;
+            Go to Stage 1 if \;
         }
         \Else{
             Move to Stage 3 \;
         }
-      3. Stage 3: Perform Deletions of vertex in path in accordance with \ref{eq5}\;
-     }
-\caption{Optimisation Algorithm}
+        3. Stage 3: Perform Deletions of vertex in path in accordance with \ref{eq5}\;
+    }
+    \caption{Optimisation Algorithm}
 \end{algorithm}
 
- 
+
 
 \section{Future Directions}
 
@@ -270,11 +315,14 @@ Also this problem can be further extended by considering some more realistic set
 
 
 Overall we see that with the right heuristics the given NP-Hard problem can be solved with good accuracy, in a real-time. While we focussed on a single task, similar algorithms can be used 
-in domains not discussed in this report. \cite{apps1},\cite{apps2} Also with advent of modern technologies with capabilities of replacing human beings at non-trivial taks, such algorithms will be the need of the hour.
+in domains not discussed in this report. \cite{apps1},\cite{apps2} Also with advent of modern technologies with capabilities of replacing human beings at non-trivial taks, such algorithms will be the need of the hour as evident from our application to cleaning robots.
+As robotics grows in the technological domain, more path routing and graph based algorithms would need to be implemented, the solutions of most of which are NP Hard. We have demonstrated that 
+the appropriate heuristics can get us very close to the optimal solution as given by deterministic algorithms with exponential time complexities.
 
 %TODO: Add additional things if needed
 
 
+\clearpage
 \bibliographystyle{plain}
 \bibliography{sample}
 

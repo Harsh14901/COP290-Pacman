@@ -8,11 +8,6 @@ An efficient four-phase heuristic for the generalized orienteering problem.
 The time constrained maximal covering salesman problem.
 \newblock {\em Applied Mathematical Modelling}, 38(15), 2014.
 
-\bibitem{DEWILDE20131700}
-T.~Dewilde, D.~Cattrysse, S.~Coene, F.C.R. Spieksma, and P.~Vansteenwegen.
-\newblock Heuristics for the traveling repairman problem with profits.
-\newblock {\em Computers \& Operations Research}, 40.
-
 \bibitem{apps1}
 Bruce~L. Golden, Larry Levy, and Rakesh Vohra.
 \newblock The orienteering problem.
