@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.6.29) (preloaded format=pdflatex 2020.10.9)  21 MAY 2021 23:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.6.29) (preloaded format=pdflatex 2020.10.9)  21 MAY 2021 23:52
 entering extended mode
-**d:/Pranjal/Desktop2/cop/simulation/derivaton.tex
-(d:/Pranjal/Desktop2/cop/simulation/derivaton.tex
+**//wsl.localhost/Ubuntu/home/pranjal2041/pacman/proj_folder/COP290-Pacman/doc/simulation/derivaton.tex
+(//wsl.localhost/Ubuntu/home/pranjal2041/pacman/proj_folder/COP290-Pacman/doc/simulation/derivaton.tex
 LaTeX2e <2020-02-02> patch level 5
 L3 programming layer <2020-06-18> ("D:\Program Files\MiKTeX\tex/latex/base\article.cls"
 Document Class: article 2019/12/20 v1.4l Standard LaTeX document class
@@ -497,37 +497,51 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 286.
 )
 \Hy@SectionHShift=\skip93
-) (d:/Pranjal\Desktop2\cop\simulation\derivaton.aux)
+) ("D:\Program Files\MiKTeX\tex/latex/algorithmicx\algorithmicx.sty"
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count316
+\c@ALG@rem=\count317
+\c@ALG@nested=\count318
+\ALG@tlm=\skip94
+\ALG@thistlm=\skip95
+\c@ALG@Lnr=\count319
+\c@ALG@blocknr=\count320
+\c@ALG@storecount=\count321
+\c@ALG@tmpcounter=\count322
+\ALG@tmplength=\skip96
+) (//wsl.localhost/Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.aux)
 \openout1 = `derivaton.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 29.
-LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
  ("D:\Program Files\MiKTeX\tex/context/base/mkii\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count316
+\scratchcounter=\count323
 \scratchdimen=\dimen276
 \scratchbox=\box72
-\nofMPsegments=\count317
-\nofMParguments=\count318
+\nofMPsegments=\count324
+\nofMParguments=\count325
 \everyMPshowfont=\toks28
-\MPscratchCnt=\count319
+\MPscratchCnt=\count326
 \MPscratchDim=\dimen277
-\MPnumerator=\count320
-\makeMPintoPDFobject=\count321
+\MPnumerator=\count327
+\makeMPintoPDFobject=\count328
 \everyMPtoPDFconversion=\toks29
 ) ("D:\Program Files\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty"
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -584,7 +598,7 @@ File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package color Info: Driver file: pdftex.def on input line 147.
 )
-Package hyperref Info: Link coloring ON on input line 29.
+Package hyperref Info: Link coloring ON on input line 30.
  ("D:\Program Files\MiKTeX\tex/latex/hyperref\nameref.sty"
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
  ("D:\Program Files\MiKTeX\tex/latex/refcount\refcount.sty"
@@ -592,54 +606,67 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ) ("D:\Program Files\MiKTeX\tex/generic/gettitlestring\gettitlestring.sty"
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count322
+\c@section@level=\count329
 )
-LaTeX Info: Redefining \ref on input line 29.
-LaTeX Info: Redefining \pageref on input line 29.
-LaTeX Info: Redefining \nameref on input line 29.
- (d:/Pranjal\Desktop2\cop\simulation\derivaton.out) (d:/Pranjal\Desktop2\cop\simulation\derivaton.out)
+LaTeX Info: Redefining \ref on input line 30.
+LaTeX Info: Redefining \pageref on input line 30.
+LaTeX Info: Redefining \nameref on input line 30.
+ (//wsl.localhost/Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.out) (//wsl.localhost/Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.out)
 \@outlinefile=\write3
 \openout3 = `derivaton.out'.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 29.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 30.
  ("D:\Program Files\MiKTeX\tex/latex/amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 29.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 30.
  ("D:\Program Files\MiKTeX\tex/latex/amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {C:/Users/Pranjal/AppData/Local/MiKTeX/pdftex/config/pdftex.map}] [2]
+Underfull \hbox (badness 10000) in paragraph at lines 129--130
 
-Package natbib Warning: Citation `c2' on page 3 undefined on input line 173.
+ []
 
-(d:/Pranjal\Desktop2\cop\simulation\derivaton.bbl [3])
 
-Package natbib Warning: There were undefined citations.
+Underfull \hbox (badness 10000) in paragraph at lines 131--133
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 198.
-[4]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 198.
- (d:/Pranjal\Desktop2\cop\simulation\derivaton.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 198.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 198.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 134--141
+
+ []
+
+
+Overfull \hbox (6.4553pt too wide) in paragraph at lines 143--145
+[]\OT1/cmr/m/n/10 Hence by \OT1/cmr/bx/n/10 prin-ci-ple of math-e-mat-i-cal in-duc-tion \OT1/cmr/m/n/10 we have shown that the al-go-rithm $\OML/cmm/m/it/10 dp\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 src; visited\OT1/cmr/m/n/10 )$
+ []
+
+[3] [4] (//wsl.localhost/Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.bbl [5])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 274.
+ [6]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 274.
+ (//wsl.localhost/Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 274.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 274.
 Package rerunfilecheck Info: File `derivaton.out' has not changed.
-(rerunfilecheck)             Checksum: 94EA1D41A02351F323C8059A11641218;764.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 198.
+(rerunfilecheck)             Checksum: DD15DF21EC162147A662DA834EBF6ADC;1059.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 274.
  ) 
 Here is how much of TeX's memory you used:
- 13462 strings out of 480790
- 242166 string characters out of 2907049
- 509814 words of memory out of 3000000
- 29232 multiletter control sequences out of 15000+200000
- 543703 words of font info for 69 fonts, out of 3000000 for 9000
+ 13770 strings out of 480790
+ 247151 string characters out of 2907049
+ 515808 words of memory out of 3000000
+ 29519 multiletter control sequences out of 15000+200000
+ 544055 words of font info for 70 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,10n,46p,378b,832s stack positions out of 5000i,500n,10000p,200000b,50000s
- <C:\Users\Pranjal\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on d:/Pranjal\Desktop2\cop\simulation\derivaton.pdf (4 pages, 162943 bytes).
+ 39i,13n,46p,431b,832s stack positions out of 5000i,500n,10000p,200000b,50000s
+ <C:\Users\Pranjal\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmti8.pfb><D:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on //wsl.localhost/Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.pdf (6 pages, 247541 bytes).
 PDF statistics:
- 146 PDF objects out of 1000 (max. 8388607)
- 27 named destinations out of 1000 (max. 500000)
- 97 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 216 PDF objects out of 1000 (max. 8388607)
+ 43 named destinations out of 1000 (max. 500000)
+ 137 words of extra memory for PDF output out of 10000 (max. 10000000)
 

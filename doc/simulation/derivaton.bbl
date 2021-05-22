@@ -1,10 +1,25 @@
 \begin{thebibliography}{1}
 
-\bibitem{ref1}
-PlaceHolder.
-\newblock Placeholder, PlaceHolder.
+\bibitem{RAMESH1991151}
+An efficient four-phase heuristic for the generalized orienteering problem.
+\newblock {\em Computers \& Operations Research}, 18(2), 1991.
 
-\bibitem{c1}
+\bibitem{DEWILDE20131700}
+T.~Dewilde, D.~Cattrysse, S.~Coene, F.C.R. Spieksma, and P.~Vansteenwegen.
+\newblock Heuristics for the traveling repairman problem with profits.
+\newblock {\em Computers \& Operations Research}, 40.
+
+\bibitem{opt2}
+S.~Lin and B.~W. Kernighan.
+\newblock An effective heuristic algorithm for the traveling-salesman problem.
+\newblock {\em Operations Research}, 21(2), 1973.
+
+\bibitem{opt1}
+Shen Lin.
+\newblock Computer solutions of the traveling salesman problem.
+\newblock {\em Bell System Technical Journal}, 44(10), 1965.
+
+\bibitem{ref1}
 PlaceHolder.
 \newblock Placeholder, PlaceHolder.
 

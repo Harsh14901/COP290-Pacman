@@ -24,16 +24,18 @@ void BottomBar::initViews() {
   weaponText.setRenderer(_gRenderer);
   weaponText.loadFromRenderedText(weapon_stats, {210, 255, 30}, lazy_font_60);
 
-  pacmanPointBar.init(x + 40 + 0.9 * (h / 2) + 110, y + h / 4 + 10, w / 4, h / 3,
-                      SDL_Color{100, 255, 40, 255},
+  pacmanPointBar.init(x + 40 + 0.9 * (h / 2) + 110, y + h / 4 + 10, w / 4,
+                      h / 3, SDL_Color{100, 255, 40, 255},
                       SDL_Color{255, 255, 255, 200});
   pacmanPointBar.setRenderer(_gRenderer);
 }
 
-void BottomBar::update(int coins, int activePoints, string weapon_stats) {
+void BottomBar::update(int coins, int activePoints, string weapon_stats,
+                       int total_points) {
   this->coinsCollected = coins;
   this->activePoints = activePoints;
   this->weapon_stats = weapon_stats;
+  this->totalPoints = total_points;
 }
 
 void BottomBar::setRenderer(SDL_Renderer* _gRenderer) {
@@ -52,8 +54,8 @@ void BottomBar::render() {
   weaponText.loadFromRenderedText(weapon_stats, {210, 255, 30}, lazy_font_60);
   weaponText.render(x + 30 + 10 * (h / 2) + 10, y + h / 6);
 
-  pacmanPointBar.render(activePoints / 100.0,
-                        HSVtoRGB(240 - 1.2 * activePoints, 100, 100));
+  float percent = (float)activePoints / (float)totalPoints;
+  pacmanPointBar.render(percent, HSVtoRGB(240 - 2.4 * percent, 100, 100));
 
   prevCoinsCollected = coinsCollected;
 }

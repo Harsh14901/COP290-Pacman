@@ -4,11 +4,11 @@
 \usepackage{multirow}
 
 
-\title{Reading By Visualisation Derivation}
+\title{Smart Cleaning}
 \author{Harsh Aggarwal, Pranjal Aggarwal}
 % \date{cs5190443@iitd.ac.in}
 \date{}
-
+ 
 \usepackage{natbib}
 \usepackage{graphicx}
 \usepackage[center]{caption}
@@ -21,11 +21,12 @@
 \usepackage{siunitx}
 \usepackage[ruled,vlined]{algorithm2e}
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref}
-
+\usepackage{algorithmicx}
+ 
 
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 
-
+ 
 \begin{document}
 
 \maketitle
@@ -44,9 +45,7 @@ We use them and build upon a new heuristic based approach.
 
 Suppose we have an indoor building with n rooms, which need to be cleaned. Each room may have different sizes
 and floorplans, and different amount of dust in them. The task of the robot is to clean all the rooms in the building in a limited amount of time.
-
-% This point  can be further elaborated
-[This can be due to both limited battery capacity of robot or urgency to complete the tasl ]
+This limited time can be due to both limited battery or storage capacity of robot or urgency to complete the task(such as when public centrs are closed for only small duration in the whole day).
 
 At the same the robot has to maximise the amount of cumulative amount of dust cleaned in all rooms, while providing a minimum in each of the room.
 The problem can be modelled as a two stage problem:
@@ -66,35 +65,102 @@ Where k is a constant value dependent on the speed of robot, and f is an arbitar
 
 
 
-% % \begin{align*}
-% \begin{equation} \label{eq:1}
-%     min_{\Ati , \Ait} \; \;  L(\TsoA, \Dval)   
-% \end{equation}
-%     \[ s.t. \]
-% \begin{equation}  \label{eq:2}
-%     \TsoA = min_T L(T,\Dtr) + \gamma L(\Dtr,T,\OsoA,\PsoA,\GsoA)   
-% \end{equation}
-% \begin{equation}  \label{eq:3}
-%     \OsoA,\PsoA = min_{\Ov,\Pv} L(\Ait , \Ov, \Pv , \Gv) \\
-% \end{equation}
-% \begin{equation} \label{eq:4}
-%     \GsoA = max_{\Gv} min_{\Eti} L(\Ait, \Gv, \Eti , \Dti) 
-% \end{equation}
 
 \section{Related Work}
 
-The problem at hand can be modelled as a variant of TSP  asknown Profit-TSP. In this problem,
+The problem at hand can be modelled as a variant of TSP  known as Profit-TSP. In this problem,
 the Salesman has to maximise its profits however in a fixed finite amount of time. 
-This has been shown to an NP-Hard Problem \cite{ref1}. 
+This has been shown to an NP-Hard Problem \cite{RAMESH1991151},\cite{apps2}. 
 
 % TODO: Complete This
 
-\section{Solution}
+\section{Steiner TSP solution}
 
+The problem of starting from a point on the graph and returning to the same point after visiting a pre-determined fixed
+set of points is called steiner TSP. A steiner TSP is just the extension of the TSP problem and can be converted to the
+regular TSP problem very easily.
+
+\subsection{Approach}
+
+Consider a fully connected graph $G$ with vertex set $V$ and edge set $E$ such that $E \subseteq V \times V$. 
+Given a set of vertices $U \subseteq V$ such that the starting vertex $v \in U$ and all vertices in $U$ must be visited
+exactly once with the final vertex being $v$.
+
+We can construct a subgraph $H \subseteq G$ such that $V_H = U$ and $E_H = V_H \times V_H$ i.e. a complete subgraph
+comprising the vertex set $U$. We can define the edge length for an edge $e = (x,y) \in E_H,\ x,y \in V_H $ as the shortest
+path length from $x$ to $y$ in $G$. i.e. $e(x,y) = d(x,y)$ where $e(x,y)$ is the length of edge from $x$ to $y$.
+
+Executing TSP on the above subgraph $H$ will yield the corresponding solution to the steiner TSP problem on $G$. The TSP is 
+solved using a Dynamic Programming approach. Let $dp(src, visited)$ indicate the shortest path length starting from $src$ to 
+$v$, given that the set of already visited vertices is represented by the bit mask 
+\footnote{
+    If the number of vertices involved is $N$ the $visited$ argument is an integer in the range $[1, 2^N]$. The $i^{th}$ bit of
+    the number $visited$ indicates whether the $i^{th}$ vertex is visited or not. To mark a vertex as visited we simply set the $i^{th}$
+    bit of the number. It is a very efficient approach for encoding information in small constrainted problems and is popularly known as \textit{bit masking}.
+}
+$visited$.
+
+To solve the DP we follow the steps below.
+\begin{enumerate}
+    \item Mark $src$ as visited by setting its bit in the $visited$ argument.
+    \item For all the unvisited neighbors of $src$ calculate the sum of the edge length and the answer returned by the recursive call to $dp(neighbor, visited)$ which is the length of the shortest path from the neighbor to $v$ with the updated $visited$ bit mask.
+    \item Calculate the minimum of all path lengths and store it as the optimal solution for this problem.
+\end{enumerate}
+Additionally we can memoize the results of the DP in an array of size $N \times 2^N$ so that each subproblem is solved exactly once.
+
+\begin{algorithm}[H]
+    \SetAlgoLined
+    visited $\gets$ visit(visited, src)\;
+    optimalLength $\gets$ \verb|INT_MAX|\;
+    \ForAll(){neighbor of src}{
+        \If{!isVisited(visited, neighbor)}{
+            pathLength $\gets$ edgeLength(src, neighbor) + dp(neighbor, visited)\;
+            optimalLength $\gets$ min(optimalLength, pathLength)\;
+        }
+    }
+    \Return{optimalLength};
+    \caption{dp(src, visited)}
+\end{algorithm}
+
+
+\subsection{Proof of correctness}
+The recursive $dp$ procedure can be proved easily using the principle of mathematical induction by inducting on $N$ (the number of vertices).
+
+\textit{Base:}  The base case is for $n = 0$. The shortest path length is zero which matches with the algorithm output.\\
+
+\textit{Induction Hypothesis: } For a given $n = n_0$, the procedure $dp(src, visited)$ returns the shortest path length from $src$ to $v$ after visiting all the vertices
+exactly once and the initial visited vertices represented by the bitmask $visited$.\\
+
+\textit{Induction step:} For a given $n = n_0 + 1$ the algorithm marks the $src$ vertex as visited and then recursively calls the $dp$ procedure
+with the updated bitmask. Observe that setting a vertex as visited implies that no solution to the subproblems are allowes to visit the vertex.
+But this is equivalent to just removing the vertex from the graph for the subproblems. This leads to a graph with $n - 1$ nodes for which the recursive calls 
+are made. Now for $n - 1 = n_0$ vertices the Induction Hypothesis can be invoked to state that the shortest distance from a neighbor of $src$ to $v$ is specified
+by the recursive call $dp(neighbor, updated\_visited)$ where $updated\_visited$ is the updated bitmask after visiting $src$. If the cost of the edge is added
+then the total path length is determined and taking a minimum of all path lengths from the unvisited neighbors yields the shortes path from $src$ to $v$.
+Thus for $n = n_0 + 1$ the Induction Hypothesis holds true.\\
+
+
+Hence by \textbf{principle of mathematical induction} we have shown that the algorithm $dp(src, visited)$ returns the shortest path length from $src$ to $v$ with the current visited
+state represented by the bitmask $visited$.
+
+\subsection{Analysis}
+
+The total number of subproblems is $(N*2^N)$. This is also the size of the memo that will be used during memoization for the DP solution.
+Hence the \textbf{space complexity} of solution is $\Theta(N*2^N)$. Now each subproblem requires a linear amount of time since it involves a 
+search through all the neighbors of the source vertex. Since there are at most $\Theta(N*2^N)$ subproblems the \textbf{time complexity} of the 
+algorithm is $\Theta(N^2*2^N)$
+
+
+
+% \section{Computation and Results}
+
+ 
+\section{Solution}
+  
 In this section we will discuss two possible heuristic solutions to our problem. 
 
 \subsection{Centre of Gravity Based Algorithm}
-
+\cite{DEWILDE20131700} 
 % Cite the Paper and write the content
 
 \subsection{Multi-Stage Algorithm}
@@ -103,7 +169,7 @@ In this section we will discuss two possible heuristic solutions to our problem.
 While the previous algorithm requires an Euclidean cost function, in this algorithm we will model a genric enough cost function and solve the problem.
 
 We divide the solution to the problem in multiple stages each performing a different operation. All these stages are iterated over for multiple rounds, till convergence criteria is not met.
-We use 4 different hyperparameters:- % Describe them
+We use 4 different hyperparameters whose values are determined empherically under some constraints.
 
 \subsubsection{Stage I: Insertion Stage}
 
@@ -111,13 +177,13 @@ At the start of stage we assume that we have a path $\{L(i) : 0<i \leq k\}$, whe
 Since we have to start and end at the same position,
 $L(1),L(2) = 1$.
 We define two sets $\Psi$ and $\Omega$
- , which contains the vertices in current path and and vertices not in current path respectively.
+, which contains the vertices in current path and and vertices not in current path respectively.
 Now we first decide, a vertex to insert, lets call it $j$. Now we need to find a point in the path where we can insert the given vertex, and which gives maximum increase in profit while minimising the cost.
 Then point of insertion can be found by solving the following Optimisation:
-
+            
 \begin{equation} \label{eq2}
-   \Theta_{j} min_{i = 1,\dots,k} ( C_{V(i),j} + C_{j,V(i+1)} - C_{V(i),V(i-1)} )
-\end{equation}
+    \Theta_{j} min_{i = 1,\dots,k} ( C_{V(i),j} + C_{j,V(i+1)} - C_{V(i),V(i-1)} )
+\end{equation}  
 Where $\Theta_{j}$ is the calculated cost of given vertex for insertion.
 Also note that in \refeq{eq2} we only need to iterate over only neigbours of vertex j, which in our case can be a maximum of 8, and therefore step 1 can be done in O(1) time.
 
@@ -133,7 +199,7 @@ However this would give high weightage to high density vertices therefore we add
 and modify it as:
 
 \begin{equation} \label{eq4}
-    max_{j \in \Omega}  \frac{P(j)^{\lambda_{1}}}{C(j)} 
+    max_{j \in \Omega}  \frac{P(j)^{\lambda_{1}}}{C(j)}
 \end{equation}
 
 We hypothesize that $\lambda_{1} < 1$. This is due the fact that a minimum time is always required for robot to cross a cell, and thus by adding this additional hyperparameter,
@@ -143,12 +209,11 @@ We continue this process of insertion till the cost doesnt exceed $\lambda_{2,1}
 If addition of any vertex increases the cost beyound alloted capacity, we omit it and move on to the next stage.
 
 As we see that runtime complexity of this step is $O(n^2)$ in this case, wehere n is the final path length achieved after performin this stage. Note that its not $O(n^3)$ due to limited number of neighbours a vertex can have in the maze like structure we have used.
-% Complete the double insertion part
 
 
 \subsubsection{Stage 2: k-Opt}
 
-In this stage we apply the famous k-Opt Startegy \cite{c1} increase the total profit while being in the budget. 
+In this stage we apply the famous k-Opt Startegy \cite{opt1} \cite{opt2} increase the total profit while being in the budget. 
 We start with applying 2-opt Optimisation, and if the final profit is more than $\{ \lambda_{3} , \lambda_{3} > 1 \}$ times the previous score, we move on to higher order k-opts. 
 However if increase in budget is observed without satisfying the previous equation, we go back to stage-1 since further insertions may have scope for improvement. 
 However if no increase in profit is improved, we move onto the next stage. The worst case complexity of this strategy on a complete graph is $O(n^2)$, however as in previous stage, since we have a maximum of 8 connexting edges from a vertex, the time complexity is just $O(n)$ for a single pass of this stage.
@@ -170,7 +235,7 @@ Again the time complexity of this stage is $O(n)$ since we can delete only n poi
 \subsubsection{Conclusion}
 
 As we have shown the overall complexity of each stage is not more than $O(n^2)$ and therefore each round of algorithm is fast enough.
-Also results in literature show that similar algorithms are able to achieve fast enough convergence, that they can be used in real time embedded systems, with minimum energy costs. \cite{c2}
+Also results in literature show that similar algorithms are able to achieve fast enough convergence, that they can be used in real time embedded systems, with minimum energy costs. \cite{RAMESH1991151}
 Simulation data suggests that the robot was able to find a very good path in very less time, thus showing the effectiveness of this algorithm.
 
 \subsubsection{Final Algorithm}
@@ -185,11 +250,22 @@ Simulation data suggests that the robot was able to find a very good path in ver
 \caption{Optimisation Algorithm}
 \end{algorithm}
 
+ 
 
+% Decide if this needs to be included
+\section{Future Directions}
+
+The algorithms discussed in this report were mostly tested on random mazes. While the results on them look promising, in future we would like to simulate the problem in real floorplans, and data.
+Also this problem can be further extended by considering some more realistic settings, such as different speeds of robot in different terrain, getting more information about the dust, such as their weight, density etc, to create an more accurate timing model.
 
 \section{Conclusion}
 
 % Write down inference and also future directions
+
+Overall we see that with the right heuristics the given NP-Hard problem can be solved with good accuracy, in a real-time. While we focussed on a single task, similar algorithms can be used 
+in domains not discussed in this report. \cite{apps1},\cite{apps2} Also with advent of modern technologies with capabilities of replacing human beings at non-trivial taks, such algorithms will be the need of the hour.
+
+
 
 \bibliographystyle{plain}
 \bibliography{sample}

@@ -37,6 +37,8 @@ class MainGame {
   void connect(Client* client);
 
  protected:
+  void drawInitScreen();
+
   void initSystems();
   void preRender();
   void renderAll();
@@ -89,7 +91,6 @@ class MainGame {
   Pacman* pacman;
 
  private:
-  void drawInitScreen();
   void processInput();
   void gameLoop();
   bool loadMedia();

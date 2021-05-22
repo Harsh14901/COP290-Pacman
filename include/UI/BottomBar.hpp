@@ -18,7 +18,8 @@ class BottomBar {
 
   void render();
   void initViews();
-  void update(int coins, int activePoints, string weapon_stats);
+  void update(int coins, int activePoints, string weapon_stats,
+              int total_points = 100);
 
  private:
   int x;
@@ -35,6 +36,7 @@ class BottomBar {
   int coinsCollected = 0;
   int prevCoinsCollected = 0;
   int activePoints = 0;
+  int totalPoints = 0;
   string weapon_stats = "-";
 
   ProgressBar pacmanPointBar;

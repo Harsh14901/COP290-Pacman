@@ -1,7 +1,7 @@
-PWD d:\Pranjal\Desktop2\cop\simulation
+PWD \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation
 INPUT C:\Users\Pranjal\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.tex
-OUTPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.log
+INPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.tex
+OUTPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.log
 INPUT D:\Program Files\MiKTeX\tex\latex\base\article.cls
 INPUT D:\Program Files\MiKTeX\tex\latex\base\article.cls
 INPUT D:\Program Files\MiKTeX\tex\latex\base\size10.clo
@@ -135,9 +135,11 @@ INPUT D:\Program Files\MiKTeX\tex\latex\rerunfilecheck\rerunfilecheck.sty
 INPUT D:\Program Files\MiKTeX\tex\latex\rerunfilecheck\rerunfilecheck.sty
 INPUT D:\Program Files\MiKTeX\tex\generic\uniquecounter\uniquecounter.sty
 INPUT D:\Program Files\MiKTeX\tex\generic\uniquecounter\uniquecounter.sty
-INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.aux
-INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.aux
-OUTPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.aux
+INPUT D:\Program Files\MiKTeX\tex\latex\algorithmicx\algorithmicx.sty
+INPUT D:\Program Files\MiKTeX\tex\latex\algorithmicx\algorithmicx.sty
+INPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.aux
+INPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.aux
+OUTPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.aux
 INPUT D:\Program Files\MiKTeX\tex\context\base\mkii\supp-pdf.mkii
 INPUT D:\Program Files\MiKTeX\tex\context\base\mkii\supp-pdf.mkii
 INPUT D:\Program Files\MiKTeX\tex\latex\epstopdf-pkg\epstopdf-base.sty
@@ -156,14 +158,14 @@ INPUT D:\Program Files\MiKTeX\tex\latex\refcount\refcount.sty
 INPUT D:\Program Files\MiKTeX\tex\latex\refcount\refcount.sty
 INPUT D:\Program Files\MiKTeX\tex\generic\gettitlestring\gettitlestring.sty
 INPUT D:\Program Files\MiKTeX\tex\generic\gettitlestring\gettitlestring.sty
-INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
-INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
-INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
-INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
-OUTPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.pdf
-INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
-INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
-OUTPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
+INPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.out
+INPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.out
+INPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.out
+INPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.out
+OUTPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.pdf
+INPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.out
+INPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.out
+OUTPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.out
 INPUT D:\Program Files\MiKTeX\fonts\tfm\public\amsfonts\cmextra\cmex7.tfm
 INPUT D:\Program Files\MiKTeX\fonts\tfm\public\amsfonts\cmextra\cmex7.tfm
 INPUT D:\Program Files\MiKTeX\tex\latex\amsfonts\umsa.fd
@@ -212,13 +214,14 @@ INPUT D:\Program Files\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
 INPUT D:\Program Files\MiKTeX\fonts\tfm\jknappen\ec\tcrm1000.tfm
 INPUT C:\Users\Pranjal\AppData\Local\MiKTeX\pdftex\config\pdftex.map
 INPUT D:\Program Files\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
+INPUT D:\Program Files\MiKTeX\fonts\tfm\public\cm\cmti8.tfm
 INPUT D:\Program Files\MiKTeX\fonts\tfm\public\cm\cmbx10.tfm
 INPUT D:\Program Files\MiKTeX\fonts\tfm\public\cm\cmti10.tfm
-INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.bbl
-INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.bbl
-INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.aux
-INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
-INPUT d:\Pranjal\Desktop2\cop\simulation\derivaton.out
+INPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.bbl
+INPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.bbl
+INPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.aux
+INPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.out
+INPUT \\wsl.localhost\Ubuntu\home\pranjal2041\pacman\proj_folder\COP290-Pacman\doc\simulation\derivaton.out
 INPUT C:\Users\Pranjal\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrm1000.pk
 INPUT C:\Users\Pranjal\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrm1000.pk
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx10.pfb
@@ -227,8 +230,12 @@ INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx12.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx12.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi10.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi10.pfb
+INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi6.pfb
+INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi6.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi7.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi7.pfb
+INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi8.pfb
+INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi8.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmr10.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmr10.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmr12.pfb
@@ -237,11 +244,19 @@ INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmr17.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmr17.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmr5.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmr5.pfb
+INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmr6.pfb
+INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmr6.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmr7.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmr7.pfb
+INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmr8.pfb
+INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmr8.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy10.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy10.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy7.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy7.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmti10.pfb
 INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmti10.pfb
+INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmti8.pfb
+INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmti8.pfb
+INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmtt10.pfb
+INPUT D:\Program Files\MiKTeX\fonts\type1\public\amsfonts\cm\cmtt10.pfb
