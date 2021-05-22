@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex derivaton"] 1621655570 "derivaton.aux" "derivaton.bbl" "derivaton" 1621655574
+["bibtex derivaton"] 1621658192 "derivaton.aux" "derivaton.bbl" "derivaton" 1621658197
   "D:/Program Files/MiKTeX/bibtex/bst/bibtex/plain.bst" 1291868336 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "derivaton.aux" 1621655573 3649 0ac0c411fab2d037bef7b07d2dfcd2dd "pdflatex"
-  "sample.bib" 1621655561 1449 804aa0cc1d3b8c9ea894dbaae0f66678 ""
+  "derivaton.aux" 1621658196 3821 9341ea2144035fb40826f3183bbf8d1f "pdflatex"
+  "sample.bib" 1621657736 2058 d9d06ab2c04237e81faaa17bced4027b ""
   (generated)
   "derivaton.blg"
   "derivaton.bbl"
-["pdflatex"] 1621655571 "//wsl.localhost/Ubuntu/home/pranjal2041/pacman/proj_folder/COP290-Pacman/doc/simulation/derivaton.tex" "//wsl.localhost/Ubuntu/home/pranjal2041/pacman/proj_folder/COP290-Pacman/doc/simulation/derivaton.pdf" "derivaton" 1621655574
-  "//wsl.localhost/Ubuntu/home/pranjal2041/pacman/proj_folder/COP290-Pacman/doc/simulation/derivaton.aux" 1621655573 3649 0ac0c411fab2d037bef7b07d2dfcd2dd ""
-  "//wsl.localhost/Ubuntu/home/pranjal2041/pacman/proj_folder/COP290-Pacman/doc/simulation/derivaton.tex" 1621655564 16245 fd6c6352f4dacb178bdee7d9124aae4d ""
+["pdflatex"] 1621658193 "//wsl.localhost/Ubuntu/home/pranjal2041/pacman/proj_folder/COP290-Pacman/doc/simulation/derivaton.tex" "//wsl.localhost/Ubuntu/home/pranjal2041/pacman/proj_folder/COP290-Pacman/doc/simulation/derivaton.pdf" "derivaton" 1621658197
+  "//wsl.localhost/Ubuntu/home/pranjal2041/pacman/proj_folder/COP290-Pacman/doc/simulation/derivaton.aux" 1621658196 3821 9341ea2144035fb40826f3183bbf8d1f ""
+  "//wsl.localhost/Ubuntu/home/pranjal2041/pacman/proj_folder/COP290-Pacman/doc/simulation/derivaton.tex" 1621658184 16670 037a45080b0c81aa6869a4e0d609474f ""
   "C:/Users/Pranjal/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1608304389 11548 15b79423b2b1c2cbe2b5f239f892bbde ""
   "C:/Users/Pranjal/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1602265321 10010376 061584805870746d5fe61eba9ae43743 ""
   "C:/Users/Pranjal/AppData/Local/MiKTeX/pdftex/config/pdftex.map" 1610916829 1378246 e4c27aaed2842497b963e0dcaf003c33 ""
@@ -138,14 +138,14 @@
   "D:/Program Files/MiKTeX/tex/latex/translator/translator-basic-dictionary-English.dict" 1596563592 3535 7dc96051305a7e943219126c49c44cd6 ""
   "D:/Program Files/MiKTeX/tex/latex/translator/translator.sty" 1596563646 8765 3368c4a5a4b5466261cafb836195e916 ""
   "D:/Program Files/MiKTeX/tex/latex/url/url.sty" 1388494052 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
-  "derivaton.aux" 1621655573 3649 0ac0c411fab2d037bef7b07d2dfcd2dd "pdflatex"
-  "derivaton.bbl" 1621655570 856 b6c020ed8e5b7a23a613cf16452e8cc7 "bibtex derivaton"
-  "derivaton.out" 1621655573 1059 dd15df21ec162147a662da834ebf6adc "pdflatex"
-  "derivaton.tex" 1621655564 16245 fd6c6352f4dacb178bdee7d9124aae4d ""
+  "derivaton.aux" 1621658196 3821 9341ea2144035fb40826f3183bbf8d1f "pdflatex"
+  "derivaton.bbl" 1621658193 1256 fc3504473c98b92016973f34bc9b1a13 "bibtex derivaton"
+  "derivaton.out" 1621658196 1070 6095e62731d3a4cfd1b05a4ce5233dd9 "pdflatex"
+  "derivaton.tex" 1621658184 16670 037a45080b0c81aa6869a4e0d609474f ""
   (generated)
+  "derivaton.pdf"
   "derivaton.log"
+  "derivaton.aux"
   "//wsl.localhost/Ubuntu/home/pranjal2041/pacman/proj_folder/COP290-Pacman/doc/simulation/derivaton.log"
   "//wsl.localhost/Ubuntu/home/pranjal2041/pacman/proj_folder/COP290-Pacman/doc/simulation/derivaton.pdf"
-  "derivaton.pdf"
   "derivaton.out"
-  "derivaton.aux"

@@ -68,11 +68,14 @@ Where k is a constant value dependent on the speed of robot, and f is an arbitar
 
 \section{Related Work}
 
-The problem at hand can be modelled as a variant of TSP  known as Profit-TSP. In this problem,
+The problem at hand in stage 2 can be modelled as a variant of TSP  known as Profit-TSP. In this problem,
 the Salesman has to maximise its profits however in a fixed finite amount of time. 
 This has been shown to an NP-Hard Problem \cite{RAMESH1991151},\cite{apps2}. 
+In literature various algorithms have been proposed, ranging from genetic algorithms to simple heuristic based algorithms. \cite{RAMESH1991151},\cite{rw1}.
+In this report we will discuss in detail these works and also propose modifications to suit our needs in solving the aforementioned problem statement.
 
-% TODO: Complete This
+% TODO: Write about steiner if needed
+
 
 \section{Steiner TSP solution}
 
@@ -155,7 +158,7 @@ algorithm is $\Theta(N^2*2^N)$
 % \section{Computation and Results}
 
  
-\section{Solution}
+\section{Solution: SubPart 2}
   
 In this section we will discuss two possible heuristic solutions to our problem. 
 
@@ -244,7 +247,13 @@ Simulation data suggests that the robot was able to find a very good path in ver
     \SetAlgoLined
      \While{not converged}{
       1. Stage 1: Given a graph $G = (V,E)$ perform insertions based on \ref{eq4} till the cost doesnt exceed the specified value\;
-      2. Stage 2: Apply k-opt strategy, and if improvements are good enough go back to stage 1. Else go to Stage 3  \;
+      2. Stage 2: Apply k-opt strategy.
+        \uIf{improvements are good enough}{
+        Go to Stage 1 if \;
+        }
+        \Else{
+            Move to Stage 3 \;
+        }
       3. Stage 3: Perform Deletions of vertex in path in accordance with \ref{eq5}\;
      }
 \caption{Optimisation Algorithm}
@@ -252,7 +261,6 @@ Simulation data suggests that the robot was able to find a very good path in ver
 
  
 
-% Decide if this needs to be included
 \section{Future Directions}
 
 The algorithms discussed in this report were mostly tested on random mazes. While the results on them look promising, in future we would like to simulate the problem in real floorplans, and data.
@@ -260,11 +268,11 @@ Also this problem can be further extended by considering some more realistic set
 
 \section{Conclusion}
 
-% Write down inference and also future directions
 
 Overall we see that with the right heuristics the given NP-Hard problem can be solved with good accuracy, in a real-time. While we focussed on a single task, similar algorithms can be used 
 in domains not discussed in this report. \cite{apps1},\cite{apps2} Also with advent of modern technologies with capabilities of replacing human beings at non-trivial taks, such algorithms will be the need of the hour.
 
+%TODO: Add additional things if needed
 
 
 \bibliographystyle{plain}

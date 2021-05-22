@@ -4,10 +4,19 @@
 An efficient four-phase heuristic for the generalized orienteering problem.
 \newblock {\em Computers \& Operations Research}, 18(2), 1991.
 
+\bibitem{rw1}
+The time constrained maximal covering salesman problem.
+\newblock {\em Applied Mathematical Modelling}, 38(15), 2014.
+
 \bibitem{DEWILDE20131700}
 T.~Dewilde, D.~Cattrysse, S.~Coene, F.C.R. Spieksma, and P.~Vansteenwegen.
 \newblock Heuristics for the traveling repairman problem with profits.
 \newblock {\em Computers \& Operations Research}, 40.
+
+\bibitem{apps1}
+Bruce~L. Golden, Larry Levy, and Rakesh Vohra.
+\newblock The orienteering problem.
+\newblock {\em Naval Research Logistics (NRL)}, 34(3), 1987.
 
 \bibitem{opt2}
 S.~Lin and B.~W. Kernighan.
@@ -19,8 +28,9 @@ Shen Lin.
 \newblock Computer solutions of the traveling salesman problem.
 \newblock {\em Bell System Technical Journal}, 44(10), 1965.
 
-\bibitem{ref1}
-PlaceHolder.
-\newblock Placeholder, PlaceHolder.
+\bibitem{apps2}
+T.~Tsiligirides.
+\newblock Heuristic methods applied to orienteering.
+\newblock {\em Journal of the Operational Research Society}, 35(9), 1984.
 
 \end{thebibliography}
